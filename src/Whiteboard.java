@@ -21,16 +21,16 @@ import javax.swing.filechooser.FileSystemView;
 
 
 @SuppressWarnings("serial")
-public class frame extends JFrame  {
+public class Whiteboard extends JFrame  {
 	private String input = "default";
-	private JButton Square, Circle, Ellipse, rectangle, triangle, line, delete,
-			colorChooser, move, resize, changeC, Freehand, text, eraser;
+	private JButton square, circle, ellipse, rectangle, triangle, line, delete,
+			colorPicker, move, resize, changeC, freehand, text, eraser;
 	private JRadioButton filled, border;
 	protected static String url;
 	MouseClass paint;
-	private saveGson savegson;
+	private SaveGson savegson;
 	private JFileChooser SLfile;
-	private JMenuBar bar;
+	private JMenuBar menuBar;
 	private JMenu file;
 	private JMenu edit;
 	private JMenu save;
@@ -52,13 +52,12 @@ public class frame extends JFrame  {
 		return input;
 	}
 
-	public frame() {
+	public Whiteboard() {
 
 		Color panel = new Color(169, 221, 217);
 		PressedUndo = false;
 		url = "";
 		paint = new MouseClass();
-		//setSize(990, 770);
 		setSize(1200, 900);
 		setBackground(panel);
 		setResizable(false);
@@ -80,49 +79,49 @@ public class frame extends JFrame  {
 		file = new JMenu("File");
 		file.add(save);
 		file.add(load);
-		bar = new JMenuBar();
-		bar.add(file);
-		bar.add(edit);
-		bar.setBounds(0, 0, 1200, 20);
+		menuBar = new JMenuBar();
+		menuBar.add(file);
+		menuBar.add(edit);
+		menuBar.setBounds(0, 0, 1200, 20);
 
-		add(bar);
+		add(menuBar);
 		int off =20;
 		int voff = 5;
 		int hoff=15;
 		int side = 40;
 
 		eraser=new JButton(new ImageIcon("Assets/eraser.png"));
-		//eraser.setBounds(0,35,40,40);
+
 		eraser.setBounds(hoff,off+voff,side,side);
-		Square=new JButton(new ImageIcon("Assets/square.png"));
-		//Square.setBounds(0,35,40,40);
-		Square.setBounds(hoff,off+2*voff+side,side,side);
+		square =new JButton(new ImageIcon("Assets/square.png"));
+
+		square.setBounds(hoff,off+2*voff+side,side,side);
 		triangle=new JButton(new ImageIcon("Assets/triangle.png"));
-		//triangle.setBounds(45, 80, 40, 40);
+
 		triangle.setBounds(hoff,off+3*voff+side*2,side,side);
 		line=new JButton(new ImageIcon("Assets/line.png"));
-		//line.setBounds(0, 125, 40, 40);
+
 		line.setBounds(hoff,off+4*voff+side*3,side,side);
 		rectangle=new JButton(new ImageIcon("Assets/rectangle.jpg"));
-		//rectangle.setBounds(45, 125, 40, 40);
+
 		rectangle.setBounds(hoff,off+5*voff+side*4,side,side);
-		Ellipse=new JButton(new ImageIcon("Assets/ellipse.png"));
-		//Ellipse.setBounds(0,170,40,40);
-		Ellipse.setBounds(hoff,off+6*voff+side*5,side,side);
-		Circle=new JButton(new ImageIcon("Assets/circle.png"));
-		//Circle.setBounds(45, 170, 40, 40);
-		Circle.setBounds(hoff,off+7*voff+side*6,side,side);
-		Freehand=new JButton(new ImageIcon("Assets/freehand.png"));
-		//Freehand.setBounds(0,215,40,40);
-		Freehand.setBounds(hoff,off+8*voff+side*7,side,side);
+		ellipse =new JButton(new ImageIcon("Assets/ellipse.png"));
+
+		ellipse.setBounds(hoff,off+6*voff+side*5,side,side);
+		circle =new JButton(new ImageIcon("Assets/circle.png"));
+
+		circle.setBounds(hoff,off+7*voff+side*6,side,side);
+		freehand =new JButton(new ImageIcon("Assets/freehand.png"));
+
+		freehand.setBounds(hoff,off+8*voff+side*7,side,side);
 		text=new JButton(new ImageIcon("Assets/text.jpg"));
-		//text.setBounds(45,215,40,40);
+
 		text.setBounds(hoff,off+9*voff+side*8,side,side);
 		textField = new JTextField("Write here");
-		//textField.setBounds(0,260,90,50);
+
 		textField.setBounds(0,off+10*voff+side*9,78,50);
 		slider = new JSlider();
-		//slider.setBounds(0, 315, 100,35);
+
 		slider.setBounds(0,off+11*voff+side*9+50,90,50);
 		slider.setValue(20);
 		slider.setPaintTicks(true);
@@ -138,13 +137,13 @@ public class frame extends JFrame  {
 		Bshapes.setBackground(panel);
 		Bshapes.setLayout(null);
 		Bshapes.setBounds(0, 0, 80, 900);
-		Bshapes.add(Square);
+		Bshapes.add(square);
 		Bshapes.add(triangle);
 		Bshapes.add(line);
 		Bshapes.add(rectangle);
-		Bshapes.add(Ellipse);
-		Bshapes.add(Circle);
-		Bshapes.add(Freehand);
+		Bshapes.add(ellipse);
+		Bshapes.add(circle);
+		Bshapes.add(freehand);
 		Bshapes.add(text);
 		Bshapes.add(textField);
 		Bshapes.add(slider);
@@ -154,42 +153,41 @@ public class frame extends JFrame  {
 
 		move=new JButton(new ImageIcon("Assets/select.png"));
 		move.setToolTipText("move");
-		//move.setBounds(0, 400,40 ,40);
+
 		move.setBounds(hoff,off+12*voff+side*9+100,side,side);
 		resize=new JButton(new ImageIcon("Assets/size.png"));
 		resize.setToolTipText("resize");
-		//resize.setBounds(45, 400, 40, 40);
+
 		resize.setBounds(hoff,off+13*voff+side*10+100,side,side);
 		delete=new JButton(new ImageIcon("Assets/delete.png"));
 		delete.setToolTipText("delete");
-		//delete.setBounds(0,445,40,40);
+
 		delete.setBounds(hoff,off+14*voff+side*11+100,side,side);
 		changeC=new JButton(new ImageIcon("Assets/paint.png"));
-		//changeC.setBounds(45, 445, 40, 40);
+
 		changeC.setBounds(hoff,off+15*voff+side*12+100,side,side);
 		changeC.setToolTipText("change color");
-		colorChooser=new JButton(new ImageIcon("Assets/palette.jpg"));
-		//colorChooser.setBounds(0, 490, 85, 80);
-		colorChooser.setBounds(hoff,off+16*voff+side*13+100,side,side);
-		colorChooser.setToolTipText("choose color");
+		colorPicker =new JButton(new ImageIcon("Assets/palette.jpg"));
+
+		colorPicker.setBounds(hoff,off+16*voff+side*13+100,side,side);
+		colorPicker.setToolTipText("choose color");
 		filled = new JRadioButton("filled");
-		//filled.setBounds(0, 600, 60, 20);
+
 		filled.setBounds(5,off+18*voff+side*14+100,60,20);
 		border = new JRadioButton("border");
-		//border.setBounds(0, 640, 70, 20);
+
 		border.setBounds(5,off+18*voff+side*15+100,60,20);
 		Bshapes.add(move);
 		Bshapes.add(resize);
 		Bshapes.add(delete);
 		Bshapes.add(changeC);
-		Bshapes.add(colorChooser);
+		Bshapes.add(colorPicker);
 		Bshapes.add(filled);
 		Bshapes.add(border);
 
-		//paint.setBounds(85, 25, 1005, 700);
 		paint.setBounds(80, 20, 1200, 900);
 		add(paint);
-		savegson = new saveGson();
+		savegson = new SaveGson();
 
 
 
@@ -198,12 +196,12 @@ public class frame extends JFrame  {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				int retval = 0;
-				FileChooserSave(retval);
+				FileChooserSave();
 				if (retval == JFileChooser.APPROVE_OPTION) {
 					url = "" + SLfile.getSelectedFile();
 					try {
 						savegson.save(paint.currentShapes);
-					} catch (Exception e1) {
+					} catch (Exception ex) {
 					}
 				}
 			}
@@ -213,8 +211,6 @@ public class frame extends JFrame  {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				int returnValue = 0;
-
-				//OpenFile(retval);
 				JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 				returnValue = jfc.showOpenDialog(null);
 
@@ -228,8 +224,8 @@ public class frame extends JFrame  {
 						paint.ur.undo = savegson.undo;
 						paint.ur.lastaction = savegson.lastaction;
 						paint.repaint();
-					} catch (Exception e1) {
-						e1.printStackTrace();
+					} catch (Exception ex) {
+						ex.printStackTrace();
 					}
 				}
 			}
@@ -246,7 +242,7 @@ public class frame extends JFrame  {
 						paint.ur.undo(paint.currentShapes);
 						paint.repaint();
 					}
-				} catch (Exception e2) {
+				} catch (Exception ex) {
 				}
 			}
 		});
@@ -279,7 +275,7 @@ public class frame extends JFrame  {
 			}
 		});
 
-		Ellipse.addActionListener(new ActionListener() {
+		ellipse.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				paint.flag = 1;
@@ -287,7 +283,7 @@ public class frame extends JFrame  {
 			}
 		});
 
-		Circle.addActionListener(new ActionListener() {
+		circle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				paint.flag = 7;
@@ -303,7 +299,7 @@ public class frame extends JFrame  {
 			}
 		});
 
-		Square.addActionListener(new ActionListener() {
+		square.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				paint.flag = 8;
@@ -327,7 +323,7 @@ public class frame extends JFrame  {
 			}
 		});
 
-		Freehand.addActionListener(new ActionListener() {
+		freehand.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				paint.flag = 11;
@@ -350,18 +346,13 @@ public class frame extends JFrame  {
 
 				PressedUndo = false;
 
-
-				//gText gt = new gText();
-				//gt.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				//gt.setVisible(true);
-
 				paint.message = textField.getText();
 				paint.fz = slider.getValue();
 
 			}
 		});
 
-		colorChooser.addActionListener(new ActionListener() {
+		colorPicker.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				paint.color = JColorChooser.showDialog(paint, "Choose a color",
@@ -406,24 +397,29 @@ public class frame extends JFrame  {
 
 	}
 
-	private void OpenFile(int retval) {
-		SLfile = new JFileChooser();
-		retval = SLfile.showOpenDialog(null);
-		SLfile.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		SLfile.setBackground(Color.white);
+	private void BuildMenu(){
+		JMenuBar menuBar = new JMenuBar();
+		JMenu menu = new JMenu("File");
+
+		JMenuItem menuItem = new JMenuItem("");
+		menuItem.setActionCommand("NewBoard");
+		menuItem.addActionListener(this);
+		menu.add(menuItem);
+
+
 	}
 
-	private void FileChooserSave(int retval) {
+
+	private void FileChooserSave() {
 		SLfile = new JFileChooser();
-		retval = SLfile.showSaveDialog(null);
 		SLfile.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		SLfile.setBackground(Color.white);
 	}
 
 	public static void main(String[] args) {
 		try {
-			frame f = new frame();
-			f.setVisible(true);
+			Whiteboard whiteboard = new Whiteboard();
+			whiteboard.setVisible(true);
 		} catch (Exception e) {
 			System.out.println("unexpected error");
 		}

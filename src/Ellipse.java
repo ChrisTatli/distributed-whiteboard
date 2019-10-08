@@ -1,17 +1,16 @@
-
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class Ellipse extends Shape {
 
-	protected int cX, cY, cWidth, cHight;
+	protected int cX, cY, cWidth, cHeight;
 
 	public Ellipse() {
 		super();
 		cX = 0;
 		cY = 0;
 		cWidth = 0;
-		cHight = 0;
+		cHeight = 0;
 	}
 
 	public int getcX() {
@@ -38,12 +37,12 @@ public class Ellipse extends Shape {
 		this.cWidth = cWidth;
 	}
 
-	public int getcHight() {
-		return cHight;
+	public int getcHeight() {
+		return cHeight;
 	}
 
-	public void setcHight(int cHight) {
-		this.cHight = cHight;
+	public void setcHeight(int cHeight) {
+		this.cHeight = cHeight;
 	}
 
 	@Override
@@ -53,7 +52,7 @@ public class Ellipse extends Shape {
 		int cX = ((Ellipse) currentShapes.get(i)).getcX();
 		int cY = ((Ellipse) currentShapes.get(i)).getcY();
 		int cWidth = ((Ellipse) currentShapes.get(i)).getcWidth();
-		int cHight = ((Ellipse) currentShapes.get(i)).getcHight();
+		int cHight = ((Ellipse) currentShapes.get(i)).getcHeight();
 		if ((x >= cX && x <= (cX + cWidth)) && (y >= cY && y <= (cY + cHight))) {
 			return currentShapes.get(i);
 		}
@@ -65,7 +64,7 @@ public class Ellipse extends Shape {
 		int x = e.getX();
 		int y = e.getY();
 		int width = ((Ellipse) selectedShape).getcWidth();
-		int hight = ((Ellipse) selectedShape).getcHight();
+		int hight = ((Ellipse) selectedShape).getcHeight();
 		((Ellipse) selectedShape).setcX(x - (width / 2));
 		((Ellipse) selectedShape).setcY(y - (hight / 2));
 	}
@@ -78,7 +77,7 @@ public class Ellipse extends Shape {
 		int cY = ((Ellipse) selectedShape).getcY();
 		if (x >= cX && y >= cY) {
 			((Ellipse) selectedShape).setcWidth(x - cX);
-			((Ellipse) selectedShape).setcHight(y - cY);
+			((Ellipse) selectedShape).setcHeight(y - cY);
 		}
 	}
 

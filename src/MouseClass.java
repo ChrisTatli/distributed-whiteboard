@@ -11,7 +11,7 @@ public class MouseClass extends JPanel implements MouseListener,
 
 
 	JPanel canvas;
-	UR ur;
+	UndoRedo ur;
 	private Color penColor = new Color(0, 0, 0);
 	private int pointX, pointY, pointR;
 	ArrayList<Shape> shapes;
@@ -27,8 +27,8 @@ public class MouseClass extends JPanel implements MouseListener,
 	private Line l;
 	private Point point;
 	private Freehand fh;
-	private text tx;
-	private eraser er;
+	private Text tx;
+	private Eraser er;
 	int flag;
 	String message;
 	int fz;
@@ -62,7 +62,7 @@ public class MouseClass extends JPanel implements MouseListener,
 
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		ur = new UR();
+		ur = new UndoRedo();
 
 
 
@@ -77,6 +77,7 @@ public class MouseClass extends JPanel implements MouseListener,
 	public void mousePressed(MouseEvent ev) {
 
 		try {
+			startx = ev.getX();
 			startx = ev.getX();
 			starty = ev.getY();
 			if (flag == 5 || flag == 6) {
@@ -136,7 +137,7 @@ public class MouseClass extends JPanel implements MouseListener,
 					fh.setPoints(pointList);  // the clicked point is added to a list
 
 				} else if (flag == 12) {
-					tx = new text();
+					tx = new Text();
 					tx.setColor(color);
 					tx.setName("text");
 					tx.setFilled(isFilled);
@@ -146,7 +147,7 @@ public class MouseClass extends JPanel implements MouseListener,
 					tx.setPosy(ev.getY());
 
 				}  else if (flag == 13) {
-					er = new eraser();
+					er = new Eraser();
 					er.setColor(Color.white);
 					er.setName("eraser");
 					pointX = ev.getX() ;   // the clicked point is stored without the offset
@@ -204,7 +205,7 @@ public class MouseClass extends JPanel implements MouseListener,
 						c.setcX(Math.min(e.getX(), startx));
 						c.setcY(Math.min(e.getY(), starty));
 						c.setcWidth(Math.abs(e.getX() - startx));
-						c.setcHight(Math.abs(e.getY() - starty));
+						c.setcHeight(Math.abs(e.getY() - starty));
 
 						shapes.add(c);
 					} else if (flag == 2) {
@@ -278,7 +279,7 @@ public class MouseClass extends JPanel implements MouseListener,
 					currentShapes.add(c);
 
 					pos = c.getcX() + "," + c.getcY() + "," + c.getcWidth() + ","
-							+ c.getcHight() + "," + c.getColor().getRGB() + ","
+							+ c.getcHeight() + "," + c.getColor().getRGB() + ","
 							+ c.isFilled();
 					item.setName("ellipse");
 					pushItem();
@@ -438,7 +439,7 @@ public class MouseClass extends JPanel implements MouseListener,
 			pos = "" + ((Ellipse) currentShapes.get(help)).getcX() + ","
 					+ ((Ellipse) currentShapes.get(help)).getcY() + ","
 					+ ((Ellipse) currentShapes.get(help)).getcWidth() + ","
-					+ ((Ellipse) currentShapes.get(help)).getcHight() + ","
+					+ ((Ellipse) currentShapes.get(help)).getcHeight() + ","
 					+ currentShapes.get(help).getColor().getRGB();
 		} else if (helpp == "square") {
 			pos = "" + ((Square) currentShapes.get(help)).getPosx() + ","
@@ -474,10 +475,10 @@ public class MouseClass extends JPanel implements MouseListener,
 					+ ((Rectangle) currentShapes.get(help)).getrHight() + ","
 					+ currentShapes.get(help).getColor().getRGB();
 		} else if (helpp == "text") {
-			pos = "" + ((text) currentShapes.get(help)).getPosx() + ","
-					+ ((text) currentShapes.get(help)).getPosy() + ","
-					+ ((text) currentShapes.get(help)).getWidth() + ","
-					+ ((text) currentShapes.get(help)).getHight() + ","
+			pos = "" + ((Text) currentShapes.get(help)).getPosx() + ","
+					+ ((Text) currentShapes.get(help)).getPosy() + ","
+					+ ((Text) currentShapes.get(help)).getWidth() + ","
+					+ ((Text) currentShapes.get(help)).getHight() + ","
 					+ currentShapes.get(help).getColor().getRGB();
 		}
 		pos += "," + currentShapes.get(help).isFilled();
@@ -569,7 +570,7 @@ public class MouseClass extends JPanel implements MouseListener,
 				}
 			}
 			else if (currentShapes.get(i).getName().equals("text")) {
-				tx = new text();
+				tx = new Text();
 				if (tx.select(e, currentShapes, i) != null) {
 					selectedShape = tx.select(e, currentShapes, i);
 					help = i;
@@ -617,9 +618,7 @@ public class MouseClass extends JPanel implements MouseListener,
 				t.resize(e, selectedShape);
 			} else if (selectedShape.getName().equals("line")) {
 				l.resize(e, selectedShape);
-			} /*else if (selectedShape.getName().equals("text")) {
-				t.resize(e, selectedShape);
-			} */
+			}
 			repaint();
 		}
 	}
@@ -632,7 +631,7 @@ public class MouseClass extends JPanel implements MouseListener,
 		g.fillRect(0, 0, 1100, 830);
 
 		for (int i = 0; i < shapes.size(); i++) {
-			if (shapes.get(i).isDraw()) {
+			if (shapes.get(i).isDrawn()) {
 
 
 				if (shapes.get(i).getName().equals("freehand")) {
@@ -641,7 +640,7 @@ public class MouseClass extends JPanel implements MouseListener,
 					int y2 = 0;
 					g.setColor(shapes.get(i).getColor());
 					for(Point point: ((Freehand)shapes.get(i)).getPoints()) {
-						//point.drawPoint(g);
+
 						int x1 =point.getX();
 						int y1 =point.getY();
 
@@ -655,7 +654,7 @@ public class MouseClass extends JPanel implements MouseListener,
 
 					int x2 = 0;
 					int y2 = 0;
-					for(Point point: ((eraser)shapes.get(i)).getPoints()) {
+					for(Point point: ((Eraser)shapes.get(i)).getPoints()) {
 						int x1 =point.getX();
 						int y1 =point.getY();
 
@@ -667,19 +666,19 @@ public class MouseClass extends JPanel implements MouseListener,
 					}
 				}
 				else if (shapes.get(i).getName().equals("text")) {
-					Font font;
+
 					FontRenderContext context;
 
-					g.setFont(new Font("TimesRoman", Font.PLAIN, ((text) shapes.get(i)).getFSize())); //***********************************************
+					g.setFont(new Font("TimesRoman", Font.PLAIN, ((Text) shapes.get(i)).getFSize())); //***********************************************
 
 					g.setColor(shapes.get(i).getColor());
-					g.drawString(((text) shapes.get(i)).getText(),
-							((text) shapes.get(i)).getPosx(), ((text) shapes.get(i)).getPosy());
+					g.drawString(((Text) shapes.get(i)).getText(),
+							((Text) shapes.get(i)).getPosx(), ((Text) shapes.get(i)).getPosy());
 
 
 
 					context = g.getFontRenderContext();
-					Rectangle2D bounds = g.getFont().getStringBounds(((text) shapes.get(i)).getText(), context);
+					Rectangle2D bounds = g.getFont().getStringBounds(((Text) shapes.get(i)).getText(), context);
 					if (tx != null) {
 						tx.setHight((int)bounds.getHeight());
 						tx.setWidth(g.getFontMetrics().stringWidth(tx.getText()));
@@ -703,7 +702,7 @@ public class MouseClass extends JPanel implements MouseListener,
 								((Circle) shapes.get(i)).getRadius(),
 								((Circle) shapes.get(i)).getRadius());
 
-					// cir.draw(g, shapes, i);
+
 				} else if (shapes.get(i).getName().equals("ellipse")) {
 
 					g.setColor(shapes.get(i).getColor());
@@ -711,14 +710,14 @@ public class MouseClass extends JPanel implements MouseListener,
 						g.fillOval(((Ellipse) shapes.get(i)).getcX(),
 								((Ellipse) shapes.get(i)).getcY(),
 								((Ellipse) shapes.get(i)).getcWidth(),
-								((Ellipse) shapes.get(i)).getcHight());
+								((Ellipse) shapes.get(i)).getcHeight());
 
 					else
 						g.drawOval(((Ellipse) shapes.get(i)).getcX(),
 								((Ellipse) shapes.get(i)).getcY(),
 								((Ellipse) shapes.get(i)).getcWidth(),
-								((Ellipse) shapes.get(i)).getcHight());
-					// c.draw(g, shapes, i);
+								((Ellipse) shapes.get(i)).getcHeight());
+
 				} else if (shapes.get(i).getName().equals("square")) {
 					g.setColor(shapes.get(i).getColor());
 					if (shapes.get(i).isFilled())

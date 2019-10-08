@@ -1,28 +1,27 @@
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public abstract class Shape {
 
-	protected Color color = Color.BLACK;
+	protected Color color;
 	protected String name;
 	protected boolean isFilled;
-	protected boolean isDraw;
+	protected boolean isDrawn;
 
 	public Shape() {
 		color = null;
 		name = null;
 		isFilled = true;
-		isDraw = true;
+		isDrawn = true;
 	}
 
-	public boolean isDraw() {
-		return isDraw;
+	public boolean isDrawn() {
+		return isDrawn;
 	}
 
-	public void setDraw(boolean isDraw) {
-		this.isDraw = isDraw;
+	public void setDraw(boolean isDrawn) {
+		this.isDrawn = isDrawn;
 	}
 
 	public boolean isFilled() {

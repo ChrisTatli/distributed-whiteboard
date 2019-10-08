@@ -1,12 +1,7 @@
-import java.awt.Color;
-import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Writer;
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Stack;
 
 
@@ -14,23 +9,17 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 
-
-
-
-
-public class saveGson {
+public class SaveGson {
 	String url;
 	ArrayList<Shape> cshape;
 	ArrayList<Shape> shape;
 	Stack<Item> undo;
 	ArrayList<Integer> lastaction;
 
-	public saveGson() {
+	public SaveGson() {
 
 		url="";
 		cshape = null;
@@ -44,7 +33,7 @@ public class saveGson {
 
 
 
-		Writer writer = new FileWriter(frame.url + ".json");
+		Writer writer = new FileWriter(Whiteboard.url + ".json");
 		Gson gson = new GsonBuilder().create();
 
 
@@ -109,7 +98,7 @@ public class saveGson {
 						shape.add(e);
 						cshape.add(e);
 						undo.push(new Item(shapeindex, "ellipse", e.getcX() + ","
-								+ e.getcY() + "," + e.getcWidth() + "," + e.getcHight()
+								+ e.getcY() + "," + e.getcWidth() + "," + e.getcHeight()
 								+ "," + e.getColor().getRGB() + "," + e.isFilled()));
 						lastaction.add(shapeindex);
 						shapeindex++;
@@ -150,7 +139,7 @@ public class saveGson {
 						shapeindex++;
 
 					} else if (valueName.equals("text")) {
-						text tx = new Gson().fromJson(firstFig, text.class);
+						Text tx = new Gson().fromJson(firstFig, Text.class);
 						shape.add(tx);
 						cshape.add(tx);
 						undo.push(new Item(shapeindex, "rectangle", tx.getPosx() + "," + tx.getPosy() + "," + tx.getWidth() + ","
@@ -170,7 +159,7 @@ public class saveGson {
 						shapeindex++;
 
 					} else if (valueName.equals("eraser")) {
-						eraser er = new Gson().fromJson(firstFig, eraser.class);
+						Eraser er = new Gson().fromJson(firstFig, Eraser.class);
 						shape.add(er);
 						cshape.add(er);
 						undo.push(new Item(shapeindex, "rectangle", er.getFX() + "," + er.getFY() + "," + er.getLX() + ","
