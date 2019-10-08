@@ -35,9 +35,7 @@ public class frame extends JFrame  {
 	private JMenu edit;
 	private JMenu save;
 	private JMenu load;
-	private JMenuItem xml;
 	private JMenuItem jason;
-	private JMenuItem xfile;
 	private JMenuItem jfile;
 	private JMenuItem undo;
 	private JMenuItem redo;
@@ -45,7 +43,7 @@ public class frame extends JFrame  {
 	private boolean PressedUndo;
 	private JTextField textField;
 	private JSlider slider;
-	
+
 	public void setText(String text) {
 		input = text;
 		//System.out.println(input);
@@ -66,11 +64,9 @@ public class frame extends JFrame  {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
-		
-		
-		xml = new JMenuItem("As Xml");
+
+
 		jason = new JMenuItem("As Json");
-		xfile = new JMenuItem("xml file");
 		jfile = new JMenuItem("Json file");
 		undo = new JMenuItem("Undo");
 		redo = new JMenuItem("Redo");
@@ -78,10 +74,8 @@ public class frame extends JFrame  {
 		edit.add(undo);
 		edit.add(redo);
 		save = new JMenu("save");
-		save.add(xml);
 		save.add(jason);
 		load = new JMenu("load");
-		load.add(xfile);
 		load.add(jfile);
 		file = new JMenu("File");
 		file.add(save);
@@ -96,7 +90,7 @@ public class frame extends JFrame  {
 		int voff = 5;
 		int hoff=15;
 		int side = 40;
-		
+
 		eraser=new JButton(new ImageIcon("eraser.png"));
 		//eraser.setBounds(0,35,40,40);
 		eraser.setBounds(hoff,off+voff,side,side);
@@ -137,10 +131,10 @@ public class frame extends JFrame  {
 		slider.setMaximum(50);
 		slider.setMajorTickSpacing(10);
 		slider.setPaintTicks(true);
-		
+
 
 		Bshapes = new JPanel();
-		
+
 		Bshapes.setBackground(panel);
 		Bshapes.setLayout(null);
 		Bshapes.setBounds(0, 0, 80, 900);
@@ -156,7 +150,7 @@ public class frame extends JFrame  {
 		Bshapes.add(slider);
 		Bshapes.add(eraser);
 		add(Bshapes);
-		
+
 
 		move=new JButton(new ImageIcon("select.png"));
 		move.setToolTipText("move");
@@ -166,11 +160,11 @@ public class frame extends JFrame  {
 		resize.setToolTipText("resize");
 		//resize.setBounds(45, 400, 40, 40);
 		resize.setBounds(hoff,off+13*voff+side*10+100,side,side);
-        delete=new JButton(new ImageIcon("delete.png"));
-        delete.setToolTipText("delete");
-        //delete.setBounds(0,445,40,40);
-        delete.setBounds(hoff,off+14*voff+side*11+100,side,side);
-		changeC=new JButton(new ImageIcon("paint.jpg"));
+		delete=new JButton(new ImageIcon("delete.png"));
+		delete.setToolTipText("delete");
+		//delete.setBounds(0,445,40,40);
+		delete.setBounds(hoff,off+14*voff+side*11+100,side,side);
+		changeC=new JButton(new ImageIcon("paint.png"));
 		//changeC.setBounds(45, 445, 40, 40);
 		changeC.setBounds(hoff,off+15*voff+side*12+100,side,side);
 		changeC.setToolTipText("change color");
@@ -197,36 +191,8 @@ public class frame extends JFrame  {
 		add(paint);
 		savegson = new saveGson();
 
-		xml.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				int retval = 0;
-				FileChooserSave(retval);
-				if (retval == JFileChooser.APPROVE_OPTION) {
-					url = "" + SLfile.getSelectedFile();
-					try {
 
-					} catch (Exception e1) {
-					}
-				}
-			}
-		});
-		
-		xfile.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				int retval = 0;
-				OpenFile(retval);
-				if (retval == JFileChooser.APPROVE_OPTION) {
-					url = "" + SLfile.getSelectedFile();
-					try {
 
-						paint.repaint();
-					} catch (Exception e1) {
-					}
-				}
-			}
-		});
 
 		jason.addMouseListener(new MouseAdapter() {
 			@Override
@@ -242,7 +208,7 @@ public class frame extends JFrame  {
 				}
 			}
 		});
-		
+
 		jfile.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -251,21 +217,25 @@ public class frame extends JFrame  {
 				//OpenFile(retval);
 				JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 				returnValue = jfc.showOpenDialog(null);
-				
+
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					url = "" + jfc.getSelectedFile().getAbsolutePath();
 					try {
 						savegson.load(url, paint.currentShapes, paint.shapes,
 								paint.ur.undo, paint.ur.lastaction);
-
+						paint.currentShapes =savegson.cshape;
+						paint.shapes = savegson.shape;
+						paint.ur.undo = savegson.undo;
+						paint.ur.lastaction = savegson.lastaction;
 						paint.repaint();
 					} catch (Exception e1) {
+						e1.printStackTrace();
 					}
 				}
 			}
 
 		});
-		
+
 		undo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -280,7 +250,7 @@ public class frame extends JFrame  {
 				}
 			}
 		});
-		
+
 		redo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -308,7 +278,7 @@ public class frame extends JFrame  {
 				PressedUndo = false;
 			}
 		});
-		
+
 		Ellipse.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -316,7 +286,7 @@ public class frame extends JFrame  {
 				PressedUndo = false;
 			}
 		});
-		
+
 		Circle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -332,7 +302,7 @@ public class frame extends JFrame  {
 				PressedUndo = false;
 			}
 		});
-		
+
 		Square.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -364,7 +334,7 @@ public class frame extends JFrame  {
 				PressedUndo = false;
 			}
 		});
-		
+
 		eraser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -372,25 +342,25 @@ public class frame extends JFrame  {
 				PressedUndo = false;
 			}
 		});
-		
+
 		text.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				paint.flag = 12;
-				
+
 				PressedUndo = false;
-				
-				
+
+
 				//gText gt = new gText();
 				//gt.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				//gt.setVisible(true);
-				
+
 				paint.message = textField.getText();
 				paint.fz = slider.getValue();
-			
+
 			}
 		});
-		
+
 		colorChooser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

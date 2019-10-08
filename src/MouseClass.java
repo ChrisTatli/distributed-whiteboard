@@ -8,7 +8,7 @@ import java.awt.geom.*;
 
 public class MouseClass extends JPanel implements MouseListener,
 		MouseMotionListener {
-	
+
 
 	JPanel canvas;
 	UR ur;
@@ -40,8 +40,8 @@ public class MouseClass extends JPanel implements MouseListener,
 	String pos, helpp;
 	int help;
 
-	
-	
+
+
 	public MouseClass() {
 
 		pos = "";
@@ -58,24 +58,24 @@ public class MouseClass extends JPanel implements MouseListener,
 		currentShapes = new ArrayList<Shape>();
 		pointList = new ArrayList<Point>();
 
-		
+
 
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		ur = new UR();
-		
-		
-		
+
+
+
 
 	}
-//*************************************************   MOUSE EVENTS ON THE CANVAS *************************************
+	//*************************************************   MOUSE EVENTS ON THE CANVAS *************************************
 	//MOUSE PRESSED ON CANVAS
 	//It calls for the methods in the class SHAPE and the figure's class
 	//to set color of border and fill
 	//through the event it catches the point where the click happens
 	@Override
 	public void mousePressed(MouseEvent ev) {
-		
+
 		try {
 			startx = ev.getX();
 			starty = ev.getY();
@@ -168,8 +168,8 @@ public class MouseClass extends JPanel implements MouseListener,
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		try {
-			
-			
+
+
 			if (e.getX() > 1100 || e.getY() >= 830) {
 
 			} else {
@@ -177,9 +177,9 @@ public class MouseClass extends JPanel implements MouseListener,
 					move(e);
 				} else if (flag == 5) {
 					resize(e);
-				} 
+				}
 				else {
-					 if (flag == 11) {
+					if (flag == 11) {
 						pointX = e.getX(); //the dragging the mouse does the same thing as clicking, it adds points
 						pointY = e.getY();
 						pointList.add(new Point(pointX, pointY));
@@ -194,10 +194,9 @@ public class MouseClass extends JPanel implements MouseListener,
 
 						shapes.add(er);
 					}
-					 else if (flag == 12) {
+					else if (flag == 12) {
 						tx.setPosx(e.getX());
 						tx.setPosy(e.getY());
-						
 
 						shapes.add(tx);
 					}
@@ -241,7 +240,7 @@ public class MouseClass extends JPanel implements MouseListener,
 
 						shapes.add(sq);
 
-					} 
+					}
 
 					repaint();
 				}
@@ -253,127 +252,127 @@ public class MouseClass extends JPanel implements MouseListener,
 
 
 	private void pushItem() {
-try{
-		item.setI(currentShapes.size() - 1);
+		try{
+			item.setI(currentShapes.size() - 1);
 
-		item.setPositions(item.getPositions() + pos);
-	
-		ur.undo.push(item);
-}catch (Exception w) {
-	// TODO: handle exception
-}
-}
-	
-	
+			item.setPositions(item.getPositions() + pos);
 
-    //To release the mouse means to save the parameters of the figure and save them into the current shapes array
+			ur.undo.push(item);
+		}catch (Exception w) {
+			// TODO: handle exception
+		}
+	}
+
+
+
+	//To release the mouse means to save the parameters of the figure and save them into the current shapes array
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		try{
-			
-		
-		selectedShape = null;
-		item = new Item();
-		if (flag != 5 && flag != 6) {
-			if (flag == 1) {
-				currentShapes.add(c);
 
-				pos = c.getcX() + "," + c.getcY() + "," + c.getcWidth() + ","
-						+ c.getcHight() + "," + c.getColor().getRGB() + ","
-						+ c.isFilled();
-				item.setName("ellipse");
-				pushItem();
 
-			} else if (flag == 2) {
-				currentShapes.add(r);
-				pos = r.getrX() + "," + r.getrY() + "," + r.getrWidth() + ","
-						+ r.getrHight() + "," + r.getColor().getRGB() + ","
-						+ r.isFilled();
-				item.setName("rectangle");
-				pushItem();
+			selectedShape = null;
+			item = new Item();
+			if (flag != 5 && flag != 6) {
+				if (flag == 1) {
+					currentShapes.add(c);
 
-			} else if (flag == 3) {
-				currentShapes.add(t);
-				String x = t.getxPoints()[0] + "," + t.getxPoints()[1] + ","
-						+ t.getxPoints()[2];
-				String y = t.getyPoints()[0] + "," + t.getyPoints()[1] + ","
-						+ t.getyPoints()[2];
-				pos = t.gettX() + "," + t.gettY() + "," + x + "," + y + ","
-						+ t.getColor().getRGB() + "," + t.isFilled();
-				item.setName("triangle");
-				pushItem();
+					pos = c.getcX() + "," + c.getcY() + "," + c.getcWidth() + ","
+							+ c.getcHight() + "," + c.getColor().getRGB() + ","
+							+ c.isFilled();
+					item.setName("ellipse");
+					pushItem();
 
-			} else if (flag == 4) {
-				currentShapes.add(l);
-				pos = l.getX1() + "," + l.getY1() + "," + l.getX2() + ","
-						+ l.getY2() + "," + l.getColor().getRGB() + ","
-						+ l.isFilled();
+				} else if (flag == 2) {
+					currentShapes.add(r);
+					pos = r.getrX() + "," + r.getrY() + "," + r.getrWidth() + ","
+							+ r.getrHight() + "," + r.getColor().getRGB() + ","
+							+ r.isFilled();
+					item.setName("rectangle");
+					pushItem();
 
-				item.setName("line");
-				pushItem();
+				} else if (flag == 3) {
+					currentShapes.add(t);
+					String x = t.getxPoints()[0] + "," + t.getxPoints()[1] + ","
+							+ t.getxPoints()[2];
+					String y = t.getyPoints()[0] + "," + t.getyPoints()[1] + ","
+							+ t.getyPoints()[2];
+					pos = t.gettX() + "," + t.gettY() + "," + x + "," + y + ","
+							+ t.getColor().getRGB() + "," + t.isFilled();
+					item.setName("triangle");
+					pushItem();
 
-			} else if (flag == 7) {
-				currentShapes.add(cir);
-				pos = cir.getX() + "," + cir.getY() + "," + cir.getRadius()
-						+ "," + cir.getRadius() + "," + cir.getColor().getRGB()
-						+ "," + cir.isFilled();
+				} else if (flag == 4) {
+					currentShapes.add(l);
+					pos = l.getX1() + "," + l.getY1() + "," + l.getX2() + ","
+							+ l.getY2() + "," + l.getColor().getRGB() + ","
+							+ l.isFilled();
 
-				item.setName("circle");
-				pushItem();
+					item.setName("line");
+					pushItem();
 
-			} else if (flag == 8) {
-				currentShapes.add(sq);
-				pos = sq.getPosx() + "," + sq.getPosy() + "," + sq.getL() + ","
-						+ sq.getL() + "," + sq.getColor().getRGB() + ","
-						+ sq.isFilled();
-				item.setName("square");
-				pushItem();
+				} else if (flag == 7) {
+					currentShapes.add(cir);
+					pos = cir.getX() + "," + cir.getY() + "," + cir.getRadius()
+							+ "," + cir.getRadius() + "," + cir.getColor().getRGB()
+							+ "," + cir.isFilled();
 
-			} else if (flag == 11) {
-				fh.setLX(e.getX());
-				fh.setLY(e.getY());
-				currentShapes.add(fh);
-				pos = fh.getFX() + "," + fh.getFY() + "," + fh.getLX() + ","
-						+ fh.getLY() + "," + fh.getColor().getRGB() + ","
-						+ true;
-				item.setName("freehand");
-				pushItem();
-				pointList = new ArrayList<Point>();
+					item.setName("circle");
+					pushItem();
 
-			} else if (flag == 13) {
-				er.setLX(e.getX());
-				er.setLY(e.getY());
-				currentShapes.add(er);
-				pos = er.getFX() + "," + er.getFY() + "," + er.getLX() + ","
-						+ er.getLY() + "," + er.getColor().getRGB() + ","
-						+ true;
-				item.setName("eraser");
-				pushItem();
-				pointList = new ArrayList<Point>();
+				} else if (flag == 8) {
+					currentShapes.add(sq);
+					pos = sq.getPosx() + "," + sq.getPosy() + "," + sq.getL() + ","
+							+ sq.getL() + "," + sq.getColor().getRGB() + ","
+							+ sq.isFilled();
+					item.setName("square");
+					pushItem();
 
-			} 
-			else if (flag == 12) {
-				currentShapes.add(tx);
-				pos = tx.getPosx() + "," + tx.getPosy() + "," + tx.getWidth() + ","
-						+ tx.getHight() + "," + tx.getColor().getRGB() + ","
-						+ true;
-				item.setName("text");
-				pushItem();
+				} else if (flag == 11) {
+					fh.setLX(e.getX());
+					fh.setLY(e.getY());
+					currentShapes.add(fh);
+					pos = fh.getFX() + "," + fh.getFY() + "," + fh.getLX() + ","
+							+ fh.getLY() + "," + fh.getColor().getRGB() + ","
+							+ true;
+					item.setName("freehand");
+					pushItem();
+					pointList = new ArrayList<Point>();
 
+				} else if (flag == 13) {
+					er.setLX(e.getX());
+					er.setLY(e.getY());
+					currentShapes.add(er);
+					pos = er.getFX() + "," + er.getFY() + "," + er.getLX() + ","
+							+ er.getLY() + "," + er.getColor().getRGB() + ","
+							+ true;
+					item.setName("eraser");
+					pushItem();
+					pointList = new ArrayList<Point>();
+
+				}
+				else if (flag == 12) {
+					currentShapes.add(tx);
+					pos = tx.getPosx() + "," + tx.getPosy() + "," + tx.getWidth() + ","
+							+ tx.getHight() + "," + tx.getColor().getRGB() + ","
+							+ true;
+					item.setName("text");
+					pushItem();
+
+				}
+
+				if (flag != 9) {
+					ur.lastaction.add(currentShapes.size() - 1);
+					ur.lastaction.add(currentCurves.size() - 1);
+				}
+			} else {
+				if (flag != 9 && flag != 10) {
+
+					ur.lastaction.add(help);
+					ur.updatselected(help,
+							updateshape(helpp, help, pos, currentShapes), ur.undo);
+				}
 			}
-			
-			if (flag != 9) {
-				ur.lastaction.add(currentShapes.size() - 1);
-				ur.lastaction.add(currentCurves.size() - 1);
-			}
-		} else {
-			if (flag != 9 && flag != 10) {
-
-				ur.lastaction.add(help);
-				ur.updatselected(help,
-						updateshape(helpp, help, pos, currentShapes), ur.undo);
-			}
-		} 
 		}catch (Exception ewe) {
 			// TODO: handle exception
 		}
@@ -382,52 +381,52 @@ try{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		try{
-		if (flag == 9) {
-			select(e);
-			if (selectedShape != null) {
-				selectedShape.setColor(color);
+			if (flag == 9) {
+				select(e);
+				if (selectedShape != null) {
+					selectedShape.setColor(color);
 
-				ur.lastaction.add(help);
-				selectedShape.setFilled(isFilled);
-				ur.updatselected(help,
-						updateshape(helpp, help, pos, currentShapes), ur.undo);
+					ur.lastaction.add(help);
+					selectedShape.setFilled(isFilled);
+					ur.updatselected(help,
+							updateshape(helpp, help, pos, currentShapes), ur.undo);
 
-			}
-		} else if (flag == 10) {
-			select(e);
-			delete();
+				}
+			} else if (flag == 10) {
+				select(e);
+				delete();
 
-			while (ur.lastaction.contains(help) == true) {
+				while (ur.lastaction.contains(help) == true) {
+					for (int i = 0; i < ur.lastaction.size(); i++) {
+						if (ur.lastaction.get(i) == help)
+							ur.lastaction.remove(i);
+					}
+				}
 				for (int i = 0; i < ur.lastaction.size(); i++) {
-					if (ur.lastaction.get(i) == help)
-						ur.lastaction.remove(i);
+					if (ur.lastaction.get(i) > help) {
+						ur.lastaction.set(i, ur.lastaction.get(i) - 1);
+					}
+				}
+				try {
+					ur.undo.remove(help);
+					ur.updastackAfterDel(ur.undo, ur.redo, help);
+
+					ur.redo.remove(help);
+				} catch (Exception ew) {
+
 				}
 			}
-			for (int i = 0; i < ur.lastaction.size(); i++) {
-				if (ur.lastaction.get(i) > help) {
-					ur.lastaction.set(i, ur.lastaction.get(i) - 1);
-				}
-			}
-			try {
-				ur.undo.remove(help);
-				ur.updastackAfterDel(ur.undo, ur.redo, help);
-
-				ur.redo.remove(help);
-			} catch (Exception ew) {
-
-			}
-		}
-		repaint();
+			repaint();
 		}catch (Exception eas) {
 			// TODO: handle exception
 		}
 	}
 
-	
-	
-	
+
+
+
 	private String updateshape(String helpp, int help, String pos,
-			ArrayList<Shape> currentShapes) {
+							   ArrayList<Shape> currentShapes) {
 
 		if (helpp == "circle") {
 			pos = "" + ((Circle) currentShapes.get(help)).getX() + ","
@@ -487,27 +486,27 @@ try{
 
 	private void delete() {
 		try{
-		if (selectedShape != null) {
-			for (int i = shapes.size() - 1; i >= 0; i--) {
-				if (shapes.get(i).toString().equals(selectedShape.toString())) {
-					shapes.remove(i);
+			if (selectedShape != null) {
+				for (int i = shapes.size() - 1; i >= 0; i--) {
+					if (shapes.get(i).toString().equals(selectedShape.toString())) {
+						shapes.remove(i);
+					}
+				}
+				for (int i = 0; i < currentShapes.size(); i++) {
+					if (currentShapes.get(i).toString()
+							.equals(selectedShape.toString()))
+						currentShapes.remove(i);
 				}
 			}
-			for (int i = 0; i < currentShapes.size(); i++) {
-				if (currentShapes.get(i).toString()
-						.equals(selectedShape.toString()))
-					currentShapes.remove(i);
-			}
-		}
 		}catch (Exception edd) {
 			// TODO: handle exception
 		}
 	}
-		
-		
-		
-		
-	
+
+
+
+
+
 
 	public void select(MouseEvent e) {
 		for (int i = currentShapes.size() - 1; i >= 0; i--) {
@@ -625,69 +624,71 @@ try{
 		}
 	}
 
-	public void paintComponent(Graphics g) {
-		super.paintComponents(g);
-		Graphics2D g2 =(Graphics2D)g;
-		g2.setStroke(new BasicStroke(10));
+	public void paintComponent(Graphics graphics) {
+		super.paintComponents(graphics);
+		Graphics2D g =(Graphics2D)graphics;
+		g.setStroke(new BasicStroke(10));
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, 1100, 830);
 
-		
 		for (int i = 0; i < shapes.size(); i++) {
 			if (shapes.get(i).isDraw()) {
-				
-				
-				 if (shapes.get(i).getName().equals("freehand")) {
-					 
-					 	int x2 = 0;
-					 	int y2 = 0;
-						for(Point point: ((Freehand)shapes.get(i)).getPoints()) {
-							//point.drawPoint(g);
-							int x1 =point.getX();
-							int y1 =point.getY();
-							
-							point.drawLine(g, x1, y1, x2, y2);
 
-							x2=x1;
-							y2=y1;
-		
-						}
+
+				if (shapes.get(i).getName().equals("freehand")) {
+
+					int x2 = 0;
+					int y2 = 0;
+					g.setColor(shapes.get(i).getColor());
+					for(Point point: ((Freehand)shapes.get(i)).getPoints()) {
+						//point.drawPoint(g);
+						int x1 =point.getX();
+						int y1 =point.getY();
+
+						point.drawLine(g, x1, y1, x2, y2);
+
+						x2=x1;
+						y2=y1;
+
+					}
 				} if (shapes.get(i).getName().equals("eraser")) {
-					 
-				 	int x2 = 0;
-				 	int y2 = 0;
+
+					int x2 = 0;
+					int y2 = 0;
 					for(Point point: ((eraser)shapes.get(i)).getPoints()) {
 						int x1 =point.getX();
 						int y1 =point.getY();
-						
+
 						point.drawEraserLine(g, x1, y1, x2, y2);
 
 						x2=x1;
 						y2=y1;
-	
+
 					}
-			}
-				 else if (shapes.get(i).getName().equals("text")) {
-					
+				}
+				else if (shapes.get(i).getName().equals("text")) {
 					Font font;
 					FontRenderContext context;
-					
+
 					g.setFont(new Font("TimesRoman", Font.PLAIN, ((text) shapes.get(i)).getFSize())); //***********************************************
-					
+
 					g.setColor(shapes.get(i).getColor());
 					g.drawString(((text) shapes.get(i)).getText(),
 							((text) shapes.get(i)).getPosx(), ((text) shapes.get(i)).getPosy());
-	
-				    context = g2.getFontRenderContext();
-				    Rectangle2D bounds = g.getFont().getStringBounds(((text) shapes.get(i)).getText(), context);
-				    
-				    tx.setHight((int)bounds.getHeight());
-					tx.setWidth(g.getFontMetrics().stringWidth(tx.getText()));
-				
-				
-				} 
-				
-			   else if (shapes.get(i).getName().equals("circle")) {
+
+
+
+					context = g.getFontRenderContext();
+					Rectangle2D bounds = g.getFont().getStringBounds(((text) shapes.get(i)).getText(), context);
+					if (tx != null) {
+						tx.setHight((int)bounds.getHeight());
+						tx.setWidth(g.getFontMetrics().stringWidth(tx.getText()));
+					}
+
+
+				}
+
+				else if (shapes.get(i).getName().equals("circle")) {
 
 					g.setColor(shapes.get(i).getColor());
 					if (shapes.get(i).isFilled())
@@ -762,7 +763,7 @@ try{
 							((Line) shapes.get(i)).getX2(),
 							((Line) shapes.get(i)).getY2());
 
-				}  
+				}
 			}
 		}
 

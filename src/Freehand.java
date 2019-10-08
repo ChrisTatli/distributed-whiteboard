@@ -16,7 +16,7 @@ public class Freehand extends Shape   {
 		firstY = 0;
 		lastY = 0;
 	}
-	
+
 	public void setFX(int x) {
 		this.firstX = x;
 	}
@@ -24,7 +24,7 @@ public class Freehand extends Shape   {
 	public int getFX() {
 		return firstX;
 	}
-	
+
 	public void setLX(int x) {
 		this.lastX = x;
 	}
@@ -32,7 +32,7 @@ public class Freehand extends Shape   {
 	public int getLX() {
 		return lastX;
 	}
-	
+
 	public void setFY(int y) {
 		this.firstY = y;
 	}
@@ -40,7 +40,7 @@ public class Freehand extends Shape   {
 	public int getFY() {
 		return firstY;
 	}
-	
+
 	public void setLY(int y) {
 		this.lastY = y;
 	}
@@ -56,8 +56,8 @@ public class Freehand extends Shape   {
 	public void setPoints(ArrayList<Point> pointList) {
 		this.pointList= pointList;
 	}
-	
-	
+
+
 
 	@Override
 	Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
@@ -87,5 +87,5 @@ public class Freehand extends Shape   {
 	}
 
 
-	
+
 }
