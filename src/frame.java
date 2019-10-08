@@ -28,8 +28,6 @@ public class frame extends JFrame  {
 	private JRadioButton filled, border;
 	protected static String url;
 	MouseClass paint;
-	private XmlFile xf;
-	private Jsonfile jf;
 	private saveGson savegson;
 	private JFileChooser SLfile;
 	private JMenuBar bar;
@@ -47,7 +45,6 @@ public class frame extends JFrame  {
 	private boolean PressedUndo;
 	private JTextField textField;
 	private JSlider slider;
-	loadJson loadj = new loadJson();
 	
 	public void setText(String text) {
 		input = text;
@@ -198,8 +195,6 @@ public class frame extends JFrame  {
 		//paint.setBounds(85, 25, 1005, 700);
 		paint.setBounds(80, 20, 1200, 900);
 		add(paint);
-		xf = new XmlFile();
-		jf = new Jsonfile();
 		savegson = new saveGson();
 
 		xml.addMouseListener(new MouseAdapter() {
@@ -210,7 +205,7 @@ public class frame extends JFrame  {
 				if (retval == JFileChooser.APPROVE_OPTION) {
 					url = "" + SLfile.getSelectedFile();
 					try {
-						xf.save(paint.currentShapes);
+
 					} catch (Exception e1) {
 					}
 				}
@@ -225,8 +220,7 @@ public class frame extends JFrame  {
 				if (retval == JFileChooser.APPROVE_OPTION) {
 					url = "" + SLfile.getSelectedFile();
 					try {
-						xf.load(paint.shapes, paint.currentShapes,
-								paint.ur.undo, paint.ur.lastaction);
+
 						paint.repaint();
 					} catch (Exception e1) {
 					}
@@ -263,10 +257,7 @@ public class frame extends JFrame  {
 					try {
 						savegson.load(url, paint.currentShapes, paint.shapes,
 								paint.ur.undo, paint.ur.lastaction);
-						paint.currentShapes =loadj.cshape;
-						paint.shapes = loadj.shape;
-						paint.ur.undo = loadj.undo;
-						paint.ur.lastaction = loadj.lastaction;
+
 						paint.repaint();
 					} catch (Exception e1) {
 					}
