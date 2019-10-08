@@ -42,19 +42,10 @@ public class SaveGson {
 
 	}
 
-	public void load(String url, ArrayList<Shape> cshape, ArrayList<Shape> shape,
-					 Stack<Item> undo, ArrayList<Integer> lastaction) throws Exception {
+	public void load(String url, ArrayList<Shape> cshape, ArrayList<Shape> shape) throws Exception {
 
 
 		JsonReader reader = new JsonReader(new FileReader(url));
-
-
-		//Type foundListType = new TypeToken<ArrayList<Object>>() {}.getType();
-		//ArrayList<Shape> data = new Gson().fromJson( reader, foundListType);
-
-
-
-
 
 		//GET THE JSON-FILE AS JSON OBJECT
 		JsonParser parser = new JsonParser();
@@ -179,8 +170,6 @@ public class SaveGson {
 
 		this.shape = shape;
 		this.cshape =cshape;
-		this.lastaction =lastaction;
-		this.undo =undo;
 
 	}
 
