@@ -2,9 +2,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Stack;
 
-/* 
- * class for undo and redo any action performed but delete action is'nt supported
- */
 
 public class UR {
 	Stack<Item> undo;

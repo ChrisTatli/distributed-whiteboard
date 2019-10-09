@@ -3,6 +3,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -12,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
@@ -19,9 +25,13 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileSystemView;
 
 
-
 @SuppressWarnings("serial")
 public class frame extends JFrame  {
+	
+	// IP and port
+	private static String ip = "localhost";
+	private static int port = 3005;
+		
 	private String input = "default";
 	private JButton Square, Circle, Ellipse, rectangle, triangle, line, delete,
 			colorChooser, move, resize, changeC, Freehand, text, eraser;
@@ -424,9 +434,52 @@ public class frame extends JFrame  {
 		try {
 			frame f = new frame();
 			f.setVisible(true);
+			ServerConnect(ServerConnectOption(f));
 		} catch (Exception e) {
-			System.out.println("unexpected error");
+			e.printStackTrace();
 		}
 	}
+	
+	public static int ServerConnectOption(frame f) {
+		String[] buttons = {"New WhiteBoard", "Connect To WhiteBoard"};
+		int conection = JOptionPane.showOptionDialog(f, "New or Existing Whiteboard", "What would you like to do", JOptionPane.WARNING_MESSAGE, 0, null, buttons, buttons[0]);
+		return conection;
+	}
 
+	public static void ServerConnect(int option) {
+		try(Socket socket = new Socket(ip, port);)
+		{
+			// Output and Input Stream
+			DataInputStream input = new DataInputStream(socket.getInputStream());
+			
+		    DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+		    
+		    String sendData;
+		    if(option == 0) {
+		    	sendData = "newWhiteboard";
+		    }
+		    else {
+		    	sendData = "showWhiteboards";
+		    }
+		    
+	    	output.writeUTF(sendData);
+	    	System.out.println("Data sent to Server--> " + sendData);
+	    	output.flush();
+	    	
+		    while(true)
+		    {
+		    	String serverMessage = input.readUTF();
+	    		System.out.println(serverMessage);
+		    }
+		    
+		} 
+		catch (UnknownHostException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
 }
