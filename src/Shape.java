@@ -1,4 +1,4 @@
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -56,6 +56,9 @@ public abstract class Shape {
 	abstract void move(MouseEvent e, Shape selectedShape);
 
 	abstract void resize(MouseEvent e, Shape selectedShape);
+
+	abstract void draw(Graphics graphics);
+
 
 
 

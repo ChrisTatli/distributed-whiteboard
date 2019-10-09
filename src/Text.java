@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -23,10 +24,6 @@ public class Text extends Shape {
 		this.txt = input;
 	}
 
-	public String getText() {
-		return txt;
-	}
-	
 	public void setPosx(int posx) {
 		this.posx = posx;
 	}
@@ -44,24 +41,14 @@ public class Text extends Shape {
 		return width;
 	}
 
-	public void setWidth(int Width) {
-		this.width = Width;
-	}
-
 	public int getHight() {
 		return hight;
 	}
 
-	public void setHight(int Hight) {
-		this.hight = Hight;
-	}
 	public void setFSize(int size) {
 		this.FSize = size;
 	}
-	public int getFSize() {
-		return FSize;
-	}
-	
+
 	@Override
 	Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
 		int x = e.getX();
@@ -91,6 +78,10 @@ public class Text extends Shape {
 	
 	}
 
+	@Override
+	void draw(Graphics graphics) {
 
-	
+	}
+
+
 }

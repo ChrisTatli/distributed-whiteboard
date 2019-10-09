@@ -1,5 +1,4 @@
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -83,6 +82,11 @@ public class Eraser extends Shape   {
 
 	@Override
 	void resize(MouseEvent e, Shape selectedShape) {
+
+	}
+
+	@Override
+	void draw(Graphics graphics) {
 
 	}
 }

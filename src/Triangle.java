@@ -102,6 +102,10 @@ public class Triangle extends Shape {
 		((Triangle) selectedShape).setyPoints(yPoints);
 	}
 
+	@Override
+	void draw(Graphics graphics) {
+
+	}
 
 
 	//@Override

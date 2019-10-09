@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -79,6 +80,11 @@ public class Ellipse extends Shape {
 			((Ellipse) selectedShape).setcWidth(x - cX);
 			((Ellipse) selectedShape).setcHeight(y - cY);
 		}
+	}
+
+	@Override
+	void draw(Graphics graphics) {
+
 	}
 
 	//@Override

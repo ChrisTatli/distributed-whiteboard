@@ -33,6 +33,7 @@ public class Mouse extends MouseInputAdapter {
 
     @Override
     public void mouseReleased(MouseEvent e){
+        Point end = e.getPoint();
 
     }
 

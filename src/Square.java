@@ -74,6 +74,11 @@ public class Square extends Shape{
 		
 	}
 
+	@Override
+	void draw(Graphics graphics) {
+
+	}
+
 //	@Override
 //	public void draw(Graphics g, ArrayList<Shape> shapes, int i) {
 //		// TODO Auto-generated method stub

@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -76,6 +77,11 @@ public class Circle extends Shape {
 		if (x >= cx && y >= cY) {
 			((Circle) selectedShape).setRadius((x - cx));
 		}
+
+	}
+
+	@Override
+	void draw(Graphics graphics) {
 
 	}
 

@@ -1,8 +1,9 @@
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -11,19 +12,24 @@ import javax.swing.filechooser.FileSystemView;
 
 @SuppressWarnings("serial")
 public class Whiteboard extends JPanel implements ActionListener  {
-	protected static String url;
-	MouseClass paint;
-
 	final JFrame frame;
+	private ArrayList<Shape> shapes = new ArrayList<>();
 	private DrawType drawType = DrawType.FREE;
 
 
 	public Whiteboard(JFrame frame) {
 		this.frame = frame;
 		BuildMenu();
+		Mouse mouse = new Mouse();
+		addMouseListener(mouse);
+		addMouseMotionListener(mouse);
+	}
 
-		url = "";
-		paint = new MouseClass();
+	@Override
+	public synchronized void paintComponent(Graphics graphics){
+		for (Shape shape : shapes) {
+			shape.draw(graphics);
+		}
 	}
 
 	private void BuildMenu(){

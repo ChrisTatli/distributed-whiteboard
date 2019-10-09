@@ -96,7 +96,11 @@ public class Line extends Shape {
 		((Line) selectedShape).setY2(y);
 	}
 
-	
+	@Override
+	void draw(Graphics graphics) {
+
+	}
+
 
 	//@Override
 //	public void draw(Graphics g, ArrayList<Shape> shapes, int i) {

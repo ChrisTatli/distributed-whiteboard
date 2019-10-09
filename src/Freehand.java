@@ -1,5 +1,4 @@
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -66,19 +65,6 @@ public class Freehand extends Shape   {
 
 	@Override
 	void move(MouseEvent e, Shape selectedShape) {
-		/*int x = e.getX();
-		int y = e.getY();
-		ArrayList<Point>  points = ((Freehand) selectedShape).getPoints();
-		
-		for(Point point: points) {
-			int x1 =point.getX()+x;
-			int y1 =point.getY()+y;
-			
-			pointList2.add(new Point(x1, y1, 5, color));
-
-		}
-		
-		((Freehand) selectedShape).setPoints(pointList2);*/
 	}
 
 	@Override
@@ -86,6 +72,10 @@ public class Freehand extends Shape   {
 
 	}
 
+	@Override
+	void draw(Graphics graphics) {
+
+	}
 
 
 }

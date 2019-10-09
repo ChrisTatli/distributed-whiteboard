@@ -16,7 +16,6 @@ public class SaveGson {
 	String url;
 	ArrayList<Shape> cshape;
 	ArrayList<Shape> shape;
-	Stack<Item> undo;
 	ArrayList<Integer> lastaction;
 
 	public SaveGson() {
@@ -24,7 +23,6 @@ public class SaveGson {
 		url="";
 		cshape = null;
 		shape = null;
-		undo=null;
 		lastaction =null;
 
 	}
@@ -33,7 +31,7 @@ public class SaveGson {
 
 
 
-		Writer writer = new FileWriter(Whiteboard.url + ".json");
+		Writer writer = new FileWriter("test" + ".json");
 		Gson gson = new GsonBuilder().create();
 
 
@@ -68,9 +66,7 @@ public class SaveGson {
 						Rectangle r = new Gson().fromJson(firstFig, Rectangle.class);
 						shape.add(r);
 						cshape.add(r);
-						undo.push(new Item(shapeindex, "rectangle", r.getrX() + ","
-								+ r.getrY() + "," + r.getrWidth() + "," + r.getrHight()
-								+ "," + r.getColor().getRGB() + "," + r.isFilled()));
+
 						lastaction.add(shapeindex);
 						shapeindex++;
 
@@ -78,9 +74,7 @@ public class SaveGson {
 						Square s = new Gson().fromJson(firstFig, Square.class);
 						shape.add(s);
 						cshape.add(s);
-						undo.push(new Item(shapeindex, "square", s.getPosx() + ","
-								+ s.getPosy() + "," + s.getL() + "," + s.getL() + ","
-								+ s.getColor().getRGB() + "," + s.isFilled()));
+
 						lastaction.add(shapeindex);
 						shapeindex++;
 
@@ -88,9 +82,7 @@ public class SaveGson {
 						Ellipse e = new Gson().fromJson(firstFig, Ellipse.class);
 						shape.add(e);
 						cshape.add(e);
-						undo.push(new Item(shapeindex, "ellipse", e.getcX() + ","
-								+ e.getcY() + "," + e.getcWidth() + "," + e.getcHeight()
-								+ "," + e.getColor().getRGB() + "," + e.isFilled()));
+
 						lastaction.add(shapeindex);
 						shapeindex++;
 
@@ -98,9 +90,7 @@ public class SaveGson {
 						Circle c = new Gson().fromJson(firstFig, Circle.class);
 						shape.add(c);
 						cshape.add(c);
-						undo.push(new Item(shapeindex, "circle", c.getX() + ","
-								+ c.getY() + "," + c.getRadius() + "," + c.getRadius()
-								+ "," + c.getColor().getRGB() + "," + c.isFilled()));
+
 						lastaction.add(shapeindex);
 						shapeindex++;
 
@@ -108,9 +98,7 @@ public class SaveGson {
 						Line l = new Gson().fromJson(firstFig, Line.class);
 						shape.add(l);
 						cshape.add(l);
-						undo.push(new Item(shapeindex, "line", l.getX1() + ","
-								+ l.getY1() + "," + l.getX2() + "," + l.getY2() + ","
-								+ l.getColor().getRGB() + "," + l.isFilled()));
+
 						lastaction.add(shapeindex);
 						shapeindex++;
 
@@ -122,9 +110,6 @@ public class SaveGson {
 								+ t.getxPoints()[2];
 						String y = t.getyPoints()[0] + "," + t.getyPoints()[1] + ","
 								+ t.getyPoints()[2];
-						undo.push(new Item(shapeindex, "triangle", t.gettX() + ","
-								+ t.gettY() + "," + x + "," + y + ","
-								+ t.getColor().getRGB() + "," + t.isFilled()));
 
 						lastaction.add(shapeindex);
 						shapeindex++;
@@ -133,9 +118,6 @@ public class SaveGson {
 						Text tx = new Gson().fromJson(firstFig, Text.class);
 						shape.add(tx);
 						cshape.add(tx);
-						undo.push(new Item(shapeindex, "rectangle", tx.getPosx() + "," + tx.getPosy() + "," + tx.getWidth() + ","
-								+ tx.getHight() + "," + tx.getColor().getRGB() + ","
-								+ true));
 						lastaction.add(shapeindex);
 						shapeindex++;
 
@@ -143,9 +125,6 @@ public class SaveGson {
 						Freehand fh = new Gson().fromJson(firstFig, Freehand.class);
 						shape.add(fh);
 						cshape.add(fh);
-						undo.push(new Item(shapeindex, "rectangle", fh.getFX() + "," + fh.getFY() + "," + fh.getLX() + ","
-								+ fh.getLY() + "," + fh.getColor().getRGB() + ","
-								+ true));
 						lastaction.add(shapeindex);
 						shapeindex++;
 
@@ -153,9 +132,6 @@ public class SaveGson {
 						Eraser er = new Gson().fromJson(firstFig, Eraser.class);
 						shape.add(er);
 						cshape.add(er);
-						undo.push(new Item(shapeindex, "rectangle", er.getFX() + "," + er.getFY() + "," + er.getLX() + ","
-								+ er.getLY() + "," + er.getColor().getRGB() + ","
-								+ true));
 						lastaction.add(shapeindex);
 						shapeindex++;
 
