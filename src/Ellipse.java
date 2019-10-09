@@ -87,22 +87,5 @@ public class Ellipse extends Shape {
 
 	}
 
-	//@Override
-//	public void draw(Graphics g, ArrayList<Shape> shapes, int i) {
-//		// TODO Auto-generated method stub
-//		g.setColor(shapes.get(i).getColor());
-//		if (shapes.get(i).isFilled())
-//			g.fillOval(((Ellipse) shapes.get(i)).getcX(),
-//					((Ellipse) shapes.get(i)).getcY(),
-//					((Ellipse) shapes.get(i)).getcWidth(),
-//					((Ellipse) shapes.get(i)).getcHight());
-//		
-//		else
-//			g.drawOval(((Ellipse) shapes.get(i)).getcX(),
-//					((Ellipse) shapes.get(i)).getcY(),
-//					((Ellipse) shapes.get(i)).getcWidth(),
-//					((Ellipse) shapes.get(i)).getcHight());
-//		
-//	}
 
 }

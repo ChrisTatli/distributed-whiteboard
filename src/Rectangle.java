@@ -97,20 +97,4 @@ public class Rectangle extends Shape {
 
 	}
 
-//	@Override
-//public	void draw(Graphics g, ArrayList<Shape> shapes, int i) {
-//		// TODO Auto-generated method stub
-//		g.setColor(shapes.get(i).getColor());
-//		if (shapes.get(i).isFilled())
-//			g.fillRect(((Rectangle) shapes.get(i)).getrX(),
-//					((Rectangle) shapes.get(i)).getrY(),
-//					((Rectangle) shapes.get(i)).getrWidth(),
-//					((Rectangle) shapes.get(i)).getrHight());
-//		else
-//			g.drawRect(((Rectangle) shapes.get(i)).getrX(),
-//					((Rectangle) shapes.get(i)).getrY(),
-//					((Rectangle) shapes.get(i)).getrWidth(),
-//					((Rectangle) shapes.get(i)).getrHight());
-//	}
-
 }

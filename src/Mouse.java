@@ -8,7 +8,11 @@ public class Mouse extends MouseInputAdapter {
 
     private Point start;
     private ArrayList<Point> points;
-    private DrawType drawType;
+    public DrawType type;
+
+    Mouse(DrawType type){
+        this.type = type;
+    }
 
     @Override
     public void mouseMoved(MouseEvent e){
@@ -18,7 +22,7 @@ public class Mouse extends MouseInputAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         start = e.getPoint();
-        if(drawType == DrawType.FREE){
+        if(type == DrawType.FREE){
             points = new ArrayList<Point>();
         }
     }
@@ -26,7 +30,7 @@ public class Mouse extends MouseInputAdapter {
     @Override
     public void mouseDragged(MouseEvent e){
         Point end = e.getPoint();
-        if(drawType == DrawType.FREE){
+        if(type == DrawType.FREE){
             points.add(new Point(e.getX(),e.getY()));
         }
     }

@@ -107,17 +107,4 @@ public class Triangle extends Shape {
 
 	}
 
-
-	//@Override
-//	public void draw(Graphics g, ArrayList<Shape> shapes, int i) {
-//		// TODO Auto-generated method stub
-//		g.setColor(shapes.get(i).getColor());
-//		if (shapes.get(i).isFilled())
-//			g.fillPolygon(((Triangle) shapes.get(i)).getxPoints(),
-//					((Triangle) shapes.get(i)).getyPoints(), 3);
-//		else
-//			g.drawPolygon(((Triangle) shapes.get(i)).getxPoints(),
-//					((Triangle) shapes.get(i)).getyPoints(), 3);
-//		
-//	}
 }

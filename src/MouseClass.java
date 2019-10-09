@@ -345,7 +345,7 @@ public class MouseClass extends JPanel implements MouseListener,
 				}
 			}
 		}catch (Exception ewe) {
-			// TODO: handle exception
+
 		}
 	}
 
@@ -369,7 +369,7 @@ public class MouseClass extends JPanel implements MouseListener,
 			}
 			repaint();
 		}catch (Exception eas) {
-			// TODO: handle exception
+
 		}
 	}
 
@@ -450,7 +450,7 @@ public class MouseClass extends JPanel implements MouseListener,
 				}
 			}
 		}catch (Exception edd) {
-			// TODO: handle exception
+
 		}
 	}
 

@@ -102,15 +102,5 @@ public class Line extends Shape {
 	}
 
 
-	//@Override
-//	public void draw(Graphics g, ArrayList<Shape> shapes, int i) {
-//		// TODO Auto-generated method stub
-//		g.setColor(shapes.get(i).getColor());
-//		g.drawLine(((Line) shapes.get(i)).getX1(), ((Line) shapes
-//				.get(i)).getY1(), ((Line) shapes.get(i)).getX2(),
-//				((Line) shapes.get(i)).getY2());
-//		
-//		
-//	}
 
 }

@@ -39,7 +39,6 @@ public class Circle extends Shape {
 
 	@Override
 	Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
-		// TODO Auto-generated method stub
 		
 		int x = e.getX();
 		int y = e.getY();
@@ -56,7 +55,6 @@ public class Circle extends Shape {
 
 	@Override
 	void move(MouseEvent e, Shape selectedShape) {
-		// TODO Auto-generated method stub
 		
 		int x = e.getX();
 		int y = e.getY();
@@ -68,7 +66,6 @@ public class Circle extends Shape {
 
 	@Override
 	void resize(MouseEvent e, Shape selectedShape) {
-		// TODO Auto-generated method stub
 		
 		int x = e.getX();
 		int y = e.getY();

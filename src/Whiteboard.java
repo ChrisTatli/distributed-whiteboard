@@ -20,7 +20,7 @@ public class Whiteboard extends JPanel implements ActionListener  {
 	public Whiteboard(JFrame frame) {
 		this.frame = frame;
 		BuildMenu();
-		Mouse mouse = new Mouse();
+		Mouse mouse = new Mouse(drawType);
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
 	}

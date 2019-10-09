@@ -52,8 +52,6 @@ public class Square extends Shape{
 
 	@Override
 	void move(MouseEvent e, Shape selectedShape) {
-		// TODO Auto-generated method stub
-		
 		int x = e.getX();
 		int y = e.getY();
 		int L = ((Square) selectedShape).getL();
@@ -79,21 +77,5 @@ public class Square extends Shape{
 
 	}
 
-//	@Override
-//	public void draw(Graphics g, ArrayList<Shape> shapes, int i) {
-//		// TODO Auto-generated method stub
-//		
-//		g.setColor(shapes.get(i).getColor());
-//		if (shapes.get(i).isFilled())
-//			g.fillRect(((Square) shapes.get(i)).getPosx(),
-//					((Square) shapes.get(i)).getPosy(),
-//					((Square) shapes.get(i)).getL(),
-//					((Square) shapes.get(i)).getL());
-//		else
-//			g.drawRect(((Square) shapes.get(i)).getPosx(),
-//					((Square) shapes.get(i)).getPosy(),
-//					((Square) shapes.get(i)).getL(),
-//					((Square) shapes.get(i)).getL());
-//	}
 	
 }
