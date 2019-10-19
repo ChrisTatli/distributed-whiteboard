@@ -3,51 +3,51 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class eraser extends Shape   {
+public class Eraser extends Shape {
 
 	private ArrayList<Point> pointList;
-	private int firstX, lastX, firstY, lastY;
+	private int x1, x2, y1, y2;
 
-	public eraser() {
+	public Eraser() {
 		super();
 		pointList = null;
-		firstX = 0;
-		lastX = 0;
-		firstY = 0;
-		lastY = 0;
-		color = Color.BLACK;
+		x1 = 0;
+		x2 = 0;
+		y1 = 0;
+		y2 = 0;
+		//color = Color.BLACK;
 	}
 
-	public void setFX(int x) {
-		this.firstX = x;
+	public void setEraserX(int x) {
+		this.x1 = x;
 	}
 
-	public int getFX() {
-		return firstX;
+	public int getEX() {
+		return x1;
 	}
 
 	public void setLX(int x) {
-		this.lastX = x;
+		this.x2 = x;
 	}
 
 	public int getLX() {
-		return lastX;
+		return x2;
 	}
 
 	public void setFY(int y) {
-		this.firstY = y;
+		this.y1 = y;
 	}
 
 	public int getFY() {
-		return firstY;
+		return y1;
 	}
 
 	public void setLY(int y) {
-		this.lastY = y;
+		this.y2 = y;
 	}
 
 	public int getLY() {
-		return lastY;
+		return y2;
 	}
 
 	public ArrayList<Point> getPoints() {
@@ -60,12 +60,12 @@ public class eraser extends Shape   {
 
 
 	@Override
-	Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
+	public Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
 		return null;
 	}
 
 	@Override
-	void move(MouseEvent e, Shape selectedShape) {
+	public void move(MouseEvent e, Shape selectedShape) {
 		/*int x = e.getX();
 		int y = e.getY();
 		ArrayList<Point>  points = ((Freehand) selectedShape).getPoints();
@@ -82,7 +82,7 @@ public class eraser extends Shape   {
 	}
 
 	@Override
-	void resize(MouseEvent e, Shape selectedShape) {
+	public void resize(MouseEvent e, Shape selectedShape) {
 
 	}
 }

@@ -3,13 +3,13 @@ import java.util.ArrayList;
 
 
 
-public class text extends Shape {
+public class Text extends Shape {
 	
 	protected String txt;
 	protected int posx,posy, FSize;
 	protected int width, hight;
 	
-	public text(){
+	public Text(){
 		super();
 		txt = "";
 		posx =0;
@@ -63,13 +63,13 @@ public class text extends Shape {
 	}
 	
 	@Override
-	Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
+	public Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
 		int x = e.getX();
 		int y = e.getY();
-		int X = ((text) currentShapes.get(i)).getPosx();
-		int Y = ((text) currentShapes.get(i)).getPosy();
-		int Width = ((text) currentShapes.get(i)).getWidth();
-		int Hight = ((text) currentShapes.get(i)).getHight();
+		int X = ((Text) currentShapes.get(i)).getPosx();
+		int Y = ((Text) currentShapes.get(i)).getPosy();
+		int Width = ((Text) currentShapes.get(i)).getWidth();
+		int Hight = ((Text) currentShapes.get(i)).getHight();
 		if ((x >= X && x <= (X + Width)) && (y <= Y && y >= (Y - Hight))) {
 			return currentShapes.get(i);
 		}
@@ -77,16 +77,16 @@ public class text extends Shape {
 	}
 
 	@Override
-	void move(MouseEvent e, Shape selectedShape) {
+	public void move(MouseEvent e, Shape selectedShape) {
 		int x = e.getX();
 		int y = e.getY();
 	
-		((text) selectedShape).setPosx(x);
-		((text) selectedShape).setPosy(y);
+		((Text) selectedShape).setPosx(x);
+		((Text) selectedShape).setPosy(y);
 	}
 
 	@Override
-	void resize(MouseEvent e, Shape selectedShape) {
+	public void resize(MouseEvent e, Shape selectedShape) {
 	
 	
 	}

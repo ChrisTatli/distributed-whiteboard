@@ -52,11 +52,11 @@ public abstract class Shape {
 
 	
 
-	abstract Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i);
+	public abstract Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i);
 
-	abstract void move(MouseEvent e, Shape selectedShape);
+	public abstract void move(MouseEvent e, Shape selectedShape);
 
-	abstract void resize(MouseEvent e, Shape selectedShape);
+	public abstract void resize(MouseEvent e, Shape selectedShape);
 
 
 

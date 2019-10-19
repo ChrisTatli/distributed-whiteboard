@@ -1,7 +1,7 @@
 public class Item {
 
-	int i;
-	String name, positions;
+	private int i;
+	private String name, positions;
 
 	public Item() {
 		i = 0;

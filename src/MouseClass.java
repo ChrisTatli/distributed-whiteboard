@@ -10,15 +10,15 @@ public class MouseClass extends JPanel implements MouseListener,
 		MouseMotionListener {
 
 
-	JPanel canvas;
-	UR ur;
+	private JPanel canvas;
+	protected UR ur;
 	private Color penColor = new Color(0, 0, 0);
 	private int pointX, pointY, pointR;
-	ArrayList<Shape> shapes;
-	ArrayList<Shape> currentShapes;
-	private ArrayList<Point> pointList;
-	private ArrayList<Freehand> curves;
-	private ArrayList<Freehand> currentCurves;
+	protected ArrayList<Shape> shapes;
+	protected ArrayList<Shape> currentShapes;
+	protected ArrayList<Point> pointList;
+	protected ArrayList<Freehand> curves;
+	protected ArrayList<Freehand> currentCurves;
 	private Ellipse c;
 	private Circle cir;
 	private Rectangle r;
@@ -27,18 +27,19 @@ public class MouseClass extends JPanel implements MouseListener,
 	private Line l;
 	private Point point;
 	private Freehand fh;
-	private text tx;
-	private eraser er;
-	int flag;
-	String message;
-	int fz;
-	private int startx, starty;
-	Color color;
-	boolean isFilled;
+	private Text tx;
+	private Eraser er;
+	protected int flag;
+	protected String message;
+	protected int fz;
+	private int startX, startY;
+	protected Color color;
+	protected boolean isFilled;
 	private Shape selectedShape;
-	Item item;
-	String pos, helpp;
-	int help;
+	private Item item;
+	private String pos, helpp;
+	private int help;
+	protected int pointSize;
 
 
 
@@ -57,6 +58,7 @@ public class MouseClass extends JPanel implements MouseListener,
 		shapes = new ArrayList<Shape>();
 		currentShapes = new ArrayList<Shape>();
 		pointList = new ArrayList<Point>();
+		pointSize = 10;
 
 
 
@@ -77,8 +79,8 @@ public class MouseClass extends JPanel implements MouseListener,
 	public void mousePressed(MouseEvent ev) {
 
 		try {
-			startx = ev.getX();
-			starty = ev.getY();
+			startX = ev.getX();
+			startY = ev.getY();
 			if (flag == 5 || flag == 6) {
 				select(ev);
 			} else {
@@ -87,22 +89,22 @@ public class MouseClass extends JPanel implements MouseListener,
 					c.setColor(color);
 					c.setName("ellipse");
 					c.setFilled(isFilled);
-					c.setcX(ev.getX());
-					c.setcY(ev.getY());
+					c.setEX(ev.getX());
+					c.setEY(ev.getY());
 				} else if (flag == 2) {
 					r = new Rectangle();
 					r.setColor(color);
 					r.setName("rectangle");
 					r.setFilled(isFilled);
-					r.setrX(ev.getX());
-					r.setrY(ev.getY());
+					r.setRectangleX(ev.getX());
+					r.setRectangleY(ev.getY());
 				} else if (flag == 3) {
 					t = new Triangle();
 					t.setColor(color);
 					t.setName("triangle");
 					t.setFilled(isFilled);
-					t.settX(ev.getX());
-					t.settY(ev.getY());
+					t.setTriangleX(ev.getX());
+					t.setTriangleY(ev.getY());
 				} else if (flag == 4) {
 					l = new Line();
 					l.setColor(color);
@@ -121,8 +123,8 @@ public class MouseClass extends JPanel implements MouseListener,
 					sq.setColor(color);
 					sq.setName("square");
 					sq.setFilled(isFilled);
-					sq.setPosx(ev.getX());
-					sq.setPosy(ev.getY());
+					sq.setSquareX(ev.getX());
+					sq.setSquareY(ev.getY());
 
 				} else if (flag == 11) {
 					fh = new Freehand();
@@ -136,9 +138,9 @@ public class MouseClass extends JPanel implements MouseListener,
 					fh.setPoints(pointList);  // the clicked point is added to a list
 
 				} else if (flag == 12) {
-					tx = new text();
+					tx = new Text();
 					tx.setColor(color);
-					tx.setName("text");
+					tx.setName("Text");
 					tx.setFilled(isFilled);
 					tx.setText(message);
 					tx.setFSize(fz);
@@ -146,19 +148,19 @@ public class MouseClass extends JPanel implements MouseListener,
 					tx.setPosy(ev.getY());
 
 				}  else if (flag == 13) {
-					er = new eraser();
+					er = new Eraser();
 					er.setColor(Color.white);
-					er.setName("eraser");
+					er.setName("Eraser");
 					pointX = ev.getX() ;   // the clicked point is stored without the offset
 					pointY = ev.getY() ;   // the clicked point is stored without the offset
 					er.setFY(pointY);
-					er.setFX(pointX);
+					er.setEraserX(pointX);
 					pointList.add(new Point(pointX, pointY));
 					er.setPoints(pointList);  // the clicked point is added to a list
 
 				}
 			}
-		} catch (Exception eee) {
+		} catch (Exception exception) {
 
 		}
 	}
@@ -201,42 +203,42 @@ public class MouseClass extends JPanel implements MouseListener,
 						shapes.add(tx);
 					}
 					else if (flag == 1) {
-						c.setcX(Math.min(e.getX(), startx));
-						c.setcY(Math.min(e.getY(), starty));
-						c.setcWidth(Math.abs(e.getX() - startx));
-						c.setcHight(Math.abs(e.getY() - starty));
+						c.setEX(Math.min(e.getX(), startX));
+						c.setEY(Math.min(e.getY(), startY));
+						c.setEWidth(Math.abs(e.getX() - startX));
+						c.setEHight(Math.abs(e.getY() - startY));
 
 						shapes.add(c);
 					} else if (flag == 2) {
-						r.setrX(Math.min(e.getX(), startx));
-						r.setrY(Math.min(e.getY(), starty));
-						r.setrWidth(Math.abs(e.getX() - startx));
-						r.setrHight(Math.abs(e.getY() - starty));
+						r.setRectangleX(Math.min(e.getX(), startX));
+						r.setRectangleY(Math.min(e.getY(), startY));
+						r.setRectangleWidth(Math.abs(e.getX() - startX));
+						r.setRectangleHight(Math.abs(e.getY() - startY));
 
 						shapes.add(r);
 					} else if (flag == 3) {
-						int base = e.getX() - t.gettX();
-						int hight = e.getY() - t.gettY();
-						int[] xPoints = { (t.gettX() + base / 2), t.gettX(),
+						int base = e.getX() - t.getTriangleX();
+						int hight = e.getY() - t.getTriangleY();
+						int[] xPoints = { (t.getTriangleX() + base / 2), t.getTriangleX(),
 								e.getX() };
-						int[] yPoints = { t.gettY(), (t.gettY() + hight),
+						int[] yPoints = { t.getTriangleY(), (t.getTriangleY() + hight),
 								e.getY() };
-						t.setxPoints(xPoints);
-						t.setyPoints(yPoints);
+						t.setXPoints(xPoints);
+						t.setYPoints(yPoints);
 						shapes.add(t);
 					} else if (flag == 4) {
 						l.setX2(e.getX());
 						l.setY2(e.getY());
 						shapes.add(l);
 					} else if (flag == 7) {
-						cir.setX(Math.min(e.getX(), startx));
-						cir.setRadius(Math.abs(e.getX() - startx));
+						cir.setX(Math.min(e.getX(), startX));
+						cir.setRadius(Math.abs(e.getX() - startX));
 						shapes.add(cir);
 
 					} else if (flag == 8) {
-						sq.setPosx(Math.min(e.getX(), startx));
+						sq.setSquareX(Math.min(e.getX(), startX));
 
-						sq.setL(Math.abs(e.getX() - startx));
+						sq.setSquareL(Math.abs(e.getX() - startX));
 
 						shapes.add(sq);
 
@@ -245,7 +247,7 @@ public class MouseClass extends JPanel implements MouseListener,
 					repaint();
 				}
 			}
-		} catch (Exception eee) {
+		} catch (Exception exception) {
 
 		}
 	}
@@ -258,7 +260,7 @@ public class MouseClass extends JPanel implements MouseListener,
 			item.setPositions(item.getPositions() + pos);
 
 			ur.undo.push(item);
-		}catch (Exception w) {
+		}catch (Exception exception) {
 			// TODO: handle exception
 		}
 	}
@@ -277,27 +279,27 @@ public class MouseClass extends JPanel implements MouseListener,
 				if (flag == 1) {
 					currentShapes.add(c);
 
-					pos = c.getcX() + "," + c.getcY() + "," + c.getcWidth() + ","
-							+ c.getcHight() + "," + c.getColor().getRGB() + ","
+					pos = c.getEX() + "," + c.getEY() + "," + c.getEWidth() + ","
+							+ c.getEHight() + "," + c.getColor().getRGB() + ","
 							+ c.isFilled();
 					item.setName("ellipse");
 					pushItem();
 
 				} else if (flag == 2) {
 					currentShapes.add(r);
-					pos = r.getrX() + "," + r.getrY() + "," + r.getrWidth() + ","
-							+ r.getrHight() + "," + r.getColor().getRGB() + ","
+					pos = r.getRectangleX() + "," + r.getRectangleY() + "," + r.getRectangleWidth() + ","
+							+ r.getRectangleHight() + "," + r.getColor().getRGB() + ","
 							+ r.isFilled();
 					item.setName("rectangle");
 					pushItem();
 
 				} else if (flag == 3) {
 					currentShapes.add(t);
-					String x = t.getxPoints()[0] + "," + t.getxPoints()[1] + ","
-							+ t.getxPoints()[2];
-					String y = t.getyPoints()[0] + "," + t.getyPoints()[1] + ","
-							+ t.getyPoints()[2];
-					pos = t.gettX() + "," + t.gettY() + "," + x + "," + y + ","
+					String x = t.getXPoints()[0] + "," + t.getXPoints()[1] + ","
+							+ t.getXPoints()[2];
+					String y = t.getYPoints()[0] + "," + t.getYPoints()[1] + ","
+							+ t.getYPoints()[2];
+					pos = t.getTriangleX() + "," + t.getTriangleY() + "," + x + "," + y + ","
 							+ t.getColor().getRGB() + "," + t.isFilled();
 					item.setName("triangle");
 					pushItem();
@@ -322,8 +324,8 @@ public class MouseClass extends JPanel implements MouseListener,
 
 				} else if (flag == 8) {
 					currentShapes.add(sq);
-					pos = sq.getPosx() + "," + sq.getPosy() + "," + sq.getL() + ","
-							+ sq.getL() + "," + sq.getColor().getRGB() + ","
+					pos = sq.getSquareX() + "," + sq.getSquareY() + "," + sq.getSquareL() + ","
+							+ sq.getSquareL() + "," + sq.getColor().getRGB() + ","
 							+ sq.isFilled();
 					item.setName("square");
 					pushItem();
@@ -343,10 +345,10 @@ public class MouseClass extends JPanel implements MouseListener,
 					er.setLX(e.getX());
 					er.setLY(e.getY());
 					currentShapes.add(er);
-					pos = er.getFX() + "," + er.getFY() + "," + er.getLX() + ","
+					pos = er.getEX() + "," + er.getFY() + "," + er.getLX() + ","
 							+ er.getLY() + "," + er.getColor().getRGB() + ","
 							+ true;
-					item.setName("eraser");
+					item.setName("Eraser");
 					pushItem();
 					pointList = new ArrayList<Point>();
 
@@ -356,24 +358,24 @@ public class MouseClass extends JPanel implements MouseListener,
 					pos = tx.getPosx() + "," + tx.getPosy() + "," + tx.getWidth() + ","
 							+ tx.getHight() + "," + tx.getColor().getRGB() + ","
 							+ true;
-					item.setName("text");
+					item.setName("Text");
 					pushItem();
 
 				}
 
 				if (flag != 9) {
-					ur.lastaction.add(currentShapes.size() - 1);
-					ur.lastaction.add(currentCurves.size() - 1);
+					ur.lastAction.add(currentShapes.size() - 1);
+					ur.lastAction.add(currentCurves.size() - 1);
 				}
 			} else {
 				if (flag != 9 && flag != 10) {
 
-					ur.lastaction.add(help);
+					ur.lastAction.add(help);
 					ur.updatselected(help,
 							updateshape(helpp, help, pos, currentShapes), ur.undo);
 				}
 			}
-		}catch (Exception ewe) {
+		}catch (Exception exception) {
 			// TODO: handle exception
 		}
 	}
@@ -386,7 +388,7 @@ public class MouseClass extends JPanel implements MouseListener,
 				if (selectedShape != null) {
 					selectedShape.setColor(color);
 
-					ur.lastaction.add(help);
+					ur.lastAction.add(help);
 					selectedShape.setFilled(isFilled);
 					ur.updatselected(help,
 							updateshape(helpp, help, pos, currentShapes), ur.undo);
@@ -396,15 +398,15 @@ public class MouseClass extends JPanel implements MouseListener,
 				select(e);
 				delete();
 
-				while (ur.lastaction.contains(help) == true) {
-					for (int i = 0; i < ur.lastaction.size(); i++) {
-						if (ur.lastaction.get(i) == help)
-							ur.lastaction.remove(i);
+				while (ur.lastAction.contains(help) == true) {
+					for (int i = 0; i < ur.lastAction.size(); i++) {
+						if (ur.lastAction.get(i) == help)
+							ur.lastAction.remove(i);
 					}
 				}
-				for (int i = 0; i < ur.lastaction.size(); i++) {
-					if (ur.lastaction.get(i) > help) {
-						ur.lastaction.set(i, ur.lastaction.get(i) - 1);
+				for (int i = 0; i < ur.lastAction.size(); i++) {
+					if (ur.lastAction.get(i) > help) {
+						ur.lastAction.set(i, ur.lastAction.get(i) - 1);
 					}
 				}
 				try {
@@ -412,12 +414,12 @@ public class MouseClass extends JPanel implements MouseListener,
 					ur.updastackAfterDel(ur.undo, ur.redo, help);
 
 					ur.redo.remove(help);
-				} catch (Exception ew) {
+				} catch (Exception exception) {
 
 				}
 			}
 			repaint();
-		}catch (Exception eas) {
+		}catch (Exception exception) {
 			// TODO: handle exception
 		}
 	}
@@ -435,30 +437,30 @@ public class MouseClass extends JPanel implements MouseListener,
 					+ ((Circle) currentShapes.get(help)).getRadius() + ","
 					+ currentShapes.get(help).getColor().getRGB();
 		} else if (helpp == "ellipse") {
-			pos = "" + ((Ellipse) currentShapes.get(help)).getcX() + ","
-					+ ((Ellipse) currentShapes.get(help)).getcY() + ","
-					+ ((Ellipse) currentShapes.get(help)).getcWidth() + ","
-					+ ((Ellipse) currentShapes.get(help)).getcHight() + ","
+			pos = "" + ((Ellipse) currentShapes.get(help)).getEX() + ","
+					+ ((Ellipse) currentShapes.get(help)).getEY() + ","
+					+ ((Ellipse) currentShapes.get(help)).getEWidth() + ","
+					+ ((Ellipse) currentShapes.get(help)).getEHight() + ","
 					+ currentShapes.get(help).getColor().getRGB();
 		} else if (helpp == "square") {
-			pos = "" + ((Square) currentShapes.get(help)).getPosx() + ","
-					+ ((Square) currentShapes.get(help)).getPosy() + ","
-					+ ((Square) currentShapes.get(help)).getL() + ","
-					+ ((Square) currentShapes.get(help)).getL() + ","
+			pos = "" + ((Square) currentShapes.get(help)).getSquareX() + ","
+					+ ((Square) currentShapes.get(help)).getSquareY() + ","
+					+ ((Square) currentShapes.get(help)).getSquareL() + ","
+					+ ((Square) currentShapes.get(help)).getSquareL() + ","
 					+ currentShapes.get(help).getColor().getRGB();
 		} else if (helpp == "triangle") {
-			String x = ((Triangle) currentShapes.get(help)).getxPoints()[0]
+			String x = ((Triangle) currentShapes.get(help)).getXPoints()[0]
 					+ ","
-					+ ((Triangle) currentShapes.get(help)).getxPoints()[1]
+					+ ((Triangle) currentShapes.get(help)).getXPoints()[1]
 					+ ","
-					+ ((Triangle) currentShapes.get(help)).getxPoints()[2];
-			String y = ((Triangle) currentShapes.get(help)).getyPoints()[0]
+					+ ((Triangle) currentShapes.get(help)).getXPoints()[2];
+			String y = ((Triangle) currentShapes.get(help)).getYPoints()[0]
 					+ ","
-					+ ((Triangle) currentShapes.get(help)).getyPoints()[1]
+					+ ((Triangle) currentShapes.get(help)).getYPoints()[1]
 					+ ","
-					+ ((Triangle) currentShapes.get(help)).getyPoints()[2];
-			pos = "" + ((Triangle) currentShapes.get(help)).gettX() + ","
-					+ ((Triangle) currentShapes.get(help)).gettY() + "," + x
+					+ ((Triangle) currentShapes.get(help)).getYPoints()[2];
+			pos = "" + ((Triangle) currentShapes.get(help)).getTriangleX() + ","
+					+ ((Triangle) currentShapes.get(help)).getTriangleY() + "," + x
 					+ "," + y + ","
 					+ currentShapes.get(help).getColor().getRGB();
 		} else if (helpp == "line") {
@@ -468,16 +470,16 @@ public class MouseClass extends JPanel implements MouseListener,
 					+ ((Line) currentShapes.get(help)).getY2() + ","
 					+ currentShapes.get(help).getColor().getRGB();
 		} else if (helpp == "rectangle") {
-			pos = "" + ((Rectangle) currentShapes.get(help)).getrX() + ","
-					+ ((Rectangle) currentShapes.get(help)).getrY() + ","
-					+ ((Rectangle) currentShapes.get(help)).getrWidth() + ","
-					+ ((Rectangle) currentShapes.get(help)).getrHight() + ","
+			pos = "" + ((Rectangle) currentShapes.get(help)).getRectangleX() + ","
+					+ ((Rectangle) currentShapes.get(help)).getRectangleY() + ","
+					+ ((Rectangle) currentShapes.get(help)).getRectangleWidth() + ","
+					+ ((Rectangle) currentShapes.get(help)).getRectangleHight() + ","
 					+ currentShapes.get(help).getColor().getRGB();
-		} else if (helpp == "text") {
-			pos = "" + ((text) currentShapes.get(help)).getPosx() + ","
-					+ ((text) currentShapes.get(help)).getPosy() + ","
-					+ ((text) currentShapes.get(help)).getWidth() + ","
-					+ ((text) currentShapes.get(help)).getHight() + ","
+		} else if (helpp == "Text") {
+			pos = "" + ((Text) currentShapes.get(help)).getPosx() + ","
+					+ ((Text) currentShapes.get(help)).getPosy() + ","
+					+ ((Text) currentShapes.get(help)).getWidth() + ","
+					+ ((Text) currentShapes.get(help)).getHight() + ","
 					+ currentShapes.get(help).getColor().getRGB();
 		}
 		pos += "," + currentShapes.get(help).isFilled();
@@ -498,7 +500,7 @@ public class MouseClass extends JPanel implements MouseListener,
 						currentShapes.remove(i);
 				}
 			}
-		}catch (Exception edd) {
+		}catch (Exception exception) {
 			// TODO: handle exception
 		}
 	}
@@ -568,12 +570,12 @@ public class MouseClass extends JPanel implements MouseListener,
 					break;
 				}
 			}
-			else if (currentShapes.get(i).getName().equals("text")) {
-				tx = new text();
+			else if (currentShapes.get(i).getName().equals("Text")) {
+				tx = new Text();
 				if (tx.select(e, currentShapes, i) != null) {
 					selectedShape = tx.select(e, currentShapes, i);
 					help = i;
-					helpp = "text";
+					helpp = "Text";
 					break;
 				}
 			}
@@ -596,7 +598,7 @@ public class MouseClass extends JPanel implements MouseListener,
 				l.move(e, selectedShape);
 			} else if (selectedShape.getName().equals("freehand")) {
 				fh.move(e, selectedShape);
-			}  else if (selectedShape.getName().equals("text")) {
+			}  else if (selectedShape.getName().equals("Text")) {
 				tx.move(e, selectedShape);
 			}
 			repaint();
@@ -617,7 +619,7 @@ public class MouseClass extends JPanel implements MouseListener,
 				t.resize(e, selectedShape);
 			} else if (selectedShape.getName().equals("line")) {
 				l.resize(e, selectedShape);
-			} /*else if (selectedShape.getName().equals("text")) {
+			} /*else if (selectedShape.getName().equals("Text")) {
 				t.resize(e, selectedShape);
 			} */
 			repaint();
@@ -630,8 +632,10 @@ public class MouseClass extends JPanel implements MouseListener,
 		g.setStroke(new BasicStroke(10));
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, 1100, 830);
-
+		
+		System.out.println("Before for size is " + pointSize);
 		for (int i = 0; i < shapes.size(); i++) {
+			System.out.println("Within for size is " + pointSize);
 			if (shapes.get(i).isDraw()) {
 
 
@@ -640,46 +644,47 @@ public class MouseClass extends JPanel implements MouseListener,
 					int x2 = 0;
 					int y2 = 0;
 					g.setColor(shapes.get(i).getColor());
-					for(Point point: ((Freehand)shapes.get(i)).getPoints()) {
+					for(Point point : ((Freehand)shapes.get(i)).getPoints()) {
 						//point.drawPoint(g);
 						int x1 =point.getX();
 						int y1 =point.getY();
-
+						
 						point.drawLine(g, x1, y1, x2, y2);
-
+						
 						x2=x1;
 						y2=y1;
+						
 
 					}
-				} if (shapes.get(i).getName().equals("eraser")) {
-
+				} if (shapes.get(i).getName().equals("Eraser")) {
 					int x2 = 0;
 					int y2 = 0;
-					for(Point point: ((eraser)shapes.get(i)).getPoints()) {
+					for(Point point : ((Eraser)shapes.get(i)).getPoints()) {
 						int x1 =point.getX();
 						int y1 =point.getY();
-
-						point.drawEraserLine(g, x1, y1, x2, y2);
-
+						
+						point.drawEraserLine(g, x1, y1, x2, y2, pointSize);
+						
 						x2=x1;
 						y2=y1;
-
+						
 					}
+					System.out.println("After IF size is " + pointSize);
 				}
-				else if (shapes.get(i).getName().equals("text")) {
+				else if (shapes.get(i).getName().equals("Text")) {
 					Font font;
 					FontRenderContext context;
 
-					g.setFont(new Font("TimesRoman", Font.PLAIN, ((text) shapes.get(i)).getFSize())); //***********************************************
+					g.setFont(new Font("TimesRoman", Font.PLAIN, ((Text) shapes.get(i)).getFSize()));
 
 					g.setColor(shapes.get(i).getColor());
-					g.drawString(((text) shapes.get(i)).getText(),
-							((text) shapes.get(i)).getPosx(), ((text) shapes.get(i)).getPosy());
+					g.drawString(((Text) shapes.get(i)).getText(),
+							((Text) shapes.get(i)).getPosx(), ((Text) shapes.get(i)).getPosy());
 
 
 
 					context = g.getFontRenderContext();
-					Rectangle2D bounds = g.getFont().getStringBounds(((text) shapes.get(i)).getText(), context);
+					Rectangle2D bounds = g.getFont().getStringBounds(((Text) shapes.get(i)).getText(), context);
 					if (tx != null) {
 						tx.setHight((int)bounds.getHeight());
 						tx.setWidth(g.getFontMetrics().stringWidth(tx.getText()));
@@ -708,52 +713,52 @@ public class MouseClass extends JPanel implements MouseListener,
 
 					g.setColor(shapes.get(i).getColor());
 					if (shapes.get(i).isFilled())
-						g.fillOval(((Ellipse) shapes.get(i)).getcX(),
-								((Ellipse) shapes.get(i)).getcY(),
-								((Ellipse) shapes.get(i)).getcWidth(),
-								((Ellipse) shapes.get(i)).getcHight());
+						g.fillOval(((Ellipse) shapes.get(i)).getEX(),
+								((Ellipse) shapes.get(i)).getEY(),
+								((Ellipse) shapes.get(i)).getEWidth(),
+								((Ellipse) shapes.get(i)).getEHight());
 
 					else
-						g.drawOval(((Ellipse) shapes.get(i)).getcX(),
-								((Ellipse) shapes.get(i)).getcY(),
-								((Ellipse) shapes.get(i)).getcWidth(),
-								((Ellipse) shapes.get(i)).getcHight());
+						g.drawOval(((Ellipse) shapes.get(i)).getEX(),
+								((Ellipse) shapes.get(i)).getEY(),
+								((Ellipse) shapes.get(i)).getEWidth(),
+								((Ellipse) shapes.get(i)).getEHight());
 					// c.draw(g, shapes, i);
 				} else if (shapes.get(i).getName().equals("square")) {
 					g.setColor(shapes.get(i).getColor());
 					if (shapes.get(i).isFilled())
-						g.fillRect(((Square) shapes.get(i)).getPosx(),
-								((Square) shapes.get(i)).getPosy(),
-								((Square) shapes.get(i)).getL(),
-								((Square) shapes.get(i)).getL());
+						g.fillRect(((Square) shapes.get(i)).getSquareX(),
+								((Square) shapes.get(i)).getSquareY(),
+								((Square) shapes.get(i)).getSquareL(),
+								((Square) shapes.get(i)).getSquareL());
 					else
-						g.drawRect(((Square) shapes.get(i)).getPosx(),
-								((Square) shapes.get(i)).getPosy(),
-								((Square) shapes.get(i)).getL(),
-								((Square) shapes.get(i)).getL());
+						g.drawRect(((Square) shapes.get(i)).getSquareX(),
+								((Square) shapes.get(i)).getSquareY(),
+								((Square) shapes.get(i)).getSquareL(),
+								((Square) shapes.get(i)).getSquareL());
 					// sq.draw(g, shapes, i);
 				} else if (shapes.get(i).getName().equals("rectangle")) {
 					g.setColor(shapes.get(i).getColor());
 					if (shapes.get(i).isFilled())
-						g.fillRect(((Rectangle) shapes.get(i)).getrX(),
-								((Rectangle) shapes.get(i)).getrY(),
-								((Rectangle) shapes.get(i)).getrWidth(),
-								((Rectangle) shapes.get(i)).getrHight());
+						g.fillRect(((Rectangle) shapes.get(i)).getRectangleX(),
+								((Rectangle) shapes.get(i)).getRectangleY(),
+								((Rectangle) shapes.get(i)).getRectangleWidth(),
+								((Rectangle) shapes.get(i)).getRectangleHight());
 					else
-						g.drawRect(((Rectangle) shapes.get(i)).getrX(),
-								((Rectangle) shapes.get(i)).getrY(),
-								((Rectangle) shapes.get(i)).getrWidth(),
-								((Rectangle) shapes.get(i)).getrHight());
+						g.drawRect(((Rectangle) shapes.get(i)).getRectangleX(),
+								((Rectangle) shapes.get(i)).getRectangleY(),
+								((Rectangle) shapes.get(i)).getRectangleWidth(),
+								((Rectangle) shapes.get(i)).getRectangleHight());
 					// r.draw(g, shapes, i);
 				} else if (shapes.get(i).getName().equals("triangle")) {
 					// t.draw(g, shapes, i);
 					g.setColor(shapes.get(i).getColor());
 					if (shapes.get(i).isFilled())
-						g.fillPolygon(((Triangle) shapes.get(i)).getxPoints(),
-								((Triangle) shapes.get(i)).getyPoints(), 3);
+						g.fillPolygon(((Triangle) shapes.get(i)).getXPoints(),
+								((Triangle) shapes.get(i)).getYPoints(), 3);
 					else
-						g.drawPolygon(((Triangle) shapes.get(i)).getxPoints(),
-								((Triangle) shapes.get(i)).getyPoints(), 3);
+						g.drawPolygon(((Triangle) shapes.get(i)).getXPoints(),
+								((Triangle) shapes.get(i)).getYPoints(), 3);
 
 				} else if (shapes.get(i).getName().equals("line")) {
 					// l.draw(g, shapes, i);
@@ -766,7 +771,8 @@ public class MouseClass extends JPanel implements MouseListener,
 				}
 			}
 		}
-
+		//pointSize = 10;
+		System.out.println("After for size is " + pointSize);
 	}
 
 	@Override

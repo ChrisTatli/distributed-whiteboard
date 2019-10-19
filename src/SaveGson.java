@@ -23,14 +23,14 @@ import com.google.gson.stream.JsonReader;
 
 
 
-public class saveGson {
+public class SaveGson {
 	String url;
 	ArrayList<Shape> cshape;
 	ArrayList<Shape> shape;
 	Stack<Item> undo;
 	ArrayList<Integer> lastaction;
 
-	public saveGson() {
+	public SaveGson() {
 
 		url="";
 		cshape = null;
@@ -44,7 +44,7 @@ public class saveGson {
 
 
 
-		Writer writer = new FileWriter(frame.url + ".json");
+		Writer writer = new FileWriter(Frame.url + ".json");
 		Gson gson = new GsonBuilder().create();
 
 
@@ -88,8 +88,8 @@ public class saveGson {
 						Rectangle r = new Gson().fromJson(firstFig, Rectangle.class);
 						shape.add(r);
 						cshape.add(r);
-						undo.push(new Item(shapeindex, "rectangle", r.getrX() + ","
-								+ r.getrY() + "," + r.getrWidth() + "," + r.getrHight()
+						undo.push(new Item(shapeindex, "rectangle", r.getRectangleX() + ","
+								+ r.getRectangleY() + "," + r.getRectangleWidth() + "," + r.getRectangleHight()
 								+ "," + r.getColor().getRGB() + "," + r.isFilled()));
 						lastaction.add(shapeindex);
 						shapeindex++;
@@ -98,8 +98,8 @@ public class saveGson {
 						Square s = new Gson().fromJson(firstFig, Square.class);
 						shape.add(s);
 						cshape.add(s);
-						undo.push(new Item(shapeindex, "square", s.getPosx() + ","
-								+ s.getPosy() + "," + s.getL() + "," + s.getL() + ","
+						undo.push(new Item(shapeindex, "square", s.getSquareX() + ","
+								+ s.getSquareY() + "," + s.getSquareL() + "," + s.getSquareL() + ","
 								+ s.getColor().getRGB() + "," + s.isFilled()));
 						lastaction.add(shapeindex);
 						shapeindex++;
@@ -108,8 +108,8 @@ public class saveGson {
 						Ellipse e = new Gson().fromJson(firstFig, Ellipse.class);
 						shape.add(e);
 						cshape.add(e);
-						undo.push(new Item(shapeindex, "ellipse", e.getcX() + ","
-								+ e.getcY() + "," + e.getcWidth() + "," + e.getcHight()
+						undo.push(new Item(shapeindex, "ellipse", e.getEX() + ","
+								+ e.getEY() + "," + e.getEWidth() + "," + e.getEHight()
 								+ "," + e.getColor().getRGB() + "," + e.isFilled()));
 						lastaction.add(shapeindex);
 						shapeindex++;
@@ -138,19 +138,19 @@ public class saveGson {
 						Triangle t = new Gson().fromJson(firstFig, Triangle.class);
 						shape.add(t);
 						cshape.add(t);
-						String x = t.getxPoints()[0] + "," + t.getxPoints()[1] + ","
-								+ t.getxPoints()[2];
-						String y = t.getyPoints()[0] + "," + t.getyPoints()[1] + ","
-								+ t.getyPoints()[2];
-						undo.push(new Item(shapeindex, "triangle", t.gettX() + ","
-								+ t.gettY() + "," + x + "," + y + ","
+						String x = t.getXPoints()[0] + "," + t.getXPoints()[1] + ","
+								+ t.getXPoints()[2];
+						String y = t.getYPoints()[0] + "," + t.getYPoints()[1] + ","
+								+ t.getYPoints()[2];
+						undo.push(new Item(shapeindex, "triangle", t.getTriangleX() + ","
+								+ t.getTriangleY() + "," + x + "," + y + ","
 								+ t.getColor().getRGB() + "," + t.isFilled()));
 
 						lastaction.add(shapeindex);
 						shapeindex++;
 
-					} else if (valueName.equals("text")) {
-						text tx = new Gson().fromJson(firstFig, text.class);
+					} else if (valueName.equals("Text")) {
+						Text tx = new Gson().fromJson(firstFig, Text.class);
 						shape.add(tx);
 						cshape.add(tx);
 						undo.push(new Item(shapeindex, "rectangle", tx.getPosx() + "," + tx.getPosy() + "," + tx.getWidth() + ","
@@ -169,11 +169,11 @@ public class saveGson {
 						lastaction.add(shapeindex);
 						shapeindex++;
 
-					} else if (valueName.equals("eraser")) {
-						eraser er = new Gson().fromJson(firstFig, eraser.class);
+					} else if (valueName.equals("Eraser")) {
+						Eraser er = new Gson().fromJson(firstFig, Eraser.class);
 						shape.add(er);
 						cshape.add(er);
-						undo.push(new Item(shapeindex, "rectangle", er.getFX() + "," + er.getFY() + "," + er.getLX() + ","
+						undo.push(new Item(shapeindex, "rectangle", er.getEX() + "," + er.getFY() + "," + er.getLX() + ","
 								+ er.getLY() + "," + er.getColor().getRGB() + ","
 								+ true));
 						lastaction.add(shapeindex);

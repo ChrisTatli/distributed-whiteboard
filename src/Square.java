@@ -5,90 +5,73 @@ import java.util.ArrayList;
 
 public class Square extends Shape{
 
-	protected int posx,posy,l;
+	protected int x,y,l;
 	
 	public Square(){
-		posx=posy=l=0;
+		x=y=l=0;
 	}
 
-	public int getPosx() {
-		return posx;
+	public int getSquareX() {
+		return x;
 	}
 
-	public void setPosx(int posx) {
-		this.posx = posx;
+	public void setSquareX(int x) {
+		this.x = x;
 	}
 
-	public int getPosy() {
-		return posy;
+	public int getSquareY() {
+		return y;
 	}
 
-	public void setPosy(int posy) {
-		this.posy = posy;
+	public void setSquareY(int y) {
+		this.y = y;
 	}
 
-	public int getL() {
+	public int getSquareL() {
 		return l;
 	}
 
-	public void setL(int l) {
+	public void setSquareL(int l) {
 		this.l = l;
 	}
 
 	@Override
-	Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
+	public Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
 		
 		int x = e.getX();
 		int y = e.getY();
-		int rX = ((Square) currentShapes.get(i)).getPosx();
-		int rY = ((Square) currentShapes.get(i)).getPosy();
-		int L = ((Square) currentShapes.get(i)).getL();
+		int sX = ((Square) currentShapes.get(i)).getSquareX();
+		int sY = ((Square) currentShapes.get(i)).getSquareY();
+		int sL = ((Square) currentShapes.get(i)).getSquareL();
 		
-		if ((x >= rX && x <= (rX + L)) && (y >= rY && y <= (rY + L))) {
+		if ((x >= sX && x <= (sX + sL)) && (y >= sY && y <= (sY + sL))) {
 			return currentShapes.get(i);
 		}
 		return null;
 	}
 
 	@Override
-	void move(MouseEvent e, Shape selectedShape) {
+	public void move(MouseEvent e, Shape selectedShape) {
 		// TODO Auto-generated method stub
 		
 		int x = e.getX();
 		int y = e.getY();
-		int L = ((Square) selectedShape).getL();
-		((Square) selectedShape).setPosx(x - (L / 2));
-		((Square) selectedShape).setPosy(y - (L / 2));
+		int sL = ((Square) selectedShape).getSquareL();
+		((Square) selectedShape).setSquareX(x - (sL / 2));
+		((Square) selectedShape).setSquareY(y - (sL / 2));
 	}
 
 	@Override
-	void resize(MouseEvent e, Shape selectedShape) {
+	public void resize(MouseEvent e, Shape selectedShape) {
 		
 		int x = e.getX();
 		int y = e.getY();
-		int rX = ((Square) selectedShape).getPosx();
-		int rY = ((Square) selectedShape).getPosy();
-		if (x >= rX && y >= rY) {
-			((Square) selectedShape).setL(x - rX);	
+		int sX = ((Square) selectedShape).getSquareX();
+		int sY = ((Square) selectedShape).getSquareY();
+		if (x >= sX && y >= sY) {
+			((Square) selectedShape).setSquareL(x - sX);	
 		}
 		
 	}
-
-//	@Override
-//	public void draw(Graphics g, ArrayList<Shape> shapes, int i) {
-//		// TODO Auto-generated method stub
-//		
-//		g.setColor(shapes.get(i).getColor());
-//		if (shapes.get(i).isFilled())
-//			g.fillRect(((Square) shapes.get(i)).getPosx(),
-//					((Square) shapes.get(i)).getPosy(),
-//					((Square) shapes.get(i)).getL(),
-//					((Square) shapes.get(i)).getL());
-//		else
-//			g.drawRect(((Square) shapes.get(i)).getPosx(),
-//					((Square) shapes.get(i)).getPosy(),
-//					((Square) shapes.get(i)).getL(),
-//					((Square) shapes.get(i)).getL());
-//	}
 	
 }

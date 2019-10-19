@@ -5,64 +5,57 @@ import java.util.ArrayList;
 
 public class Rectangle extends Shape {
 
-	protected int rX, rY, rWidth, rHight;
+	protected int x, y, width, hight;
 
 	public Rectangle() {
 		super();
-		rX = 0;
-		rY = 0;
-		rWidth = 0;
-		rHight = 0;
+		x = 0;
+		y = 0;
+		width = 0;
+		hight = 0;
 	}
 
-	public int getrX() {
-		return rX;
+	public int getRectangleX() {
+		return x;
 	}
 
-	public void setrX(int rX) {
-		this.rX = rX;
+	public void setRectangleX(int x) {
+		this.x = x;
 	}
 
-	public int getrY() {
-		return rY;
+	public int getRectangleY() {
+		return y;
 	}
 
-	public void setrY(int rY) {
-		this.rY = rY;
+	public void setRectangleY(int y) {
+		this.y = y;
 	}
 
-	public int getrWidth() {
-		return rWidth;
+	public int getRectangleWidth() {
+		return width;
 	}
 
-	public void setrWidth(int rWidth) {
-		this.rWidth = rWidth;
+	public void setRectangleWidth(int width) {
+		this.width = width;
 	}
 
-	public int getrHight() {
-		return rHight;
+	public int getRectangleHight() {
+		return hight;
 	}
 
-	public void setrHight(int rHight) {
-		this.rHight = rHight;
+	public void setRectangleHight(int hight) {
+		this.hight = hight;
 	}
 
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-	}
 
 	@Override
-	Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
+	public Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
 		int x = e.getX();
 		int y = e.getY();
-		int rX = ((Rectangle) currentShapes.get(i)).getrX();
-		int rY = ((Rectangle) currentShapes.get(i)).getrY();
-		int rWidth = ((Rectangle) currentShapes.get(i)).getrWidth();
-		int rHight = ((Rectangle) currentShapes.get(i)).getrHight();
+		int rX = ((Rectangle) currentShapes.get(i)).getRectangleX();
+		int rY = ((Rectangle) currentShapes.get(i)).getRectangleY();
+		int rWidth = ((Rectangle) currentShapes.get(i)).getRectangleWidth();
+		int rHight = ((Rectangle) currentShapes.get(i)).getRectangleHight();
 		if ((x >= rX && x <= (rX + rWidth)) && (y >= rY && y <= (rY + rHight))) {
 			return currentShapes.get(i);
 		}
@@ -70,42 +63,26 @@ public class Rectangle extends Shape {
 	}
 
 	@Override
-	void move(MouseEvent e, Shape selectedShape) {
+	public void move(MouseEvent e, Shape selectedShape) {
 		int x = e.getX();
 		int y = e.getY();
-		int width = ((Rectangle) selectedShape).getrWidth();
-		int hight = ((Rectangle) selectedShape).getrHight();
-		((Rectangle) selectedShape).setrX(x - (width / 2));
-		((Rectangle) selectedShape).setrY(y - (hight / 2));
+		int width = ((Rectangle) selectedShape).getRectangleWidth();
+		int hight = ((Rectangle) selectedShape).getRectangleHight();
+		((Rectangle) selectedShape).setRectangleX(x - (width / 2));
+		((Rectangle) selectedShape).setRectangleY(y - (hight / 2));
 	}
 
 	@Override
-	void resize(MouseEvent e, Shape selectedShape) {
+	public void resize(MouseEvent e, Shape selectedShape) {
 		int x = e.getX();
 		int y = e.getY();
-		int rX = ((Rectangle) selectedShape).getrX();
-		int rY = ((Rectangle) selectedShape).getrY();
+		int rX = ((Rectangle) selectedShape).getRectangleX();
+		int rY = ((Rectangle) selectedShape).getRectangleY();
 		if (x >= rX && y >= rY) {
-			((Rectangle) selectedShape).setrWidth(x - rX);
-			((Rectangle) selectedShape).setrHight(y - rY);
+			((Rectangle) selectedShape).setRectangleWidth(x - rX);
+			((Rectangle) selectedShape).setRectangleHight(y - rY);
 		}
 	
 	}
-
-//	@Override
-//public	void draw(Graphics g, ArrayList<Shape> shapes, int i) {
-//		// TODO Auto-generated method stub
-//		g.setColor(shapes.get(i).getColor());
-//		if (shapes.get(i).isFilled())
-//			g.fillRect(((Rectangle) shapes.get(i)).getrX(),
-//					((Rectangle) shapes.get(i)).getrY(),
-//					((Rectangle) shapes.get(i)).getrWidth(),
-//					((Rectangle) shapes.get(i)).getrHight());
-//		else
-//			g.drawRect(((Rectangle) shapes.get(i)).getrX(),
-//					((Rectangle) shapes.get(i)).getrY(),
-//					((Rectangle) shapes.get(i)).getrWidth(),
-//					((Rectangle) shapes.get(i)).getrHight());
-//	}
 
 }

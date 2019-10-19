@@ -47,7 +47,7 @@ public class Line extends Shape {
 	}
 
 	@Override
-	Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
+	public Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
 		int x = e.getX();
 		int y = e.getY();
 		int x1 = ((Line) currentShapes.get(i)).getX1();
@@ -71,7 +71,7 @@ public class Line extends Shape {
 	}
 
 	@Override
-	void move(MouseEvent e, Shape selectedShape) {
+	public void move(MouseEvent e, Shape selectedShape) {
 		int x = e.getX();
 		int y = e.getY();
 		int x1 = ((Line) selectedShape).getX1();
@@ -89,24 +89,11 @@ public class Line extends Shape {
 	}
 
 	@Override
-	void resize(MouseEvent e, Shape selectedShape) {
+	public void resize(MouseEvent e, Shape selectedShape) {
 		int x = e.getX();
 		int y = e.getY();
 		((Line) selectedShape).setX2(x);
 		((Line) selectedShape).setY2(y);
 	}
-
-	
-
-	//@Override
-//	public void draw(Graphics g, ArrayList<Shape> shapes, int i) {
-//		// TODO Auto-generated method stub
-//		g.setColor(shapes.get(i).getColor());
-//		g.drawLine(((Line) shapes.get(i)).getX1(), ((Line) shapes
-//				.get(i)).getY1(), ((Line) shapes.get(i)).getX2(),
-//				((Line) shapes.get(i)).getY2());
-//		
-//		
-//	}
 
 }

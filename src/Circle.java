@@ -4,27 +4,27 @@ import java.util.ArrayList;
 
 public class Circle extends Shape {
 
-	protected int x, y, radius;
+	protected int cX, cY, radius;
 
 	public Circle() {
 		super();
-		x = y = radius = 0;
+		cX = cY = radius = 0;
 	}
 
 	public int getX() {
-		return x;
+		return cX;
 	}
 
 	public void setX(int x) {
-		this.x = x;
+		this.cX = x;
 	}
 
 	public int getY() {
-		return y;
+		return cY;
 	}
 
 	public void setY(int y) {
-		this.y = y;
+		this.cY = y;
 	}
 
 
@@ -38,7 +38,7 @@ public class Circle extends Shape {
 	}
 
 	@Override
-	Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
+	public Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
 		// TODO Auto-generated method stub
 		
 		int x = e.getX();
@@ -55,7 +55,7 @@ public class Circle extends Shape {
 	
 
 	@Override
-	void move(MouseEvent e, Shape selectedShape) {
+	public void move(MouseEvent e, Shape selectedShape) {
 		// TODO Auto-generated method stub
 		
 		int x = e.getX();
@@ -67,7 +67,7 @@ public class Circle extends Shape {
 	}
 
 	@Override
-	void resize(MouseEvent e, Shape selectedShape) {
+	public void resize(MouseEvent e, Shape selectedShape) {
 		// TODO Auto-generated method stub
 		
 		int x = e.getX();

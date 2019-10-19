@@ -7,31 +7,25 @@ import java.util.Stack;
  */
 
 public class UR {
-	Stack<Item> undo;
-	Stack<Item> redo;
-	Rectangle r;
-	Freehand fh;
-	Square s;
-	Line l;
-	Circle c;
-	Ellipse e;
-	Triangle tr;
-	Item object;
-	ArrayList<Integer> lastaction;
+	protected Stack<Item> undo;
+	protected Stack<Item> redo;
+	protected Rectangle r;
+	protected Item object;
+	protected ArrayList<Integer> lastAction;
 
 	// constructor
 	public UR() {
 		undo = new Stack<Item>();
 		redo = new Stack<Item>();
-		lastaction = new ArrayList<Integer>();
+		lastAction = new ArrayList<Integer>();
 	}
 
 	// undo
 	public void undo(ArrayList<Shape> cshapes) {
 		try {
 			object = new Item();
-			object = undo.get(lastaction.get(lastaction.size() - 1));
-			lastaction.remove(lastaction.size() - 1);
+			object = undo.get(lastAction.get(lastAction.size() - 1));
+			lastAction.remove(lastAction.size() - 1);
 
 			String pos = object.getPositions();
 			Object[] p = returnpos(pos);
@@ -43,7 +37,7 @@ public class UR {
 				int[] oldpos = (int[]) temp[temp.length - 1];
 				DetectShapeType(oldpos, object, cshapes, (Boolean) p[1]);
 			}
-		} catch (Exception ef) {
+		} catch (Exception exception) {
 
 		}
 	}
@@ -73,20 +67,20 @@ public class UR {
 				filled = true;
 			}
 			DetectShapeType(newpos, object, cshape, filled);
-			lastaction.add(t.getI());
-		} catch (Exception f) {
+			lastAction.add(t.getI());
+		} catch (Exception exception) {
 
 		}
 	}
 
-	// method that updat the position of selecteeed shape in the stack
+	// method that update the position of selected shape in the stack
 	public void updatselected(int i, String pos, Stack<Item> undo) {
 		try{
 		object = new Item();
 		object = undo.get(i);
 		object.setPositions(object.getPositions() + "=" + pos);
 		undo.set(i, object);
-		}catch (Exception e) {
+		}catch (Exception exception) {
 		
 		}
 	}
@@ -176,23 +170,23 @@ public class UR {
 			cshapes.get(object.getI()).setColor(new Color((oldpos[4])));
 
 		} else if (object.getName() == "ellipse") {
-			((Ellipse) cshapes.get(object.getI())).setcX(oldpos[0]);
-			((Ellipse) cshapes.get(object.getI())).setcY(oldpos[1]);
-			((Ellipse) cshapes.get(object.getI())).setcWidth(oldpos[2]);
-			((Ellipse) cshapes.get(object.getI())).setcHight(oldpos[3]);
+			((Ellipse) cshapes.get(object.getI())).setEX(oldpos[0]);
+			((Ellipse) cshapes.get(object.getI())).setEY(oldpos[1]);
+			((Ellipse) cshapes.get(object.getI())).setEWidth(oldpos[2]);
+			((Ellipse) cshapes.get(object.getI())).setEHight(oldpos[3]);
 			cshapes.get(object.getI()).setColor(new Color((oldpos[4])));
 		} else if (object.getName() == "rectangle") {
 
-			((Rectangle) cshapes.get(object.getI())).setrX(oldpos[0]);
-			((Rectangle) cshapes.get(object.getI())).setrY(oldpos[1]);
-			((Rectangle) cshapes.get(object.getI())).setrWidth(oldpos[2]);
-			((Rectangle) cshapes.get(object.getI())).setrHight(oldpos[3]);
+			((Rectangle) cshapes.get(object.getI())).setRectangleX(oldpos[0]);
+			((Rectangle) cshapes.get(object.getI())).setRectangleY(oldpos[1]);
+			((Rectangle) cshapes.get(object.getI())).setRectangleWidth(oldpos[2]);
+			((Rectangle) cshapes.get(object.getI())).setRectangleHight(oldpos[3]);
 			cshapes.get(object.getI()).setColor(new Color((oldpos[4])));
 		} else if (object.getName() == "square") {
 
-			((Square) cshapes.get(object.getI())).setPosx(oldpos[0]);
-			((Square) cshapes.get(object.getI())).setPosy(oldpos[1]);
-			((Square) cshapes.get(object.getI())).setL(oldpos[2]);
+			((Square) cshapes.get(object.getI())).setSquareX(oldpos[0]);
+			((Square) cshapes.get(object.getI())).setSquareY(oldpos[1]);
+			((Square) cshapes.get(object.getI())).setSquareL(oldpos[2]);
 			cshapes.get(object.getI()).setColor(new Color((oldpos[4])));
 
 		} else if (object.getName() == "line") {
@@ -204,11 +198,11 @@ public class UR {
 			cshapes.get(object.getI()).setColor(new Color((oldpos[4])));
 		} else if (object.getName() == "triangle") {
 
-			((Triangle) cshapes.get(object.getI())).settX(oldpos[0]);
-			((Triangle) cshapes.get(object.getI())).settY(oldpos[1]);
-			((Triangle) cshapes.get(object.getI())).setxPoints(new int[] {
+			((Triangle) cshapes.get(object.getI())).setTriangleX(oldpos[0]);
+			((Triangle) cshapes.get(object.getI())).setTriangleY(oldpos[1]);
+			((Triangle) cshapes.get(object.getI())).setXPoints(new int[] {
 					oldpos[2], oldpos[3], oldpos[4] });
-			((Triangle) cshapes.get(object.getI())).setyPoints(new int[] {
+			((Triangle) cshapes.get(object.getI())).setYPoints(new int[] {
 					oldpos[5], oldpos[6], oldpos[7] });
 			cshapes.get(object.getI()).setColor(new Color((oldpos[8])));
 		}
