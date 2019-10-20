@@ -119,67 +119,9 @@ public class Frame extends JFrame  {
 		text=new JButton(new ImageIcon("Assets/text.jpg"));
 		//Text.setBounds(45,215,40,40);
 		text.setBounds(hoff,off+9*voff+side*8,side,side);
-//		textField = new JTextField("Write here");
-//		//textField.setBounds(0,260,90,50);
-//		textField.setBounds(0,off+10*voff+side*9,78,50);
-//		slider = new JSlider();
-//		//slider.setBounds(0, 315, 100,35);
-//		slider.setBounds(0,off+11*voff+side*9+50,90,50);
-//		slider.setValue(20);
-//		slider.setPaintTicks(true);
-//		slider.setPaintLabels(true);
-//		slider.setMinimum(5);
-//		slider.setMaximum(50);
-//		slider.setMajorTickSpacing(10);
-//		slider.setPaintTicks(true);
-		
-		
-//		Eraser=new JButton(new ImageIcon("Eraser.png"));
-//		//Eraser.setBounds(0,35,40,40);
-//		Eraser.setBounds(hoff,off+voff,side,side);
-//		Square=new JButton(new ImageIcon("square.png"));
-//		//Square.setBounds(0,35,40,40);
-//		Square.setBounds(hoff,off+2*voff+side,side,side);
-//		triangle=new JButton(new ImageIcon("triangle.png"));
-//		//triangle.setBounds(45, 80, 40, 40);
-//		triangle.setBounds(hoff,off+3*voff+side*2,side,side);
-//		line=new JButton(new ImageIcon("line.png"));
-//		//line.setBounds(0, 125, 40, 40);
-//		line.setBounds(hoff,off+4*voff+side*3,side,side);
-//		rectangle=new JButton(new ImageIcon("rectangle.jpg"));
-//		//rectangle.setBounds(45, 125, 40, 40);
-//		rectangle.setBounds(hoff,off+5*voff+side*4,side,side);
-//		Ellipse=new JButton(new ImageIcon("ellipse.png"));
-//		//Ellipse.setBounds(0,170,40,40);
-//		Ellipse.setBounds(hoff,off+6*voff+side*5,side,side);
-//		Circle=new JButton(new ImageIcon("circle.png"));
-//		//Circle.setBounds(45, 170, 40, 40);
-//		Circle.setBounds(hoff,off+7*voff+side*6,side,side);
-//		Freehand=new JButton(new ImageIcon("freehand.png"));
-//		//Freehand.setBounds(0,215,40,40);
-//		Freehand.setBounds(hoff,off+8*voff+side*7,side,side);
-//		Text=new JButton(new ImageIcon("Text.jpg"));
-//		//Text.setBounds(45,215,40,40);
-//		Text.setBounds(hoff,off+9*voff+side*8,side,side);
-		
-		
-//		textField = new JTextField("Write here");
-//		//textField.setBounds(0,260,90,50);
-//		textField.setBounds(0,off+10*voff+side*9,78,50);
-//		slider = new JSlider();
-//		//slider.setBounds(0, 315, 100,35);
-//		slider.setBounds(0,off+11*voff+side*9+50,90,50);
-//		slider.setValue(20);
-//		slider.setPaintTicks(true);
-//		slider.setPaintLabels(true);
-//		slider.setMinimum(5);
-//		slider.setMaximum(50);
-//		slider.setMajorTickSpacing(10);
-//		slider.setPaintTicks(true);
 
 
 		bShapes = new JPanel();
-
 		bShapes.setBackground(panel);
 		bShapes.setLayout(null);
 		bShapes.setBounds(0, 0, 80, 900);
@@ -197,40 +139,7 @@ public class Frame extends JFrame  {
 		add(bShapes);
 
 
-//		move=new JButton(new ImageIcon("Assets/select.png"));
-//		move.setToolTipText("move");
-//		//move.setBounds(0, 400,40 ,40);
-//		move.setBounds(hoff,off+12*voff+side*9+100,side,side);
-//		resize=new JButton(new ImageIcon("Assets/size.png"));
-//		resize.setToolTipText("resize");
-//		//resize.setBounds(45, 400, 40, 40);
-//		resize.setBounds(hoff,off+13*voff+side*10+100,side,side);
-//		delete=new JButton(new ImageIcon("Assets/delete.png"));
-//		delete.setToolTipText("delete");
-//		//delete.setBounds(0,445,40,40);
-//		delete.setBounds(hoff,off+14*voff+side*11+100,side,side);
-//		changeC=new JButton(new ImageIcon("Assets/paint.png"));
-//		//changeC.setBounds(45, 445, 40, 40);
-//		changeC.setBounds(hoff,off+15*voff+side*12+100,side,side);
-//		changeC.setToolTipText("change color");
-//		colorChooser=new JButton(new ImageIcon("Assets/palette.jpg"));
-//		//colorChooser.setBounds(0, 490, 85, 80);
-//		colorChooser.setBounds(hoff,off+16*voff+side*13+100,side,side);
-//		colorChooser.setToolTipText("choose color");
-//		filled = new JRadioButton("filled");
-//		//filled.setBounds(0, 600, 60, 20);
-//		filled.setBounds(5,off+18*voff+side*14+100,60,20);
-//		border = new JRadioButton("border");
-//		//border.setBounds(0, 640, 70, 20);
-//		border.setBounds(5,off+18*voff+side*15+100,60,20);
-//		Bshapes.add(move);
-//		Bshapes.add(resize);
-//		Bshapes.add(delete);
-//		Bshapes.add(changeC);
-//		Bshapes.add(colorChooser);
-//		Bshapes.add(filled);
-//		Bshapes.add(border);
-		
+	
 		
 		move=new JButton(new ImageIcon("Assets/select.png"));
 		move.setToolTipText("move");
@@ -443,7 +352,7 @@ public class Frame extends JFrame  {
 				String tempText = tf.getText();
 				int tempFontSize = tf.getFontSize();
 				paint.message = tempText;
-				paint.fz = tempFontSize;
+				paint.fontSize = tempFontSize;
 			}
 		});
 		

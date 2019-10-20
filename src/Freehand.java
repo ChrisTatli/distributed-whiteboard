@@ -66,19 +66,7 @@ public class Freehand extends Shape   {
 
 	@Override
 	public void move(MouseEvent e, Shape selectedShape) {
-		/*int x = e.getX();
-		int y = e.getY();
-		ArrayList<Point>  points = ((Freehand) selectedShape).getPoints();
-		
-		for(Point point: points) {
-			int x1 =point.getX()+x;
-			int y1 =point.getY()+y;
-			
-			pointList2.add(new Point(x1, y1, 5, color));
 
-		}
-		
-		((Freehand) selectedShape).setPoints(pointList2);*/
 	}
 
 	@Override

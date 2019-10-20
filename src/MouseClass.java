@@ -19,18 +19,18 @@ public class MouseClass extends JPanel implements MouseListener,
 	protected ArrayList<Point> pointList;
 	protected ArrayList<Freehand> curves;
 	protected ArrayList<Freehand> currentCurves;
-	private Ellipse c;
-	private Circle cir;
-	private Rectangle r;
-	private Square sq;
-	private Triangle t;
-	private Line l;
-	private Freehand fh;
-	private Text tx;
-	private Eraser er;
+	private Ellipse ellipse;
+	private Circle circle;
+	private Rectangle rectangle;
+	private Square square;
+	private Triangle triangle;
+	private Line line;
+	private Freehand freehand;
+	private Text text;
+	private Eraser eraser;
 	protected int flag;
 	protected String message;
-	protected int fz;
+	protected int fontSize;
 	private int startX, startY;
 	protected Color color;
 	protected boolean isFilled;
@@ -48,7 +48,7 @@ public class MouseClass extends JPanel implements MouseListener,
 		setVisible(true);
 		canvas.setVisible(true);
 		flag = 0;
-		fz=20;
+		fontSize=20;
 		message = "Default";
 		color = Color.BLACK;
 		shapes = new ArrayList<Shape>();
@@ -65,8 +65,7 @@ public class MouseClass extends JPanel implements MouseListener,
 
 
 	}
-	//*************************************************   MOUSE EVENTS ON THE CANVAS *************************************
-	//MOUSE PRESSED ON CANVAS
+	//Mouse events on th Canvas
 	//It calls for the methods in the class SHAPE and the figure's class
 	//to set color of border and fill
 	//through the event it catches the point where the click happens
@@ -80,78 +79,78 @@ public class MouseClass extends JPanel implements MouseListener,
 				select(ev);
 			} else {
 				if (flag == 1) {
-					c = new Ellipse();
-					c.setColor(color);
-					c.setName("ellipse");
-					c.setFilled(isFilled);
-					c.setEX(ev.getX());
-					c.setEY(ev.getY());
+					ellipse = new Ellipse();
+					ellipse.setColor(color);
+					ellipse.setName("ellipse");
+					ellipse.setFilled(isFilled);
+					ellipse.setEX(ev.getX());
+					ellipse.setEY(ev.getY());
 				} else if (flag == 2) {
-					r = new Rectangle();
-					r.setColor(color);
-					r.setName("rectangle");
-					r.setFilled(isFilled);
-					r.setRectangleX(ev.getX());
-					r.setRectangleY(ev.getY());
+					rectangle = new Rectangle();
+					rectangle.setColor(color);
+					rectangle.setName("rectangle");
+					rectangle.setFilled(isFilled);
+					rectangle.setRectangleX(ev.getX());
+					rectangle.setRectangleY(ev.getY());
 				} else if (flag == 3) {
-					t = new Triangle();
-					t.setColor(color);
-					t.setName("triangle");
-					t.setFilled(isFilled);
-					t.setTriangleX(ev.getX());
-					t.setTriangleY(ev.getY());
+					triangle = new Triangle();
+					triangle.setColor(color);
+					triangle.setName("triangle");
+					triangle.setFilled(isFilled);
+					triangle.setTriangleX(ev.getX());
+					triangle.setTriangleY(ev.getY());
 				} else if (flag == 4) {
-					l = new Line();
-					l.setColor(color);
-					l.setName("line");
-					l.setX1(ev.getX());
-					l.setY1(ev.getY());
+					line = new Line();
+					line.setColor(color);
+					line.setName("line");
+					line.setX1(ev.getX());
+					line.setY1(ev.getY());
 				} else if (flag == 7) {
-					cir = new Circle();
-					cir.setColor(color);
-					cir.setName("circle");
-					cir.setFilled(isFilled);
-					cir.setX(ev.getX());
-					cir.setY(ev.getY());
+					circle = new Circle();
+					circle.setColor(color);
+					circle.setName("circle");
+					circle.setFilled(isFilled);
+					circle.setX(ev.getX());
+					circle.setY(ev.getY());
 				} else if (flag == 8) {
-					sq = new Square();
-					sq.setColor(color);
-					sq.setName("square");
-					sq.setFilled(isFilled);
-					sq.setSquareX(ev.getX());
-					sq.setSquareY(ev.getY());
+					square = new Square();
+					square.setColor(color);
+					square.setName("square");
+					square.setFilled(isFilled);
+					square.setSquareX(ev.getX());
+					square.setSquareY(ev.getY());
 
 				} else if (flag == 11) {
-					fh = new Freehand();
-					fh.setColor(color);
-					fh.setName("freehand");
+					freehand = new Freehand();
+					freehand.setColor(color);
+					freehand.setName("freehand");
 					pointX = ev.getX() ;   // the clicked point is stored without the offset
 					pointY = ev.getY() ;   // the clicked point is stored without the offset
-					fh.setFY(pointY);
-					fh.setFX(pointX);
+					freehand.setFY(pointY);
+					freehand.setFX(pointX);
 					pointList.add(new Point(pointX, pointY));
-					fh.setPoints(pointList);  // the clicked point is added to a list
+					freehand.setPoints(pointList);  // the clicked point is added to a list
 
 				} else if (flag == 12) {
-					tx = new Text();
-					tx.setColor(color);
-					tx.setName("Text");
-					tx.setFilled(isFilled);
-					tx.setText(message);
-					tx.setFSize(fz);
-					tx.setPosx(ev.getX());
-					tx.setPosy(ev.getY());
+					text = new Text();
+					text.setColor(color);
+					text.setName("Text");
+					text.setFilled(isFilled);
+					text.setText(message);
+					text.setFSize(fontSize);
+					text.setPosx(ev.getX());
+					text.setPosy(ev.getY());
 
 				}  else if (flag == 13) {
-					er = new Eraser();
-					er.setColor(Color.white);
-					er.setName("Eraser");
+					eraser = new Eraser();
+					eraser.setColor(Color.white);
+					eraser.setName("Eraser");
 					pointX = ev.getX() ;   // the clicked point is stored without the offset
 					pointY = ev.getY() ;   // the clicked point is stored without the offset
-					er.setFY(pointY);
-					er.setEraserX(pointX);
+					eraser.setFY(pointY);
+					eraser.setEraserX(pointX);
 					pointList.add(new Point(pointX, pointY));
-					er.setPoints(pointList);  // the clicked point is added to a list
+					eraser.setPoints(pointList);  // the clicked point is added to a list
 
 				}
 			}
@@ -180,62 +179,62 @@ public class MouseClass extends JPanel implements MouseListener,
 						pointX = e.getX(); //the dragging the mouse does the same thing as clicking, it adds points
 						pointY = e.getY();
 						pointList.add(new Point(pointX, pointY));
-						fh.setPoints(pointList);
+						freehand.setPoints(pointList);
 
-						shapes.add(fh);
+						shapes.add(freehand);
 					} else if (flag == 13) {
 						pointX = e.getX(); //the dragging the mouse does the same thing as clicking, it adds points
 						pointY = e.getY();
 						pointList.add(new Point(pointX, pointY));
-						er.setPoints(pointList);
+						eraser.setPoints(pointList);
 
-						shapes.add(er);
+						shapes.add(eraser);
 					}
 					else if (flag == 12) {
-						tx.setPosx(e.getX());
-						tx.setPosy(e.getY());
+						text.setPosx(e.getX());
+						text.setPosy(e.getY());
 
-						shapes.add(tx);
+						shapes.add(text);
 					}
 					else if (flag == 1) {
-						c.setEX(Math.min(e.getX(), startX));
-						c.setEY(Math.min(e.getY(), startY));
-						c.setEWidth(Math.abs(e.getX() - startX));
-						c.setEHight(Math.abs(e.getY() - startY));
+						ellipse.setEX(Math.min(e.getX(), startX));
+						ellipse.setEY(Math.min(e.getY(), startY));
+						ellipse.setEWidth(Math.abs(e.getX() - startX));
+						ellipse.setEHight(Math.abs(e.getY() - startY));
 
-						shapes.add(c);
+						shapes.add(ellipse);
 					} else if (flag == 2) {
-						r.setRectangleX(Math.min(e.getX(), startX));
-						r.setRectangleY(Math.min(e.getY(), startY));
-						r.setRectangleWidth(Math.abs(e.getX() - startX));
-						r.setRectangleHight(Math.abs(e.getY() - startY));
+						rectangle.setRectangleX(Math.min(e.getX(), startX));
+						rectangle.setRectangleY(Math.min(e.getY(), startY));
+						rectangle.setRectangleWidth(Math.abs(e.getX() - startX));
+						rectangle.setRectangleHight(Math.abs(e.getY() - startY));
 
-						shapes.add(r);
+						shapes.add(rectangle);
 					} else if (flag == 3) {
-						int base = e.getX() - t.getTriangleX();
-						int hight = e.getY() - t.getTriangleY();
-						int[] xPoints = { (t.getTriangleX() + base / 2), t.getTriangleX(),
+						int base = e.getX() - triangle.getTriangleX();
+						int hight = e.getY() - triangle.getTriangleY();
+						int[] xPoints = { (triangle.getTriangleX() + base / 2), triangle.getTriangleX(),
 								e.getX() };
-						int[] yPoints = { t.getTriangleY(), (t.getTriangleY() + hight),
+						int[] yPoints = { triangle.getTriangleY(), (triangle.getTriangleY() + hight),
 								e.getY() };
-						t.setXPoints(xPoints);
-						t.setYPoints(yPoints);
-						shapes.add(t);
+						triangle.setXPoints(xPoints);
+						triangle.setYPoints(yPoints);
+						shapes.add(triangle);
 					} else if (flag == 4) {
-						l.setX2(e.getX());
-						l.setY2(e.getY());
-						shapes.add(l);
+						line.setX2(e.getX());
+						line.setY2(e.getY());
+						shapes.add(line);
 					} else if (flag == 7) {
-						cir.setX(Math.min(e.getX(), startX));
-						cir.setRadius(Math.abs(e.getX() - startX));
-						shapes.add(cir);
+						circle.setX(Math.min(e.getX(), startX));
+						circle.setRadius(Math.abs(e.getX() - startX));
+						shapes.add(circle);
 
 					} else if (flag == 8) {
-						sq.setSquareX(Math.min(e.getX(), startX));
+						square.setSquareX(Math.min(e.getX(), startX));
 
-						sq.setSquareL(Math.abs(e.getX() - startX));
+						square.setSquareL(Math.abs(e.getX() - startX));
 
-						shapes.add(sq);
+						shapes.add(square);
 
 					}
 
@@ -272,85 +271,85 @@ public class MouseClass extends JPanel implements MouseListener,
 			item = new Item();
 			if (flag != 5 && flag != 6) {
 				if (flag == 1) {
-					currentShapes.add(c);
+					currentShapes.add(ellipse);
 
-					pos = c.getEX() + "," + c.getEY() + "," + c.getEWidth() + ","
-							+ c.getEHight() + "," + c.getColor().getRGB() + ","
-							+ c.isFilled();
+					pos = ellipse.getEX() + "," + ellipse.getEY() + "," + ellipse.getEWidth() + ","
+							+ ellipse.getEHight() + "," + ellipse.getColor().getRGB() + ","
+							+ ellipse.isFilled();
 					item.setName("ellipse");
 					pushItem();
 
 				} else if (flag == 2) {
-					currentShapes.add(r);
-					pos = r.getRectangleX() + "," + r.getRectangleY() + "," + r.getRectangleWidth() + ","
-							+ r.getRectangleHight() + "," + r.getColor().getRGB() + ","
-							+ r.isFilled();
+					currentShapes.add(rectangle);
+					pos = rectangle.getRectangleX() + "," + rectangle.getRectangleY() + "," + rectangle.getRectangleWidth() + ","
+							+ rectangle.getRectangleHight() + "," + rectangle.getColor().getRGB() + ","
+							+ rectangle.isFilled();
 					item.setName("rectangle");
 					pushItem();
 
 				} else if (flag == 3) {
-					currentShapes.add(t);
-					String x = t.getXPoints()[0] + "," + t.getXPoints()[1] + ","
-							+ t.getXPoints()[2];
-					String y = t.getYPoints()[0] + "," + t.getYPoints()[1] + ","
-							+ t.getYPoints()[2];
-					pos = t.getTriangleX() + "," + t.getTriangleY() + "," + x + "," + y + ","
-							+ t.getColor().getRGB() + "," + t.isFilled();
+					currentShapes.add(triangle);
+					String x = triangle.getXPoints()[0] + "," + triangle.getXPoints()[1] + ","
+							+ triangle.getXPoints()[2];
+					String y = triangle.getYPoints()[0] + "," + triangle.getYPoints()[1] + ","
+							+ triangle.getYPoints()[2];
+					pos = triangle.getTriangleX() + "," + triangle.getTriangleY() + "," + x + "," + y + ","
+							+ triangle.getColor().getRGB() + "," + triangle.isFilled();
 					item.setName("triangle");
 					pushItem();
 
 				} else if (flag == 4) {
-					currentShapes.add(l);
-					pos = l.getX1() + "," + l.getY1() + "," + l.getX2() + ","
-							+ l.getY2() + "," + l.getColor().getRGB() + ","
-							+ l.isFilled();
+					currentShapes.add(line);
+					pos = line.getX1() + "," + line.getY1() + "," + line.getX2() + ","
+							+ line.getY2() + "," + line.getColor().getRGB() + ","
+							+ line.isFilled();
 
 					item.setName("line");
 					pushItem();
 
 				} else if (flag == 7) {
-					currentShapes.add(cir);
-					pos = cir.getX() + "," + cir.getY() + "," + cir.getRadius()
-							+ "," + cir.getRadius() + "," + cir.getColor().getRGB()
-							+ "," + cir.isFilled();
+					currentShapes.add(circle);
+					pos = circle.getX() + "," + circle.getY() + "," + circle.getRadius()
+							+ "," + circle.getRadius() + "," + circle.getColor().getRGB()
+							+ "," + circle.isFilled();
 
 					item.setName("circle");
 					pushItem();
 
 				} else if (flag == 8) {
-					currentShapes.add(sq);
-					pos = sq.getSquareX() + "," + sq.getSquareY() + "," + sq.getSquareL() + ","
-							+ sq.getSquareL() + "," + sq.getColor().getRGB() + ","
-							+ sq.isFilled();
+					currentShapes.add(square);
+					pos = square.getSquareX() + "," + square.getSquareY() + "," + square.getSquareL() + ","
+							+ square.getSquareL() + "," + square.getColor().getRGB() + ","
+							+ square.isFilled();
 					item.setName("square");
 					pushItem();
 
 				} else if (flag == 11) {
-					fh.setLX(e.getX());
-					fh.setLY(e.getY());
-					currentShapes.add(fh);
-					pos = fh.getFX() + "," + fh.getFY() + "," + fh.getLX() + ","
-							+ fh.getLY() + "," + fh.getColor().getRGB() + ","
+					freehand.setLX(e.getX());
+					freehand.setLY(e.getY());
+					currentShapes.add(freehand);
+					pos = freehand.getFX() + "," + freehand.getFY() + "," + freehand.getLX() + ","
+							+ freehand.getLY() + "," + freehand.getColor().getRGB() + ","
 							+ true;
 					item.setName("freehand");
 					pushItem();
 					pointList = new ArrayList<Point>();
 
 				} else if (flag == 13) {
-					er.setLX(e.getX());
-					er.setLY(e.getY());
-					currentShapes.add(er);
-					pos = er.getEX() + "," + er.getFY() + "," + er.getLX() + ","
-							+ er.getLY() + "," + er.getColor().getRGB() + ","
+					eraser.setLX(e.getX());
+					eraser.setLY(e.getY());
+					currentShapes.add(eraser);
+					pos = eraser.getEX() + "," + eraser.getFY() + "," + eraser.getLX() + ","
+							+ eraser.getLY() + "," + eraser.getColor().getRGB() + ","
 							+ true;
 					item.setName("Eraser");
 					pushItem();
 					pointList = new ArrayList<Point>();
 				}
 				else if (flag == 12) {
-					currentShapes.add(tx);
-					pos = tx.getPosx() + "," + tx.getPosy() + "," + tx.getWidth() + ","
-							+ tx.getHight() + "," + tx.getColor().getRGB() + ","
+					currentShapes.add(text);
+					pos = text.getPosx() + "," + text.getPosy() + "," + text.getWidth() + ","
+							+ text.getHight() + "," + text.getColor().getRGB() + ","
 							+ true;
 					item.setName("Text");
 					pushItem();
@@ -507,67 +506,67 @@ public class MouseClass extends JPanel implements MouseListener,
 	public void select(MouseEvent e) {
 		for (int i = currentShapes.size() - 1; i >= 0; i--) {
 			if (currentShapes.get(i).getName().equals("circle")) {
-				cir = new Circle();
-				if (cir.select(e, currentShapes, i) != null) {
-					selectedShape = cir.select(e, currentShapes, i);
+				circle = new Circle();
+				if (circle.select(e, currentShapes, i) != null) {
+					selectedShape = circle.select(e, currentShapes, i);
 					help = i;
 					helpp = "circle";
 					break;
 				}
 			} else if (currentShapes.get(i).getName().equals("ellipse")) {
-				c = new Ellipse();
-				if (c.select(e, currentShapes, i) != null) {
-					selectedShape = c.select(e, currentShapes, i);
+				ellipse = new Ellipse();
+				if (ellipse.select(e, currentShapes, i) != null) {
+					selectedShape = ellipse.select(e, currentShapes, i);
 					help = i;
 					helpp = "ellipse";
 					break;
 				}
 			} else if (currentShapes.get(i).getName().equals("square")) {
-				sq = new Square();
-				if (sq.select(e, currentShapes, i) != null) {
-					selectedShape = sq.select(e, currentShapes, i);
+				square = new Square();
+				if (square.select(e, currentShapes, i) != null) {
+					selectedShape = square.select(e, currentShapes, i);
 					help = i;
 					helpp = "square";
 					break;
 				}
 			} else if (currentShapes.get(i).getName().equals("rectangle")) {
-				r = new Rectangle();
-				if (r.select(e, currentShapes, i) != null) {
-					selectedShape = r.select(e, currentShapes, i);
+				rectangle = new Rectangle();
+				if (rectangle.select(e, currentShapes, i) != null) {
+					selectedShape = rectangle.select(e, currentShapes, i);
 					help = i;
 					helpp = "rectangle";
 					break;
 				}
 			} else if (currentShapes.get(i).getName().equals("triangle")) {
-				t = new Triangle();
-				if (t.select(e, currentShapes, i) != null) {
-					selectedShape = t.select(e, currentShapes, i);
+				triangle = new Triangle();
+				if (triangle.select(e, currentShapes, i) != null) {
+					selectedShape = triangle.select(e, currentShapes, i);
 					help = i;
 					helpp = "triangle";
 
 					break;
 				}
 			} else if (currentShapes.get(i).getName().equals("line")) {
-				l = new Line();
-				if (l.select(e, currentShapes, i) != null) {
-					selectedShape = l.select(e, currentShapes, i);
+				line = new Line();
+				if (line.select(e, currentShapes, i) != null) {
+					selectedShape = line.select(e, currentShapes, i);
 					help = i;
 					helpp = "line";
 					break;
 				}
 			} else if (currentShapes.get(i).getName().equals("freehand")) {
-				fh = new Freehand();
-				if (fh.select(e, currentShapes, i) != null) {
-					selectedShape = fh.select(e, currentShapes, i);
+				freehand = new Freehand();
+				if (freehand.select(e, currentShapes, i) != null) {
+					selectedShape = freehand.select(e, currentShapes, i);
 					help = i;
 					helpp = "freehand";
 					break;
 				}
 			}
 			else if (currentShapes.get(i).getName().equals("Text")) {
-				tx = new Text();
-				if (tx.select(e, currentShapes, i) != null) {
-					selectedShape = tx.select(e, currentShapes, i);
+				text = new Text();
+				if (text.select(e, currentShapes, i) != null) {
+					selectedShape = text.select(e, currentShapes, i);
 					help = i;
 					helpp = "Text";
 					break;
@@ -579,21 +578,21 @@ public class MouseClass extends JPanel implements MouseListener,
 	private void move(MouseEvent e) {
 		if (selectedShape != null) {
 			if (selectedShape.getName().equals("circle")) {
-				cir.move(e, selectedShape);
+				circle.move(e, selectedShape);
 			} else if (selectedShape.getName().equals("square")) {
-				sq.move(e, selectedShape);
+				square.move(e, selectedShape);
 			} else if (selectedShape.getName().equals("ellipse")) {
-				c.move(e, selectedShape);
+				ellipse.move(e, selectedShape);
 			} else if (selectedShape.getName().equals("rectangle")) {
-				r.move(e, selectedShape);
+				rectangle.move(e, selectedShape);
 			} else if (selectedShape.getName().equals("triangle")) {
-				t.move(e, selectedShape);
+				triangle.move(e, selectedShape);
 			} else if (selectedShape.getName().equals("line")) {
-				l.move(e, selectedShape);
+				line.move(e, selectedShape);
 			} else if (selectedShape.getName().equals("freehand")) {
-				fh.move(e, selectedShape);
+				freehand.move(e, selectedShape);
 			}  else if (selectedShape.getName().equals("Text")) {
-				tx.move(e, selectedShape);
+				text.move(e, selectedShape);
 			}
 			repaint();
 		}
@@ -602,17 +601,17 @@ public class MouseClass extends JPanel implements MouseListener,
 	public void resize(MouseEvent e) {
 		if (selectedShape != null) {
 			if (selectedShape.getName().equals("circle")) {
-				cir.resize(e, selectedShape);
+				circle.resize(e, selectedShape);
 			} else if (selectedShape.getName().equals("square")) {
-				sq.resize(e, selectedShape);
+				square.resize(e, selectedShape);
 			} else if (selectedShape.getName().equals("ellipse")) {
-				c.resize(e, selectedShape);
+				ellipse.resize(e, selectedShape);
 			} else if (selectedShape.getName().equals("rectangle")) {
-				r.resize(e, selectedShape);
+				rectangle.resize(e, selectedShape);
 			} else if (selectedShape.getName().equals("triangle")) {
-				t.resize(e, selectedShape);
+				triangle.resize(e, selectedShape);
 			} else if (selectedShape.getName().equals("line")) {
-				l.resize(e, selectedShape);
+				line.resize(e, selectedShape);
 			} /*else if (selectedShape.getName().equals("Text")) {
 				t.resize(e, selectedShape);
 			} */
@@ -685,9 +684,9 @@ public class MouseClass extends JPanel implements MouseListener,
 
 					context = g.getFontRenderContext();
 					Rectangle2D bounds = g.getFont().getStringBounds(((Text) shapes.get(i)).getText(), context);
-					if (tx != null) {
-						tx.setHight((int)bounds.getHeight());
-						tx.setWidth(g.getFontMetrics().stringWidth(tx.getText()));
+					if (text != null) {
+						text.setHight((int)bounds.getHeight());
+						text.setWidth(g.getFontMetrics().stringWidth(text.getText()));
 					}
 
 
