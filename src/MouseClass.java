@@ -25,7 +25,6 @@ public class MouseClass extends JPanel implements MouseListener,
 	private Square sq;
 	private Triangle t;
 	private Line l;
-	private Point point;
 	private Freehand fh;
 	private Text tx;
 	private Eraser er;
@@ -39,10 +38,7 @@ public class MouseClass extends JPanel implements MouseListener,
 	private Item item;
 	private String pos, helpp;
 	private int help;
-	protected int pointSize;
-
-
-
+	
 	public MouseClass() {
 
 		pos = "";
@@ -58,7 +54,6 @@ public class MouseClass extends JPanel implements MouseListener,
 		shapes = new ArrayList<Shape>();
 		currentShapes = new ArrayList<Shape>();
 		pointList = new ArrayList<Point>();
-		pointSize = 10;
 
 
 
@@ -351,7 +346,6 @@ public class MouseClass extends JPanel implements MouseListener,
 					item.setName("Eraser");
 					pushItem();
 					pointList = new ArrayList<Point>();
-
 				}
 				else if (flag == 12) {
 					currentShapes.add(tx);
@@ -625,51 +619,57 @@ public class MouseClass extends JPanel implements MouseListener,
 			repaint();
 		}
 	}
-
+	
+	@Override
 	public void paintComponent(Graphics graphics) {
 		super.paintComponents(graphics);
 		Graphics2D g =(Graphics2D)graphics;
 		g.setStroke(new BasicStroke(10));
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, 1100, 830);
+		int i = 0;
 		
-		System.out.println("Before for size is " + pointSize);
-		for (int i = 0; i < shapes.size(); i++) {
-			System.out.println("Within for size is " + pointSize);
+		for (i = 0; i < shapes.size(); i++) {
+			g.setStroke(new BasicStroke(10));
+			Point point = new Point(0,0);
+			
 			if (shapes.get(i).isDraw()) {
 
 
 				if (shapes.get(i).getName().equals("freehand")) {
-
 					int x2 = 0;
 					int y2 = 0;
 					g.setColor(shapes.get(i).getColor());
-					for(Point point : ((Freehand)shapes.get(i)).getPoints()) {
-						//point.drawPoint(g);
+					
+					for (int j = 0; j < ((Freehand)shapes.get(i)).getPoints().size(); j++) {
+						point = ((Freehand)shapes.get(i)).getPoints().get(j);
 						int x1 =point.getX();
 						int y1 =point.getY();
 						
-						point.drawLine(g, x1, y1, x2, y2);
+						point.drawFreehandLine(g, x1, y1, x2, y2);
 						
 						x2=x1;
 						y2=y1;
 						
 
 					}
-				} if (shapes.get(i).getName().equals("Eraser")) {
+					
+					
+				} else if (shapes.get(i).getName().equals("Eraser")) {
 					int x2 = 0;
 					int y2 = 0;
-					for(Point point : ((Eraser)shapes.get(i)).getPoints()) {
+					for (int j = 0; j < ((Eraser)shapes.get(i)).getPoints().size(); j++) {
+						point = ((Eraser)shapes.get(i)).getPoints().get(j);
 						int x1 =point.getX();
 						int y1 =point.getY();
 						
-						point.drawEraserLine(g, x1, y1, x2, y2, pointSize);
+						point.drawEraserLine(g, x1, y1, x2, y2);
 						
 						x2=x1;
 						y2=y1;
 						
 					}
-					System.out.println("After IF size is " + pointSize);
+					
 				}
 				else if (shapes.get(i).getName().equals("Text")) {
 					Font font;
@@ -771,8 +771,7 @@ public class MouseClass extends JPanel implements MouseListener,
 				}
 			}
 		}
-		//pointSize = 10;
-		System.out.println("After for size is " + pointSize);
+		g.finalize();
 	}
 
 	@Override

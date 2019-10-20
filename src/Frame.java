@@ -119,19 +119,19 @@ public class Frame extends JFrame  {
 		text=new JButton(new ImageIcon("Assets/text.jpg"));
 		//Text.setBounds(45,215,40,40);
 		text.setBounds(hoff,off+9*voff+side*8,side,side);
-		textField = new JTextField("Write here");
-		//textField.setBounds(0,260,90,50);
-		textField.setBounds(0,off+10*voff+side*9,78,50);
-		slider = new JSlider();
-		//slider.setBounds(0, 315, 100,35);
-		slider.setBounds(0,off+11*voff+side*9+50,90,50);
-		slider.setValue(20);
-		slider.setPaintTicks(true);
-		slider.setPaintLabels(true);
-		slider.setMinimum(5);
-		slider.setMaximum(50);
-		slider.setMajorTickSpacing(10);
-		slider.setPaintTicks(true);
+//		textField = new JTextField("Write here");
+//		//textField.setBounds(0,260,90,50);
+//		textField.setBounds(0,off+10*voff+side*9,78,50);
+//		slider = new JSlider();
+//		//slider.setBounds(0, 315, 100,35);
+//		slider.setBounds(0,off+11*voff+side*9+50,90,50);
+//		slider.setValue(20);
+//		slider.setPaintTicks(true);
+//		slider.setPaintLabels(true);
+//		slider.setMinimum(5);
+//		slider.setMaximum(50);
+//		slider.setMajorTickSpacing(10);
+//		slider.setPaintTicks(true);
 		
 		
 //		Eraser=new JButton(new ImageIcon("Eraser.png"));
@@ -424,12 +424,12 @@ public class Frame extends JFrame  {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				paint.flag = 13;
-				//PressedUndo = false;
-				PointSlider pf = new PointSlider();
-				pf.setPointSize();
-				pf.setVisible(true);
-				int tempPointSize = pf.getPointSize();
-				paint.pointSize = tempPointSize;
+				pressedUndo = false;
+//				PointSlider ps = new PointSlider();
+//				ps.setPointSize();
+//				ps.setVisible(true);
+//				int tempPointSize = ps.getPointSize();
+//				paint.pointSize = tempPointSize;
 			}
 		});
 
@@ -437,8 +437,6 @@ public class Frame extends JFrame  {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				paint.flag = 12;
-				
-
 				TextField tf = new TextField();
 				tf.setText();
 				tf.setVisible(true);

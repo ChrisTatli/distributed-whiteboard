@@ -16,7 +16,7 @@ public class Point {
 		return pointY;
 	}
 
-	public void drawLine(Graphics2D g2, int x1, int y1, int x2, int y2) {
+	public void drawFreehandLine(Graphics2D g2, int x1, int y1, int x2, int y2) {
 		g2.setColor(color);
 
 		if (x2 == 0 && y2 == 0) {
@@ -31,7 +31,7 @@ public class Point {
 		
 
 	}
-	public void drawEraserLine(Graphics2D g2, int x1, int y1, int x2, int y2, int pointSize) {
+	public void drawEraserLine(Graphics2D g2, int x1, int y1, int x2, int y2) {
 		g2.setColor(Color.white);
 		
 		
@@ -42,10 +42,10 @@ public class Point {
 		}
 
 
-		g2.setStroke(new BasicStroke(pointSize));
+		g2.setStroke(new BasicStroke(30));
 		
 		g2.drawLine(x1, y1, x2, y2);
-
+		
 	}
 
 }
