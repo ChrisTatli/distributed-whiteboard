@@ -21,7 +21,7 @@ import com.google.gson.stream.JsonReader;
 public class Server {
 	
 	public enum Message {
-		NEW_WB, OPEN_WB
+		NEW_WB, OPEN_WB, JOIN_WB, UPDATE
 	}
 	
 	// Declare the port number
@@ -31,10 +31,18 @@ public class Server {
 	private static int counter = 0;
 	
 	// List of whiteboards
-	static ArrayList<String> whiteboards = new ArrayList<String>();
+	static ArrayList<ArrayList<JsonObject>> whiteboards = new ArrayList<ArrayList<JsonObject>>();
 
 	public static void main(String[] args)
 	{
+		
+		// TESTING
+		whiteboards.add(new ArrayList<JsonObject> ());
+		JsonObject testJson = new JsonObject();
+		testJson.addProperty("test", "testValue");
+		whiteboards.get(0).add(testJson);
+		
+		
 		ServerSocketFactory factory = ServerSocketFactory.getDefault();
 		
 		try(ServerSocket server = factory.createServerSocket(port))
@@ -70,30 +78,52 @@ public class Server {
 			// Output Stream
 		    DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());
 		    
+		    int curWB = -1;
+		    int curWBElement = 0;
+		    
 		    // Read input Json
 		    JsonParser parser = new JsonParser();
 		    Gson gson = new Gson();
 		    
 		    while(true)
 		    {
+		    	JsonObject reply = new JsonObject();
+		    	
 		    	if (input.available() > 0) {
 		    		JsonObject clientMessage = (JsonObject) parser.parse(input.readUTF());
 		    		//String messageType = clientMessage.get("messageType").toString();
 		    		Message messageType = gson.fromJson(clientMessage.get("messageType"), Message.class);
 		    		System.out.println("CLIENT: "+ messageType.toString());
-		    		
-		    		JsonObject reply = new JsonObject();
 				    
-				    if (messageType == Message.OPEN_WB) {
-				    	reply.add("messageType", gson.toJsonTree(Server.Message.OPEN_WB, Server.Message.class));
-				    	reply.addProperty("whiteboards", listToString(whiteboards));
+		    		switch(messageType) {
+		    		case OPEN_WB:
+		    			reply.add("messageType", gson.toJsonTree(Server.Message.OPEN_WB, Server.Message.class));
+				    	reply.addProperty("whiteboards", wbList());
 				    	// Serialise the json and send to client
 				    	output.writeUTF(gson.toJson(reply));
-				    }
-				    else {
-				    	//output.writeUTF("Message from Server");
-				    }
-		    	}	
+		    			break;
+		    		case JOIN_WB:
+		    			curWB = gson.fromJson(clientMessage.get("selectedWB"), int.class);
+		    			// TODO if server has saved whiteboard, send to client
+		    			break;
+		    		default:
+		    			break;
+		    		}
+		    		
+		    	}
+		    	else {
+		    		// Checks for updates and sends to client
+			    	if(curWB >= 0) { // Has the client chosen a whiteboard
+			    		ArrayList<JsonObject> openWB = whiteboards.get(curWB); 
+			    		if (openWB.size() > curWBElement) { // Are there new updates
+			    			reply.add("messageType", gson.toJsonTree(Server.Message.UPDATE, Server.Message.class));
+			    			reply.add("update", openWB.get(curWBElement));
+			    			output.writeUTF(gson.toJson(reply));
+			    			curWBElement++;
+			    		}
+			    	}
+		    	}
+		    	
 		    }
 		    
 		} 
@@ -103,14 +133,30 @@ public class Server {
 		}
 	}
 	
-	private static String listToString (ArrayList<String> arlist) {
+	/*private static String listToString (ArrayList<String> arlist) {
 		String strList = "";
 		for (String s : arlist) {
 			if(!strList.equals("")) {
 				strList = strList + "," + s;
 			}
+			else {
+				strList += s;
+			}
 		}
 		return strList;
+	}*/
+	
+	private static String wbList() {
+		String wbs = "";
+		for(ArrayList<JsonObject> wb: whiteboards) {
+			if(!wbs.equals("")) {
+				wbs = wbs + "," + "List";
+			}
+			else {
+				wbs += "List";
+			}
+		}
+		return wbs;
 	}
 
 }

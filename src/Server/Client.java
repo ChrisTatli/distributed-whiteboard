@@ -37,7 +37,9 @@ public class Client {
 	    	JsonParser parser = new JsonParser();
 	    	Gson gson = new Gson();
 	    	
-	    	initMessage.add("messageType", gson.toJsonTree(Server.Message.OPEN_WB, Server.Message.class));
+	    	//initMessage.add("messageType", gson.toJsonTree(Server.Message.OPEN_WB, Server.Message.class));
+	    	initMessage.add("messageType", gson.toJsonTree(Server.Message.JOIN_WB, Server.Message.class));
+	    	initMessage.addProperty("selectedWB", "0");
 	    	
 	    	output.writeUTF(gson.toJson(initMessage));
 	    	System.out.println("Sent json");
@@ -53,6 +55,9 @@ public class Client {
 		    		case OPEN_WB:
 		    			System.out.println("Whiteboards: " + serverMessage.get("whiteboards"));
 		    			break;
+		    		case UPDATE:
+		    			JsonObject update = (JsonObject) serverMessage.get("update");
+		    			System.out.println("Update: " + update.toString());
 		    		default:
 		    			break;
 		    		}	
