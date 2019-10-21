@@ -91,7 +91,7 @@ public class Server {
 				    	output.writeUTF(gson.toJson(reply));
 				    }
 				    else {
-				    	output.writeUTF("Message from Server");
+				    	//output.writeUTF("Message from Server");
 				    }
 		    	}	
 		    }
