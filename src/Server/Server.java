@@ -109,6 +109,11 @@ public class Server {
 		    		case UPDATE:
 		    			ArrayList<JsonObject> openWB = whiteboards.get(curWB);
 		    			openWB.add((JsonObject) clientMessage.get("update"));
+		    		case NEW_WB:
+		    			System.out.println(whiteboards.size());
+		    			whiteboards.add(new ArrayList<JsonObject>());
+		    			curWB = whiteboards.size() - 1;
+		    			System.out.println(whiteboards.size());
 		    		default:
 		    			break;
 		    		}

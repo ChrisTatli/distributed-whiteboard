@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.google.gson.GsonBuilder;
@@ -37,8 +40,10 @@ public class Client {
 	    	JsonParser parser = new JsonParser();
 	    	Gson gson = new Gson();
 	    	
-	    	//initMessage.add("messageType", gson.toJsonTree(Server.Message.OPEN_WB, Server.Message.class));
-	    	initMessage.add("messageType", gson.toJsonTree(Server.Message.JOIN_WB, Server.Message.class));
+	    	// Asks user to connect or start new whiteboard
+	    	Server.Message initM = ServerConnectOption(new JFrame()) == 0 ? Server.Message.NEW_WB : Server.Message.OPEN_WB;
+	    	
+	    	initMessage.add("messageType", gson.toJsonTree(initM, Server.Message.class));
 	    	initMessage.addProperty("selectedWB", "0");
 	    	
 	    	output.writeUTF(gson.toJson(initMessage));
@@ -54,6 +59,9 @@ public class Client {
 		    		switch (messageType) {
 		    		case OPEN_WB:
 		    			System.out.println("Whiteboards: " + serverMessage.get("whiteboards"));
+		    			// TODO popup with available whiteboards then return OPEN_WB with selected wb
+		    			//initMessage.add("messageType", gson.toJsonTree(Server.Message.JOIN_WB, Server.Message.class));
+		    	    	//initMessage.addProperty("selectedWB", <Chosen WB>);
 		    			break;
 		    		case UPDATE:
 		    			JsonObject update = (JsonObject) serverMessage.get("update");
@@ -81,6 +89,12 @@ public class Client {
 		updateMessage.add("messageType", gson.toJsonTree(Server.Message.UPDATE, Server.Message.class));
 		updateMessage.add("update", json);
 		output.writeUTF(gson.toJson(updateMessage));
+	}
+	
+	public static int ServerConnectOption(JFrame f) {
+		String[] buttons = {"New WhiteBoard", "Connect To WhiteBoard"};
+		int conection = JOptionPane.showOptionDialog(f, "New or Existing Whiteboard", "What would you like to do", JOptionPane.WARNING_MESSAGE, 0, null, buttons, buttons[0]);
+		return conection;
 	}
 
 }
