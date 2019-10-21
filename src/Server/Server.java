@@ -157,9 +157,9 @@ public class Server {
 	
 	private static String wbList() {
 		String wbs = "";
-		for(ArrayList<JsonObject> wb: whiteboards) {
+		for(int i = 0; i< whiteboards.size(); i++) {
 			if(!wbs.equals("")) {
-				wbs = wbs + "," + "Whiteboard " + whiteboards.indexOf(wb) + 1;
+				wbs = wbs + "," + "Whiteboard " + (i + 1);
 			}
 			else {
 				wbs += "Whiteboard 1";

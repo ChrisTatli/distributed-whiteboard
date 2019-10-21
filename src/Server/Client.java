@@ -64,7 +64,7 @@ public class Client {
 		    		case OPEN_WB:
 		    			System.out.println("Whiteboards: " + serverMessage.get("whiteboards"));
 		    			// TODO popup with available whiteboards then send to server OPEN_WB with selected wb
-		    			int wbChoice = WhiteboardConnectOption(serverMessage.get("whiteboards").toString());
+		    			int wbChoice = WhiteboardConnectOption(gson.fromJson(serverMessage.get("whiteboards"), String.class));
 		    			reply.add("messageType", gson.toJsonTree(Server.Message.JOIN_WB, Server.Message.class));
 		    	    	reply.addProperty("selectedWB", wbChoice);
 		    	    	output.writeUTF(gson.toJson(reply));
