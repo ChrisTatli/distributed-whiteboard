@@ -106,6 +106,9 @@ public class Server {
 		    			curWB = gson.fromJson(clientMessage.get("selectedWB"), int.class);
 		    			// TODO if server has saved whiteboard, send to client
 		    			break;
+		    		case UPDATE:
+		    			ArrayList<JsonObject> openWB = whiteboards.get(curWB);
+		    			openWB.add((JsonObject) clientMessage.get("update"));
 		    		default:
 		    			break;
 		    		}

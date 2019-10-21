@@ -75,5 +75,12 @@ public class Client {
 		}
 
 	}
+	
+	private void sendUpdate(JsonObject json, DataOutputStream output, Gson gson) throws IOException {
+		JsonObject updateMessage = new JsonObject();
+		updateMessage.add("messageType", gson.toJsonTree(Server.Message.UPDATE, Server.Message.class));
+		updateMessage.add("update", json);
+		output.writeUTF(gson.toJson(updateMessage));
+	}
 
 }
