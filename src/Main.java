@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.EventHandler;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -19,6 +20,9 @@ public class Main {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        DrawEventHandler drawEventHandler = new DrawEventHandler(whiteboard);
+        whiteboard.handler = drawEventHandler;
+        new Thread(drawEventHandler).start( );
     }
 
     public static void main(String[] args){

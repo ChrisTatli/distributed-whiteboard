@@ -1,26 +1,41 @@
+import Enums.DrawType;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
-
 
 
 @SuppressWarnings("serial")
 public class Whiteboard extends JPanel implements ActionListener  {
 	final JFrame frame;
+	private Mouse mouse;
+	public DrawEventHandler handler;
+
 	private ArrayList<Shape> shapes = new ArrayList<>();
 	private DrawType drawType = DrawType.FREE;
+	private Color color = Color.BLACK;
+	public ArrayList<DrawEvent> drawEvents;
+	private int eventNumber;
+
+	public synchronized ArrayList getDrawEvents(int from){
+		return new ArrayList(drawEvents.subList(from, drawEvents.size()));
+	}
+
+	public synchronized void addDrawEvent(DrawEvent event){
+		event.Id = eventNumber++;
+		drawEvents.add(event);
+	}
 
 
 	public Whiteboard(JFrame frame) {
 		this.frame = frame;
 		BuildMenu();
-		Mouse mouse = new Mouse(drawType);
+		eventNumber = 0;
+		drawEvents = new ArrayList<>();
+		mouse = new Mouse(drawType, this);
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
 	}
@@ -31,6 +46,10 @@ public class Whiteboard extends JPanel implements ActionListener  {
 			shape.draw(graphics);
 		}
 	}
+
+	public synchronized  void addShape(Shape shape){
+	    shapes.add(shape);
+    }
 
 	private void BuildMenu(){
 		JMenuBar menuBar = new JMenuBar();
@@ -51,6 +70,7 @@ public class Whiteboard extends JPanel implements ActionListener  {
 		fileMenu.add(save);
 
 		menuBar.add(fileMenu);
+
 
 		//SHAPE MENU
 		JMenu shapeMenu = new JMenu("Shapes");
@@ -88,11 +108,6 @@ public class Whiteboard extends JPanel implements ActionListener  {
 		group.add(circleMenuItem);
 		shapeMenu.add(circleMenuItem);
 
-		JRadioButtonMenuItem ovalMenuItem = new JRadioButtonMenuItem("Oval");
-		ovalMenuItem.setActionCommand("Oval");
-		ovalMenuItem.addActionListener(this);
-		group.add(ovalMenuItem);
-		shapeMenu.add(ovalMenuItem);
 
 		JRadioButtonMenuItem ellipseMenuItem = new JRadioButtonMenuItem("Ellipse");
 		ellipseMenuItem.setActionCommand("Ellipse");
@@ -101,6 +116,13 @@ public class Whiteboard extends JPanel implements ActionListener  {
 		shapeMenu.add(ellipseMenuItem);
 
 		menuBar.add(shapeMenu);
+
+		//Colors
+		JButton colorMenu = new JButton("Color");
+		colorMenu.setActionCommand("Color");
+		colorMenu.addActionListener(this);
+
+		menuBar.add(colorMenu);
 
 		frame.setJMenuBar(menuBar);
 	}
@@ -126,24 +148,31 @@ public class Whiteboard extends JPanel implements ActionListener  {
 				break;
 			case "Free":
 				drawType = DrawType.FREE;
+				mouse.setDrawType(DrawType.FREE);
 				break;
 			case "Line":
 				drawType = DrawType.LINE;
+				mouse.setDrawType(DrawType.LINE);
 				break;
 			case "Rectangle":
 				drawType = DrawType.RECT;
+				mouse.setDrawType(DrawType.RECT);
 				break;
 			case "Square":
 				drawType = DrawType.SQUARE;
+				mouse.setDrawType(DrawType.SQUARE);
 				break;
 			case "Circle":
 				drawType = DrawType.CIRCLE;
-				break;
-			case "Oval":
-				drawType = DrawType.OVAL;
+				mouse.setDrawType(DrawType.CIRCLE);
 				break;
 			case "Ellipse":
 				drawType = DrawType.ELLIPSE;
+				mouse.setDrawType(DrawType.ELLIPSE);
+				break;
+			case "Color":
+				color = JColorChooser.showDialog(this, "Select Color", color);
+				mouse.setColor(color);
 				break;
 
 		}

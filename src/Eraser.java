@@ -14,40 +14,9 @@ public class Eraser extends Shape   {
 		lastX = 0;
 		firstY = 0;
 		lastY = 0;
-		color = Color.BLACK;
+
 	}
 
-	public void setFX(int x) {
-		this.firstX = x;
-	}
-
-	public int getFX() {
-		return firstX;
-	}
-
-	public void setLX(int x) {
-		this.lastX = x;
-	}
-
-	public int getLX() {
-		return lastX;
-	}
-
-	public void setFY(int y) {
-		this.firstY = y;
-	}
-
-	public int getFY() {
-		return firstY;
-	}
-
-	public void setLY(int y) {
-		this.lastY = y;
-	}
-
-	public int getLY() {
-		return lastY;
-	}
 
 	public ArrayList<Point> getPoints() {
 		return pointList;
@@ -65,19 +34,7 @@ public class Eraser extends Shape   {
 
 	@Override
 	void move(MouseEvent e, Shape selectedShape) {
-		/*int x = e.getX();
-		int y = e.getY();
-		ArrayList<Point>  points = ((Freehand) selectedShape).getPoints();
 
-		for(Point point: points) {
-			int x1 =point.getX()+x;
-			int y1 =point.getY()+y;
-
-			pointList2.add(new Point(x1, y1, 5, color));
-
-		}
-
-		((Freehand) selectedShape).setPoints(pointList2);*/
 	}
 
 	@Override

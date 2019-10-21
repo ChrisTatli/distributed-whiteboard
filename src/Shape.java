@@ -4,25 +4,20 @@ import java.util.ArrayList;
 
 public abstract class Shape {
 
-	protected Color color;
-	protected String name;
+	private Color color;
 	protected boolean isFilled;
-	protected boolean isDrawn;
 
-	public Shape() {
-		color = null;
-		name = null;
+
+	public Shape(Color color) {
+		this.color = color;
 		isFilled = true;
-		isDrawn = true;
 	}
 
-	public boolean isDrawn() {
-		return isDrawn;
+	public Shape(){
+
 	}
 
-	public void setDraw(boolean isDrawn) {
-		this.isDrawn = isDrawn;
-	}
+
 
 	public boolean isFilled() {
 		return isFilled;
@@ -32,21 +27,10 @@ public abstract class Shape {
 		this.isFilled = isFilled;
 	}
 
-	public void setColor(Color c) {
-		color = c;
-	}
-
 	public Color getColor() {
 		return color;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 	
 
 	
@@ -58,9 +42,5 @@ public abstract class Shape {
 	abstract void resize(MouseEvent e, Shape selectedShape);
 
 	abstract void draw(Graphics graphics);
-
-
-
-
 
 }

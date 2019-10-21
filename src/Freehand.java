@@ -5,55 +5,12 @@ import java.util.ArrayList;
 public class Freehand extends Shape   {
 
 	private ArrayList<Point> pointList;
-	private int firstX, lastX, firstY, lastY;
 
-	public Freehand() {
-		super();
-		pointList = null;
-		firstX = 0;
-		lastX = 0;
-		firstY = 0;
-		lastY = 0;
-	}
 
-	public void setFX(int x) {
-		this.firstX = x;
-	}
+	public Freehand(ArrayList<Point> points, Color color) {
+		super(color);
+		pointList = points;
 
-	public int getFX() {
-		return firstX;
-	}
-
-	public void setLX(int x) {
-		this.lastX = x;
-	}
-
-	public int getLX() {
-		return lastX;
-	}
-
-	public void setFY(int y) {
-		this.firstY = y;
-	}
-
-	public int getFY() {
-		return firstY;
-	}
-
-	public void setLY(int y) {
-		this.lastY = y;
-	}
-
-	public int getLY() {
-		return lastY;
-	}
-
-	public ArrayList<Point> getPoints() {
-		return pointList;
-	}
-
-	public void setPoints(ArrayList<Point> pointList) {
-		this.pointList= pointList;
 	}
 
 
@@ -74,7 +31,11 @@ public class Freehand extends Shape   {
 
 	@Override
 	void draw(Graphics graphics) {
-
+		for (int i = 1; i < pointList.size(); i++) {
+			Point first = pointList.get(i-1);
+			Point second = pointList.get(i);
+			graphics.drawLine(first.x,first.y, second.x, second.y );
+		}
 	}
 
 

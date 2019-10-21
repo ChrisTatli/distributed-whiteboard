@@ -4,87 +4,43 @@ import java.util.ArrayList;
 
 public class Ellipse extends Shape {
 
-	protected int cX, cY, cWidth, cHeight;
+	private Point start;
+	private Point end;
+	private int width;
+	private int height;
 
-	public Ellipse() {
-		super();
-		cX = 0;
-		cY = 0;
-		cWidth = 0;
-		cHeight = 0;
+	public Ellipse(Point start, Point end, Color color) {
+		super(color);
+		this.start = start;
+		this.end = end;
 	}
 
-	public int getcX() {
-		return cX;
+	private void CalculateDimensions(Point start, Point end){
+		this.width = Math.abs(start.x - end.x);
+		this.height = Math.abs(start.y - end.y);
 	}
 
-	public void setcX(int cX) {
-		this.cX = cX;
-	}
-
-	public int getcY() {
-		return cY;
-	}
-
-	public void setcY(int cY) {
-		this.cY = cY;
-	}
-
-	public int getcWidth() {
-		return cWidth;
-	}
-
-	public void setcWidth(int cWidth) {
-		this.cWidth = cWidth;
-	}
-
-	public int getcHeight() {
-		return cHeight;
-	}
-
-	public void setcHeight(int cHeight) {
-		this.cHeight = cHeight;
-	}
 
 	@Override
 	Shape select(MouseEvent e, ArrayList<Shape> currentShapes, int i) {
-		int x = e.getX();
-		int y = e.getY();
-		int cX = ((Ellipse) currentShapes.get(i)).getcX();
-		int cY = ((Ellipse) currentShapes.get(i)).getcY();
-		int cWidth = ((Ellipse) currentShapes.get(i)).getcWidth();
-		int cHight = ((Ellipse) currentShapes.get(i)).getcHeight();
-		if ((x >= cX && x <= (cX + cWidth)) && (y >= cY && y <= (cY + cHight))) {
-			return currentShapes.get(i);
-		}
-		return null;
+	return null;
 	}
 
 	@Override
 	void move(MouseEvent e, Shape selectedShape) {
-		int x = e.getX();
-		int y = e.getY();
-		int width = ((Ellipse) selectedShape).getcWidth();
-		int hight = ((Ellipse) selectedShape).getcHeight();
-		((Ellipse) selectedShape).setcX(x - (width / 2));
-		((Ellipse) selectedShape).setcY(y - (hight / 2));
+
 	}
 
 	@Override
 	void resize(MouseEvent e, Shape selectedShape) {
-		int x = e.getX();
-		int y = e.getY();
-		int cX = ((Ellipse) selectedShape).getcX();
-		int cY = ((Ellipse) selectedShape).getcY();
-		if (x >= cX && y >= cY) {
-			((Ellipse) selectedShape).setcWidth(x - cX);
-			((Ellipse) selectedShape).setcHeight(y - cY);
-		}
+
 	}
 
 	@Override
 	void draw(Graphics graphics) {
-
+		CalculateDimensions(start,end);
+		graphics.setColor(this.getColor());
+		graphics.drawOval(start.x, start.y, width, height);
 	}
 
 
