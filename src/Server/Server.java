@@ -104,6 +104,7 @@ public class Server {
 		    			break;
 		    		case JOIN_WB:
 		    			curWB = gson.fromJson(clientMessage.get("selectedWB"), int.class);
+		    			System.out.println(curWB);
 		    			// TODO if server has saved whiteboard, send to client
 		    			break;
 		    		case UPDATE:
@@ -158,10 +159,10 @@ public class Server {
 		String wbs = "";
 		for(ArrayList<JsonObject> wb: whiteboards) {
 			if(!wbs.equals("")) {
-				wbs = wbs + "," + "List";
+				wbs = wbs + "," + "Whiteboard " + whiteboards.indexOf(wb) + 1;
 			}
 			else {
-				wbs += "List";
+				wbs += "Whiteboard 1";
 			}
 		}
 		return wbs;

@@ -4,6 +4,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -41,7 +43,7 @@ public class Client {
 	    	Gson gson = new Gson();
 	    	
 	    	// Asks user to connect or start new whiteboard
-	    	Server.Message initM = ServerConnectOption(new JFrame()) == 0 ? Server.Message.NEW_WB : Server.Message.OPEN_WB;
+	    	Server.Message initM = ServerConnectOption() == 0 ? Server.Message.NEW_WB : Server.Message.OPEN_WB;
 	    	
 	    	initMessage.add("messageType", gson.toJsonTree(initM, Server.Message.class));
 	    	initMessage.addProperty("selectedWB", "0");
@@ -52,6 +54,8 @@ public class Client {
 	    	
 		    while(true)
 		    {
+		    	JsonObject reply = new JsonObject();
+		    	
 		    	if(input.available() > 0) {
 		    		JsonObject serverMessage = (JsonObject) parser.parse(input.readUTF());
 		    		Server.Message messageType = gson.fromJson(serverMessage.get("messageType"), Message.class);
@@ -59,9 +63,11 @@ public class Client {
 		    		switch (messageType) {
 		    		case OPEN_WB:
 		    			System.out.println("Whiteboards: " + serverMessage.get("whiteboards"));
-		    			// TODO popup with available whiteboards then return OPEN_WB with selected wb
-		    			//initMessage.add("messageType", gson.toJsonTree(Server.Message.JOIN_WB, Server.Message.class));
-		    	    	//initMessage.addProperty("selectedWB", <Chosen WB>);
+		    			// TODO popup with available whiteboards then send to server OPEN_WB with selected wb
+		    			int wbChoice = WhiteboardConnectOption(serverMessage.get("whiteboards").toString());
+		    			reply.add("messageType", gson.toJsonTree(Server.Message.JOIN_WB, Server.Message.class));
+		    	    	reply.addProperty("selectedWB", wbChoice);
+		    	    	output.writeUTF(gson.toJson(reply));
 		    			break;
 		    		case UPDATE:
 		    			JsonObject update = (JsonObject) serverMessage.get("update");
@@ -91,10 +97,16 @@ public class Client {
 		output.writeUTF(gson.toJson(updateMessage));
 	}
 	
-	public static int ServerConnectOption(JFrame f) {
+	private static int ServerConnectOption() {
 		String[] buttons = {"New WhiteBoard", "Connect To WhiteBoard"};
-		int conection = JOptionPane.showOptionDialog(f, "New or Existing Whiteboard", "What would you like to do", JOptionPane.WARNING_MESSAGE, 0, null, buttons, buttons[0]);
+		int conection = JOptionPane.showOptionDialog(null, "New or Existing Whiteboard", "What would you like to do", JOptionPane.WARNING_MESSAGE, 0, null, buttons, buttons[0]);
 		return conection;
+	}
+	
+	private static int WhiteboardConnectOption(String wbs) {
+		String[] wbsArr = wbs.split(",");
+		Object wbChoice = JOptionPane.showInputDialog(null, "Select a whiteboard", "Open Whiteboards", JOptionPane.QUESTION_MESSAGE, null, wbsArr, wbsArr[0]);
+		return Arrays.asList(wbsArr).indexOf(wbChoice);
 	}
 
 }
