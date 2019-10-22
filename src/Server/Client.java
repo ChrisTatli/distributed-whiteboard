@@ -42,8 +42,15 @@ public class Client {
 	    	JsonParser parser = new JsonParser();
 	    	Gson gson = new Gson();
 	    	
-	    	// TODO Asks user to enter username
-	    	// username = 
+	    	// Asks user to enter username
+	    	username = JOptionPane.showInputDialog("Enter your username");
+	    	if (username.equals("")) {
+	    		username = "defaultUser";
+	    	}
+	    	JsonObject usernameMessage = new JsonObject();
+	    	usernameMessage.add("messageType", gson.toJsonTree(Server.Message.USER, Server.Message.class));
+	    	usernameMessage.addProperty("user", username);
+	    	output.writeUTF(gson.toJson(usernameMessage));
 	    	
 	    	// Asks user to connect or start new whiteboard
 	    	JsonObject initMessage = initMessage(gson);
@@ -75,11 +82,24 @@ public class Client {
 		    			System.out.println("Update: " + update.toString());
 		    			break;
 		    		case CHAT:
-		    			String chatString = gson.fromJson(serverMessage.get("chat"), String.class);
-		    			System.out.println("Chat: " + chatString);
+		    			ChatMessage chatString = gson.fromJson(serverMessage.get("chat"), ChatMessage.class);
+		    			System.out.println(chatString);
 		    			break;
 		    		case REJECT:
-		    			
+		    			System.out.println("REJECTED CONNECTION");
+		    			reply = initMessage(gson);
+		    			output.writeUTF(gson.toJson(reply));
+		    			break;
+		    		case USER:
+		    			System.out.println(gson.fromJson(serverMessage.get("user"), String.class) + " ASKING FOR CONNECTION");
+		    			String[] buttons = {"Accept", "Decline"};
+		    			int userRequest = JOptionPane.showOptionDialog(null, gson.fromJson(serverMessage.get("user"), String.class) + " would like to join your Whiteboard", "User requesting access", JOptionPane.WARNING_MESSAGE, 0, null, buttons, buttons[0]);
+		    			if (userRequest == 0) {
+		    				sendChat(gson.fromJson(serverMessage.get("user"), String.class), output, gson, Server.Message.ACCEPT);
+		    			}
+		    			else {
+		    				sendChat(gson.fromJson(serverMessage.get("user"), String.class), output, gson, Server.Message.REJECT);
+		    			}
 		    		default:
 		    			break;
 		    		}	
@@ -113,14 +133,16 @@ public class Client {
 	
 	private static int WhiteboardConnectOption(String wbs) {
 		String[] wbsArr = wbs.split(",");
-		Object wbChoice = JOptionPane.showInputDialog(null, "Select a whiteboard", "Open Whiteboards", JOptionPane.QUESTION_MESSAGE, null, wbsArr, wbsArr[0]);
+		Object wbChoice = JOptionPane.showInputDialog(null, "Select a Whiteboard", "Open Whiteboards", JOptionPane.QUESTION_MESSAGE, null, wbsArr, wbsArr[0]);
 		return Arrays.asList(wbsArr).indexOf(wbChoice);
 	}
 	
-	private static void sendChat(String chat, DataOutputStream output, Gson gson) throws IOException {
+	private static void sendChat(String chat, DataOutputStream output, Gson gson, Server.Message flag) throws IOException {
 		JsonObject chatMessage = new JsonObject();
 		chatMessage.add("messageType", gson.toJsonTree(Server.Message.CHAT, Server.Message.class));
-		chatMessage.add("chat", gson.toJsonTree(new ChatMessage(username, chat), ChatMessage.class));
+		ChatMessage sendChat = new ChatMessage(username, chat);
+		sendChat.setFlag(flag);
+		chatMessage.add("chat", gson.toJsonTree(sendChat, ChatMessage.class));
 		output.writeUTF(gson.toJson(chatMessage));
 	}
 	
@@ -133,9 +155,16 @@ public class Client {
     	if (initM == Server.Message.NEW_WB) {
     		// TODO popup to ask for whiteboard name
     		initMessage.addProperty("manager", username);
-    		//initMessage.addProperty("whiteboardName", <Val from popup>);
+    		initMessage.addProperty("whiteboardName", JOptionPane.showInputDialog("Enter new Whiteboard name"));
     	}
     	return initMessage;
+	}
+	
+	private static void disconnect(Gson gson, DataOutputStream output) throws IOException {
+		JsonObject discMessage = new JsonObject();
+		discMessage.add("messageType", gson.toJsonTree(Server.Message.DISCONNECT, Server.Message.class));
+		discMessage.addProperty("user", username);		
+		output.writeUTF(gson.toJson(discMessage));
 	}
 
 }

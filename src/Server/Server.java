@@ -21,7 +21,7 @@ import com.google.gson.stream.JsonReader;
 public class Server {
 	
 	public enum Message {
-		NEW_WB, OPEN_WB, JOIN_WB, UPDATE, CHAT, REJECT
+		NEW_WB, OPEN_WB, JOIN_WB, UPDATE, CHAT, REJECT, DISCONNECT, USER, ACCEPT
 	}
 	
 	// Declare the port number
@@ -44,6 +44,7 @@ public class Server {
 		JsonObject testJson = new JsonObject();
 		testJson.addProperty("test", "testValue");
 		whiteboards.get(0).addEvent(testJson);
+		
 		whiteboardChats.add(new ArrayList<ChatMessage>());
 		whiteboardChats.get(0).add(new ChatMessage("testUser1", "Hello"));
 		whiteboardChats.get(0).add(new ChatMessage("testUser2", "Hi"));
@@ -87,6 +88,9 @@ public class Server {
 		    int curWB = -1; // Current whiteboard
 		    int curWBElement = 0; // Current whiteboard json element
 		    int curWBCElement = 0; // Current whiteboard chat message
+		    boolean isManager = false;
+		    String username = "";
+		    boolean connected = false;
 		    
 		    // Read input Json
 		    JsonParser parser = new JsonParser();
@@ -103,14 +107,37 @@ public class Server {
 		    		System.out.println("CLIENT: "+ messageType.toString());
 				    
 		    		switch(messageType) {
+		    		case USER:
+		    			username = gson.fromJson(clientMessage.get("user"), String.class);
+		    			break;
 		    		case OPEN_WB:
 		    			reply.add("messageType", gson.toJsonTree(Server.Message.OPEN_WB, Server.Message.class));
-				    	reply.addProperty("whiteboards", wbList());
+				    	reply.addProperty("whiteboards", listToString());
 				    	// Serialise the json and send to client
 				    	output.writeUTF(gson.toJson(reply));
 		    			break;
 		    		case JOIN_WB:
 		    			curWB = gson.fromJson(clientMessage.get("selectedWB"), int.class);
+		    			Whiteboard appliedWB = whiteboards.get(curWB);
+		    			if(!appliedWB.getManager().equals(gson.fromJson(clientMessage.get("user"), String.class))) {
+		    				// TODO send message to chat with join flag for manager to review
+		    				if (!appliedWB.getActiveUsers().contains(appliedWB.getManager())) {
+		    					reply.add("messageType", gson.toJsonTree(Server.Message.REJECT, Server.Message.class));
+		    					output.writeUTF(gson.toJson(reply));
+		    				}
+		    				else {
+		    					ArrayList<ChatMessage> openWBC = whiteboardChats.get(curWB);
+		    					ChatMessage applyMessage = new ChatMessage(username, username);
+		    					applyMessage.setFlag(Server.Message.JOIN_WB);
+			    				openWBC.add(applyMessage);
+			    				isManager = false;	
+		    				}
+		    			}
+		    			else {
+		    				isManager = true;
+		    				connected = true;
+			    			appliedWB.addActiveUser(gson.fromJson(clientMessage.get("user"), String.class));
+		    			}
 		    			System.out.println(curWB);
 		    			// TODO if server has saved whiteboard, send to client
 		    			// TODO check username, if it is the manager, open WB, else make popup on manager screen
@@ -122,14 +149,22 @@ public class Server {
 		    			break;
 		    		case NEW_WB:
 		    			System.out.println(whiteboards.size());
-		    			whiteboards.add(new Whiteboard(gson.fromJson(clientMessage.get("manager"), String.class), gson.fromJson(clientMessage.get("whiteboardName"), String.class)));
+		    			Whiteboard newWB = new Whiteboard(gson.fromJson(clientMessage.get("manager"), String.class), gson.fromJson(clientMessage.get("whiteboardName"), String.class));
+		    			newWB.addActiveUser(gson.fromJson(clientMessage.get("manager"), String.class));
+		    			whiteboards.add(newWB);
 		    			whiteboardChats.add(new ArrayList<ChatMessage>());
 		    			curWB = whiteboards.size() - 1;
 		    			System.out.println(whiteboards.size());
+		    			isManager = true;
+		    			connected = true;
 		    			break;
 		    		case CHAT:
 		    			ArrayList<ChatMessage> openWBC = whiteboardChats.get(curWB);
 		    			openWBC.add(gson.fromJson(clientMessage.get("chat"), ChatMessage.class));
+		    			break;
+		    		case DISCONNECT:
+		    			whiteboards.get(curWB).removeActiveUser(gson.fromJson(clientMessage.get("user"), String.class));
+		    			connected = false;
 		    			break;
 		    		default:
 		    			break;
@@ -140,7 +175,7 @@ public class Server {
 		    		// Checks for updates and sends to client
 			    	if(curWB >= 0) { // Has the client chosen a whiteboard
 			    		Whiteboard openWB = whiteboards.get(curWB); 
-			    		if (openWB.getEvents().size() > curWBElement) { // Are there new updates
+			    		if (openWB.getEvents().size() > curWBElement && connected) {// Are there new updates
 			    			reply.add("messageType", gson.toJsonTree(Server.Message.UPDATE, Server.Message.class));
 			    			reply.add("update", openWB.getEvents().get(curWBElement));
 			    			output.writeUTF(gson.toJson(reply));
@@ -148,10 +183,34 @@ public class Server {
 			    		}
 			    		else { // Checks for chat updates and sends to client
 				    		ArrayList<ChatMessage> openWBC = whiteboardChats.get(curWB); 
-				    		if (openWBC.size() > curWBCElement) { // Are there new chat messages
-				    			reply.add("messageType", gson.toJsonTree(Server.Message.CHAT, Server.Message.class));
-				    			reply.add("chat", gson.toJsonTree(openWBC.get(curWBCElement), ChatMessage.class));
-				    			output.writeUTF(gson.toJson(reply));
+				    		if (openWBC.size() > curWBCElement && connected) { // Are there new chat messages
+				    			if (openWBC.get(curWBCElement).getFlag() == Server.Message.CHAT) {
+					    			reply.add("messageType", gson.toJsonTree(Server.Message.CHAT, Server.Message.class));
+					    			reply.add("chat", gson.toJsonTree(openWBC.get(curWBCElement), ChatMessage.class));
+					    			output.writeUTF(gson.toJson(reply));	
+				    			}
+				    			else if (openWBC.get(curWBCElement).getFlag() == Server.Message.JOIN_WB){
+				    				if(isManager) {
+				    					// Popup asking if user can connect
+				    					reply.add("messageType", gson.toJsonTree(Server.Message.USER, Server.Message.class));
+				    					System.out.println(openWBC.get(curWBCElement).getUser());
+				    					reply.addProperty("user", openWBC.get(curWBCElement).getUser());
+				    					output.writeUTF(gson.toJson(reply));
+				    				}
+				    			}
+				    			else if (openWBC.get(curWBCElement).getFlag() == Server.Message.REJECT) {
+				    				if(openWBC.get(curWBCElement).getMessage().equals(username)) {
+				    					reply.add("messageType", gson.toJsonTree(Server.Message.REJECT, Server.Message.class));
+				    					output.writeUTF(gson.toJson(reply));
+				    				}
+				    			}
+				    			else if (openWBC.get(curWBCElement).getFlag() == Server.Message.ACCEPT) {
+				    				if(openWBC.get(curWBCElement).getMessage().equals(username)) {
+				    					connected = true;
+				    					whiteboards.get(curWB).addActiveUser(username);
+				    					System.out.println("USER ACCEPTED");
+				    				}
+				    			}
 				    			curWBCElement++;
 				    		}
 				    	}
@@ -229,18 +288,18 @@ public class Server {
 		}
 	}*/
 	
-	/*private static String listToString (ArrayList<String> arlist) {
-		String strList = "";
-		for (String s : arlist) {
-			if(!strList.equals("")) {
-				strList = strList + "," + s;
+	private static String listToString() {
+		String wbList = "";
+		for (Whiteboard wb : whiteboards) {
+			if(!wbList.equals("")) {
+				wbList = wbList + "," + wb.getWBName();
 			}
 			else {
-				strList += s;
+				wbList += wb.getWBName();
 			}
 		}
-		return strList;
-	}*/
+		return wbList;
+	}
 	
 	private static String wbList() {
 		String wbs = "";
