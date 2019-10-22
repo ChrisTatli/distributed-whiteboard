@@ -72,6 +72,9 @@ public class Client {
 		    		case UPDATE:
 		    			JsonObject update = (JsonObject) serverMessage.get("update");
 		    			System.out.println("Update: " + update.toString());
+		    		case CHAT:
+		    			String chatString = gson.fromJson(serverMessage.get("chat"), String.class);
+		    			System.out.println(chatString);
 		    		default:
 		    			break;
 		    		}	
@@ -107,6 +110,12 @@ public class Client {
 		String[] wbsArr = wbs.split(",");
 		Object wbChoice = JOptionPane.showInputDialog(null, "Select a whiteboard", "Open Whiteboards", JOptionPane.QUESTION_MESSAGE, null, wbsArr, wbsArr[0]);
 		return Arrays.asList(wbsArr).indexOf(wbChoice);
+	}
+	
+	private static void sendChat(String chat, DataOutputStream output, Gson gson) throws IOException {
+		JsonObject chatMessage = new JsonObject();
+		chatMessage.add("messageType", gson.toJsonTree(Server.Message.CHAT, Server.Message.class));
+		output.writeUTF(gson.toJson(chatMessage));
 	}
 
 }

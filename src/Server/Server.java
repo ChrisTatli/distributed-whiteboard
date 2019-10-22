@@ -21,7 +21,7 @@ import com.google.gson.stream.JsonReader;
 public class Server {
 	
 	public enum Message {
-		NEW_WB, OPEN_WB, JOIN_WB, UPDATE
+		NEW_WB, OPEN_WB, JOIN_WB, UPDATE, CHAT
 	}
 	
 	// Declare the port number
@@ -32,15 +32,21 @@ public class Server {
 	
 	// List of whiteboards
 	static ArrayList<ArrayList<JsonObject>> whiteboards = new ArrayList<ArrayList<JsonObject>>();
+	
+	// List of whiteboard chats
+	static ArrayList<ArrayList<String>> whiteboardChats = new ArrayList<ArrayList<String>>();
 
 	public static void main(String[] args)
 	{
 		
-		// TESTING
+		// TESTING TODO
 		whiteboards.add(new ArrayList<JsonObject> ());
 		JsonObject testJson = new JsonObject();
 		testJson.addProperty("test", "testValue");
 		whiteboards.get(0).add(testJson);
+		whiteboardChats.add(new ArrayList<String>());
+		whiteboardChats.get(0).add("Hello");
+		whiteboardChats.get(0).add("Hi");
 		
 		
 		ServerSocketFactory factory = ServerSocketFactory.getDefault();
@@ -58,6 +64,8 @@ public class Server {
 							
 				// Start a new thread for a connection
 				Thread t = new Thread(() -> serveClient(client));
+				t.start();
+				t = new Thread(() -> serveClientChat(client));
 				t.start();
 			}
 			
@@ -141,6 +149,68 @@ public class Server {
 			e.printStackTrace();
 		}
 	}
+	
+	/*private static void serveClientChat(Socket client)
+	{
+		try(Socket clientSocket = client)
+		{
+			// Input stream
+			DataInputStream input = new DataInputStream(clientSocket.getInputStream());
+			// Output Stream
+		    DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());
+		    
+		    int curWB = -1;
+		    int curWBCElement = 0;
+		    
+		    // Read input Json
+		    JsonParser parser = new JsonParser();
+		    Gson gson = new Gson();
+		    
+		    while(true)
+		    {
+		    	JsonObject reply = new JsonObject();
+		    	
+		    	if (input.available() > 0) {
+		    		JsonObject clientMessage = (JsonObject) parser.parse(input.readUTF());
+		    		//String messageType = clientMessage.get("messageType").toString();
+		    		Message messageType = gson.fromJson(clientMessage.get("messageType"), Message.class);
+		    		System.out.println("CLIENT: "+ messageType.toString());
+				    
+		    		switch(messageType) {
+		    		case JOIN_WB:
+		    			curWB = gson.fromJson(clientMessage.get("selectedWB"), int.class);
+		    			System.out.println(curWB);
+		    			// TODO if server has saved whiteboard, send to client
+		    			break;
+		    		case CHAT:
+		    			ArrayList<String> openWBC = whiteboardChats.get(curWB);
+		    			openWBC.add(gson.fromJson(clientMessage.get("chat"), String.class));
+		    		default:
+		    			break;
+		    		}
+		    		
+		    	}
+		    	else {
+		    		// Checks for chat updates and sends to client
+			    	if(curWB >= 0) { // Has the client chosen a whiteboard
+			    		ArrayList<String> openWBC = whiteboardChats.get(curWB); 
+			    		if (openWBC.size() > curWBCElement) { // Are there new chat messages
+			    			reply.add("messageType", gson.toJsonTree(Server.Message.CHAT, Server.Message.class));
+			    			reply.addProperty("chat", openWBC.get(curWBCElement));
+			    			output.writeUTF(gson.toJson(reply));
+			    			curWBCElement++;
+			    		}
+			    	}
+		    	}
+		    	
+		    }
+		    
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}*/
 	
 	/*private static String listToString (ArrayList<String> arlist) {
 		String strList = "";
