@@ -6,5 +6,6 @@ public enum DrawType {
     FREE,
     LINE,
     RECT,
-    SQUARE
+    SQUARE,
+    TEXT
 }

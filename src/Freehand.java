@@ -31,9 +31,9 @@ public class Freehand extends Shape   {
 
 	@Override
 	void draw(Graphics graphics) {
-		for (int i = 1; i < pointList.size(); i++) {
-			Point first = pointList.get(i-1);
-			Point second = pointList.get(i);
+		for (int i = 0; i < pointList.size()-1; i++) {
+			Point first = pointList.get(i);
+			Point second = pointList.get(i+1);
 			graphics.drawLine(first.x,first.y, second.x, second.y );
 		}
 	}

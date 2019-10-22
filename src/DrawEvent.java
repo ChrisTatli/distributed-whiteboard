@@ -12,6 +12,7 @@ public class DrawEvent {
     public ArrayList<Point> points;
     public DrawType drawType;
     public Color color;
+    public String text;
 
     public DrawEvent(EventType eventType){
         this.eventType = eventType;

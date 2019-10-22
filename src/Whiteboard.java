@@ -1,17 +1,21 @@
 import Enums.DrawType;
+import Enums.EventType;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
 
 
 @SuppressWarnings("serial")
-public class Whiteboard extends JPanel implements ActionListener  {
+public class Whiteboard extends JPanel implements ActionListener {
 	final JFrame frame;
 	private Mouse mouse;
+	private KeyBoard keyBoard;
 	public DrawEventHandler handler;
 
 	private ArrayList<Shape> shapes = new ArrayList<>();
@@ -36,6 +40,8 @@ public class Whiteboard extends JPanel implements ActionListener  {
 		eventNumber = 0;
 		drawEvents = new ArrayList<>();
 		mouse = new Mouse(drawType, this);
+		keyBoard = new KeyBoard(drawType, this);
+		addKeyListener(keyBoard);
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
 	}
@@ -83,6 +89,11 @@ public class Whiteboard extends JPanel implements ActionListener  {
 		group.add(freeHandMenuItem);
 		shapeMenu.add(freeHandMenuItem);
 
+		JRadioButtonMenuItem textMenuItem = new JRadioButtonMenuItem("Text");
+		textMenuItem.setActionCommand("Text");
+		textMenuItem.addActionListener(this);
+		group.add(textMenuItem);
+		shapeMenu.add(textMenuItem);
 
 		JRadioButtonMenuItem lineMenuItem = new JRadioButtonMenuItem("Line");
 		lineMenuItem.setActionCommand("Line");
@@ -149,6 +160,10 @@ public class Whiteboard extends JPanel implements ActionListener  {
 			case "Free":
 				drawType = DrawType.FREE;
 				mouse.setDrawType(DrawType.FREE);
+				break;
+			case "Text":
+				drawType = DrawType.TEXT;
+				keyBoard.setDrawType(DrawType.TEXT);
 				break;
 			case "Line":
 				drawType = DrawType.LINE;

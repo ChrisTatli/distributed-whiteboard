@@ -67,7 +67,10 @@ public class DrawEventHandler implements Runnable{
                 }
                 whiteboard.frame.repaint();
                 break;
-
+            case KEYSTROKE:
+                Text text = new Text(event.start,event.text, event.color);
+                text.draw(whiteboard.getGraphics());
+                break;
         }
     }
 

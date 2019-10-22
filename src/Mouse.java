@@ -3,6 +3,9 @@ import Enums.EventType;
 
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -14,6 +17,7 @@ public class Mouse extends MouseInputAdapter {
     private DrawType type;
     private Whiteboard whiteboard;
     private Color color;
+    private String text;
 
     Mouse(DrawType type, Whiteboard whiteboard){
         this.type = type;
@@ -70,6 +74,7 @@ public class Mouse extends MouseInputAdapter {
 
         whiteboard.addDrawEvent(drawEvent);
     }
+
 
 
 }
