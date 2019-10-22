@@ -214,33 +214,26 @@ public class Whiteboard extends JPanel implements ActionListener {
 	}
 
 	public void writeWhiteboard(){
-		GsonBuilder gson = new GsonBuilder();
-		gson.registerTypeAdapter(Shape.class, new ShapeClassAdapter());
+
 
 		JFileChooser jfc = new JFileChooser();
 		int retVal = jfc.showSaveDialog(this);
 		if(retVal == JFileChooser.APPROVE_OPTION){
-			BufferedWriter out = null;
+
 			try{
-				FileWriter fStream = new FileWriter(jfc.getSelectedFile(), false);
-				String output = gson.create().toJson(shapes);
-				out = new BufferedWriter(fStream);
-				out.write(output);
+				FileOutputStream fStream = new FileOutputStream(jfc.getSelectedFile(), false);
+				ObjectOutputStream output = new ObjectOutputStream(fStream);
+				output.writeObject(shapes);
+				output.close();
 			} catch (IOException e){
 				e.printStackTrace();
-			} finally {
-				try {
-					out.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 			}
 		}
 	}
 
 	public void readWhiteboard(){
-		GsonBuilder gson = new GsonBuilder();
-		gson.registerTypeAdapter(Shape.class, new ShapeClassAdapter());
+		Gson gson = new Gson();
+
 
 		JFileChooser jfc = new JFileChooser();
 		int retval = jfc.showOpenDialog(this);
@@ -248,10 +241,17 @@ public class Whiteboard extends JPanel implements ActionListener {
 			File file = jfc.getSelectedFile();
 			try {
 
-				FileReader in = new FileReader(file);
-				Type type = new TypeToken<ArrayList<Shapes.Shape>>() {}.getType();
-				shapes = gson.create().fromJson(in, (Type) Shape[].class);
+				FileInputStream inStream = new FileInputStream(file);
+				ObjectInputStream input = new ObjectInputStream(inStream);
+				Object object = input.readObject();
+
+
+				shapes = (ArrayList<Shape>) object;
 			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
