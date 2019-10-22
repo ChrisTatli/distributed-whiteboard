@@ -1,4 +1,5 @@
 import Enums.DrawType;
+import Enums.EventType;
 import Shapes.Shape;
 
 import java.awt.*;
@@ -18,20 +19,36 @@ public class Whiteboard extends JPanel implements ActionListener {
 	private Mouse mouse;
 	private KeyBoard keyBoard;
 	public DrawEventHandler handler;
+	public ManagementEventHandler mhandler;
 
 	private ArrayList<Shapes.Shape> shapes = new ArrayList<>();
 	private DrawType drawType = DrawType.FREE;
 	private Color color;
 	public ArrayList<DrawEvent> drawEvents;
+	public ArrayList<ManagementEvent> managementEvents;
 	private int eventNumber;
+	private int meventNumber;
 
 	public synchronized ArrayList getDrawEvents(int from){
 		return new ArrayList(drawEvents.subList(from, drawEvents.size()));
 	}
 
+	public synchronized ArrayList getManagementEvents(int from){
+		return new ArrayList(managementEvents.subList(from, managementEvents.size()));
+	}
+
 	public synchronized void addDrawEvent(DrawEvent event){
 		event.Id = eventNumber++;
 		drawEvents.add(event);
+	}
+
+	public synchronized void addManagementEvent(ManagementEvent event){
+		event.Id = meventNumber++;
+		managementEvents.add(event);
+	}
+
+	public synchronized void clear(){
+		shapes.clear();
 	}
 
 
@@ -40,6 +57,7 @@ public class Whiteboard extends JPanel implements ActionListener {
 		BuildMenu();
 		eventNumber = 0;
 		drawEvents = new ArrayList<>();
+		managementEvents = new ArrayList<>();
 		mouse = new Mouse(drawType, this);
 		keyBoard = new KeyBoard(drawType, this);
 		addKeyListener(keyBoard);
@@ -64,6 +82,12 @@ public class Whiteboard extends JPanel implements ActionListener {
 		//FILE MENU
 		JMenu fileMenu = new JMenu("File");
 
+		JMenuItem newBoard = new JMenuItem("New");
+		newBoard.setActionCommand("New");
+		newBoard.addActionListener(this);
+		fileMenu.add(newBoard);
+		fileMenu.addSeparator();
+
 		JMenuItem load = new JMenuItem("Load");
 		load.setActionCommand("Load");
 		load.addActionListener(this);
@@ -77,66 +101,56 @@ public class Whiteboard extends JPanel implements ActionListener {
 		fileMenu.add(save);
 
 		menuBar.add(fileMenu);
+		
+
+		//Shapes
+		JButton freeHand = new JButton(new ImageIcon("Assets/pointer.png"));
+		freeHand.setActionCommand("Free");
+		freeHand.addActionListener(this);
+		menuBar.add(freeHand);
+
+		JButton eraser = new JButton(new ImageIcon("Assets/erase.png"));
+		eraser.setActionCommand("Erase");
+		eraser.addActionListener(this);
+		menuBar.add(eraser);
+
+		JButton line = new JButton(new ImageIcon("Assets/line.png"));
+		line.setActionCommand("Line");
+		line.addActionListener(this);
+		menuBar.add(line);
+
+		JButton rectangle = new JButton(new ImageIcon("Assets/rectangle.png"));
+		rectangle.setActionCommand("Rectangle");
+		rectangle.addActionListener(this);
+		menuBar.add(rectangle);
+
+		JButton square = new JButton(new ImageIcon("Assets/square.png"));
+		square.setActionCommand("Square");
+		square.addActionListener(this);
+		menuBar.add(square);
+
+		JButton circle = new JButton(new ImageIcon("Assets/circle.png"));
+		circle.setActionCommand("Circle");
+		circle.addActionListener(this);
+		menuBar.add(circle);
+
+		JButton ellipse = new JButton(new ImageIcon("Assets/ellipse.png"));
+		ellipse.setActionCommand("Ellipse");
+		ellipse.addActionListener(this);
+		menuBar.add(ellipse);
+
+		JButton text = new JButton(new ImageIcon("Assets/text.png"));
+		text.setActionCommand("Text");
+		text.addActionListener(this);
+		menuBar.add(text);
 
 
-		//SHAPE MENU
-		JMenu shapeMenu = new JMenu("Shapes");
-		ButtonGroup group = new ButtonGroup();
-
-		JRadioButtonMenuItem freeHandMenuItem = new JRadioButtonMenuItem("Free Hand");
-		freeHandMenuItem.setActionCommand("Free");
-		freeHandMenuItem.addActionListener(this);
-		freeHandMenuItem.setSelected(true);
-		group.add(freeHandMenuItem);
-		shapeMenu.add(freeHandMenuItem);
-
-		JRadioButtonMenuItem textMenuItem = new JRadioButtonMenuItem("Text");
-		textMenuItem.setActionCommand("SText");
-		textMenuItem.addActionListener(this);
-		group.add(textMenuItem);
-		shapeMenu.add(textMenuItem);
-
-		JRadioButtonMenuItem lineMenuItem = new JRadioButtonMenuItem("Line");
-		lineMenuItem.setActionCommand("Line");
-		lineMenuItem.addActionListener(this);
-		group.add(lineMenuItem);
-		shapeMenu.add(lineMenuItem);
-
-		JRadioButtonMenuItem rectMenuItem = new JRadioButtonMenuItem("Rectangle");
-		rectMenuItem.setActionCommand("Rectangle");
-		rectMenuItem.addActionListener(this);
-		group.add(rectMenuItem);
-		shapeMenu.add(rectMenuItem);
-
-		JRadioButtonMenuItem squareMenuItem = new JRadioButtonMenuItem("Square");
-		squareMenuItem.setActionCommand("Square");
-		squareMenuItem.addActionListener(this);
-		group.add(squareMenuItem);
-		shapeMenu.add(squareMenuItem);
-
-		JRadioButtonMenuItem circleMenuItem = new JRadioButtonMenuItem("Circle");
-		circleMenuItem.setActionCommand("Circle");
-		circleMenuItem.addActionListener(this);
-		group.add(circleMenuItem);
-		shapeMenu.add(circleMenuItem);
 
 
-		JRadioButtonMenuItem ellipseMenuItem = new JRadioButtonMenuItem("Ellipse");
-		ellipseMenuItem.setActionCommand("Ellipse");
-		ellipseMenuItem.addActionListener(this);
-		group.add(ellipseMenuItem);
-		shapeMenu.add(ellipseMenuItem);
 
-		JRadioButtonMenuItem eraseMenuItem = new JRadioButtonMenuItem("Erase");
-		eraseMenuItem.setActionCommand("Erase");
-		eraseMenuItem.addActionListener(this);
-		group.add(eraseMenuItem);
-		shapeMenu.add(eraseMenuItem);
 
-		menuBar.add(shapeMenu);
-
-		//Colors
-		JButton colorMenu = new JButton("Color");
+		//colors
+		JButton colorMenu = new JButton(new ImageIcon("Assets/rgb.png"));
 		colorMenu.setActionCommand("Color");
 		colorMenu.addActionListener(this);
 
@@ -197,6 +211,10 @@ public class Whiteboard extends JPanel implements ActionListener {
 	private void saveWhiteboard(){
 
 	}
+	private void newWhiteboard(){
+		ManagementEvent event = new ManagementEvent(EventType.NEW);
+		this.addManagementEvent(event);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -207,6 +225,9 @@ public class Whiteboard extends JPanel implements ActionListener {
 				break;
 			case "Save":
 				saveWhiteboard();
+				break;
+			case "New":
+				newWhiteboard();
 				break;
 			case "Free":
 				drawType = DrawType.FREE;

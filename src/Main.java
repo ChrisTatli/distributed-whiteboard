@@ -27,6 +27,8 @@ public class Main {
         frame.setVisible(true);
         DrawEventHandler drawEventHandler = new DrawEventHandler(whiteboard);
         whiteboard.handler = drawEventHandler;
+        ManagementEventHandler managementEventHandler = new ManagementEventHandler(whiteboard);
+        whiteboard.mhandler = managementEventHandler;
 
         frame.addWindowFocusListener(new WindowAdapter() {
             public void windowGainedFocus(WindowEvent e) {
@@ -34,7 +36,8 @@ public class Main {
             }
         });
 
-        new Thread(drawEventHandler).start( );
+        new Thread(drawEventHandler).start();
+        new Thread(managementEventHandler).start();
     }
 
     public static void main(String[] args){
