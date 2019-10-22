@@ -183,8 +183,8 @@ public class Server {
 			    		}
 			    		else { // Checks for chat updates and sends to client
 				    		ArrayList<ChatMessage> openWBC = whiteboardChats.get(curWB); 
-				    		if (openWBC.size() > curWBCElement && connected) { // Are there new chat messages
-				    			if (openWBC.get(curWBCElement).getFlag() == Server.Message.CHAT) {
+				    		if (openWBC.size() > curWBCElement) { // Are there new chat messages
+				    			if (openWBC.get(curWBCElement).getFlag() == Server.Message.CHAT && connected) {
 					    			reply.add("messageType", gson.toJsonTree(Server.Message.CHAT, Server.Message.class));
 					    			reply.add("chat", gson.toJsonTree(openWBC.get(curWBCElement), ChatMessage.class));
 					    			output.writeUTF(gson.toJson(reply));	
@@ -199,6 +199,8 @@ public class Server {
 				    				}
 				    			}
 				    			else if (openWBC.get(curWBCElement).getFlag() == Server.Message.REJECT) {
+				    				System.out.println("REJECT RECIEVED");
+				    				System.out.println(username + ":" + openWBC.get(curWBCElement).getMessage());
 				    				if(openWBC.get(curWBCElement).getMessage().equals(username)) {
 				    					reply.add("messageType", gson.toJsonTree(Server.Message.REJECT, Server.Message.class));
 				    					output.writeUTF(gson.toJson(reply));
