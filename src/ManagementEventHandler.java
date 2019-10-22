@@ -13,6 +13,17 @@ public class ManagementEventHandler implements Runnable{
             case NEW:
                 whiteboard.clear();
                 whiteboard.frame.repaint();
+                break;
+            case SAVE:
+                whiteboard.writeWhiteboard();
+                break;
+            case LOAD:
+                whiteboard.clear();
+                whiteboard.readWhiteboard();
+                whiteboard.frame.repaint();
+                break;
+
+
         }
     }
 

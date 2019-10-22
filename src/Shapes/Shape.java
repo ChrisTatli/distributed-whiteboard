@@ -6,39 +6,26 @@ import java.util.ArrayList;
 
 public abstract class Shape {
 
-	private Color color;
+	private int color;
 	private int strokeWidth;
-	protected boolean isFilled;
 
 
 	public Shape(Color color, int strokeWidth) {
-		this.color = color;
+		this.color = color.getRGB();
 		this.strokeWidth = strokeWidth;
-		isFilled = true;
+
 	}
 
 	public Shape(Color color) {
-		this.color = color;
+		this.color = color.getRGB();
 		this.strokeWidth = strokeWidth;
-		isFilled = true;
-	}
-
-	public Shape(){
 
 	}
+	
 
-
-
-	public boolean isFilled() {
-		return isFilled;
-	}
-
-	public void setFilled(boolean isFilled) {
-		this.isFilled = isFilled;
-	}
 
 	public Color getColor() {
-		return color;
+		return new Color(color);
 	}
 	public Stroke getStrokeWidth(){return new BasicStroke(strokeWidth);}
 

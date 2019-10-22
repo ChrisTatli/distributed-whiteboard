@@ -7,5 +7,6 @@ public enum EventType {
     KEYSTROKE,
     PRESSED,
     NEW,
-
+    SAVE,
+    LOAD
 }

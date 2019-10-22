@@ -1,10 +1,15 @@
 import Enums.DrawType;
 import Enums.EventType;
 import Shapes.Shape;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -23,7 +28,7 @@ public class Whiteboard extends JPanel implements ActionListener {
 
 	private ArrayList<Shapes.Shape> shapes = new ArrayList<>();
 	private DrawType drawType = DrawType.FREE;
-	private Color color;
+
 	public ArrayList<DrawEvent> drawEvents;
 	public ArrayList<ManagementEvent> managementEvents;
 	private int eventNumber;
@@ -59,6 +64,7 @@ public class Whiteboard extends JPanel implements ActionListener {
 		drawEvents = new ArrayList<>();
 		managementEvents = new ArrayList<>();
 		mouse = new Mouse(drawType, this);
+		mouse.setColor(Color.BLACK);
 		keyBoard = new KeyBoard(drawType, this);
 		addKeyListener(keyBoard);
 		addMouseListener(mouse);
@@ -203,11 +209,58 @@ public class Whiteboard extends JPanel implements ActionListener {
 
 
 	private void loadWhiteboard(){
+		ManagementEvent event = new ManagementEvent(EventType.LOAD);
+		this.addManagementEvent(event);
+	}
+
+	public void writeWhiteboard(){
+		GsonBuilder gson = new GsonBuilder();
+		gson.registerTypeAdapter(Shape.class, new ShapeClassAdapter());
+
+		JFileChooser jfc = new JFileChooser();
+		int retVal = jfc.showSaveDialog(this);
+		if(retVal == JFileChooser.APPROVE_OPTION){
+			BufferedWriter out = null;
+			try{
+				FileWriter fStream = new FileWriter(jfc.getSelectedFile(), false);
+				String output = gson.create().toJson(shapes);
+				out = new BufferedWriter(fStream);
+				out.write(output);
+			} catch (IOException e){
+				e.printStackTrace();
+			} finally {
+				try {
+					out.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public void readWhiteboard(){
+		GsonBuilder gson = new GsonBuilder();
+		gson.registerTypeAdapter(Shape.class, new ShapeClassAdapter());
+
+		JFileChooser jfc = new JFileChooser();
+		int retval = jfc.showOpenDialog(this);
+		if(retval == JFileChooser.APPROVE_OPTION){
+			File file = jfc.getSelectedFile();
+			try {
+
+				FileReader in = new FileReader(file);
+				Type type = new TypeToken<ArrayList<Shapes.Shape>>() {}.getType();
+				shapes = gson.create().fromJson(in, (Type) Shape[].class);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
 
 	}
 
 	private void saveWhiteboard(){
-
+		ManagementEvent event = new ManagementEvent(EventType.SAVE);
+		this.addManagementEvent(event);
 	}
 	private void newWhiteboard(){
 		ManagementEvent event = new ManagementEvent(EventType.NEW);
@@ -257,7 +310,7 @@ public class Whiteboard extends JPanel implements ActionListener {
 				mouse.setDrawType(DrawType.ELLIPSE);
 				break;
 			case "Color":
-				color = JColorChooser.showDialog(this, "Select Color", color);
+				Color color = JColorChooser.showDialog(this, "Select Color", null);
 				mouse.setColor(color);
 				break;
 			case "Erase":
