@@ -27,6 +27,8 @@ public class Client {
 	private static String ip = "localhost";
 	private static int port = 3005;
 	
+	private static String username;
+	
 	public static void main(String[] args) 
 	{
 	
@@ -41,6 +43,9 @@ public class Client {
 	    	
 	    	JsonParser parser = new JsonParser();
 	    	Gson gson = new Gson();
+	    	
+	    	// TODO Asks user to enter username
+	    	// username = 
 	    	
 	    	// Asks user to connect or start new whiteboard
 	    	Server.Message initM = ServerConnectOption() == 0 ? Server.Message.NEW_WB : Server.Message.OPEN_WB;
