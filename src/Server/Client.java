@@ -38,8 +38,6 @@ public class Client {
 			DataInputStream input = new DataInputStream(socket.getInputStream());
 			
 		    DataOutputStream output = new DataOutputStream(socket.getOutputStream());
-		    
-		    JsonObject initMessage = new JsonObject();
 	    	
 	    	JsonParser parser = new JsonParser();
 	    	Gson gson = new Gson();
@@ -48,10 +46,7 @@ public class Client {
 	    	// username = 
 	    	
 	    	// Asks user to connect or start new whiteboard
-	    	Server.Message initM = ServerConnectOption() == 0 ? Server.Message.NEW_WB : Server.Message.OPEN_WB;
-	    	
-	    	initMessage.add("messageType", gson.toJsonTree(initM, Server.Message.class));
-	    	initMessage.addProperty("selectedWB", "0");
+	    	JsonObject initMessage = initMessage(gson);
 	    	
 	    	output.writeUTF(gson.toJson(initMessage));
 	    	System.out.println("Sent json");
@@ -72,6 +67,7 @@ public class Client {
 		    			int wbChoice = WhiteboardConnectOption(gson.fromJson(serverMessage.get("whiteboards"), String.class));
 		    			reply.add("messageType", gson.toJsonTree(Server.Message.JOIN_WB, Server.Message.class));
 		    	    	reply.addProperty("selectedWB", wbChoice);
+		    	    	reply.addProperty("user", username);
 		    	    	output.writeUTF(gson.toJson(reply));
 		    			break;
 		    		case UPDATE:
@@ -82,6 +78,8 @@ public class Client {
 		    			String chatString = gson.fromJson(serverMessage.get("chat"), String.class);
 		    			System.out.println("Chat: " + chatString);
 		    			break;
+		    		case REJECT:
+		    			
 		    		default:
 		    			break;
 		    		}	
@@ -123,6 +121,20 @@ public class Client {
 		JsonObject chatMessage = new JsonObject();
 		chatMessage.add("messageType", gson.toJsonTree(Server.Message.CHAT, Server.Message.class));
 		output.writeUTF(gson.toJson(chatMessage));
+	}
+	
+	private static JsonObject initMessage(Gson gson) {
+		
+		JsonObject initMessage = new JsonObject();
+		
+		Server.Message initM = ServerConnectOption() == 0 ? Server.Message.NEW_WB : Server.Message.OPEN_WB;
+    	initMessage.add("messageType", gson.toJsonTree(initM, Server.Message.class));
+    	if (initM == Server.Message.NEW_WB) {
+    		// TODO popup to ask for whiteboard name
+    		initMessage.addProperty("manager", username);
+    		//initMessage.addProperty("whiteboardName", <Val from popup>);
+    	}
+    	return initMessage;
 	}
 
 }

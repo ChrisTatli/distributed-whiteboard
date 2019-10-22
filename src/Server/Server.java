@@ -21,7 +21,7 @@ import com.google.gson.stream.JsonReader;
 public class Server {
 	
 	public enum Message {
-		NEW_WB, OPEN_WB, JOIN_WB, UPDATE, CHAT
+		NEW_WB, OPEN_WB, JOIN_WB, UPDATE, CHAT, REJECT
 	}
 	
 	// Declare the port number
@@ -31,7 +31,7 @@ public class Server {
 	private static int counter = 0;
 	
 	// List of whiteboards
-	static ArrayList<ArrayList<JsonObject>> whiteboards = new ArrayList<ArrayList<JsonObject>>();
+	static ArrayList<Whiteboard> whiteboards = new ArrayList<Whiteboard>();
 	
 	// List of whiteboard chats
 	static ArrayList<ArrayList<String>> whiteboardChats = new ArrayList<ArrayList<String>>();
@@ -40,10 +40,10 @@ public class Server {
 	{
 		
 		// TESTING TODO
-		whiteboards.add(new ArrayList<JsonObject> ());
+		whiteboards.add(new Whiteboard("manager1", "whiteboard1"));
 		JsonObject testJson = new JsonObject();
 		testJson.addProperty("test", "testValue");
-		whiteboards.get(0).add(testJson);
+		whiteboards.get(0).addEvent(testJson);
 		whiteboardChats.add(new ArrayList<String>());
 		whiteboardChats.get(0).add("Hello");
 		whiteboardChats.get(0).add("Hi");
@@ -113,14 +113,16 @@ public class Server {
 		    			curWB = gson.fromJson(clientMessage.get("selectedWB"), int.class);
 		    			System.out.println(curWB);
 		    			// TODO if server has saved whiteboard, send to client
+		    			// TODO check username, if it is the manager, open WB, else make popup on manager screen
+		    			// to ask to join or decline
 		    			break;
 		    		case UPDATE:
-		    			ArrayList<JsonObject> openWB = whiteboards.get(curWB);
-		    			openWB.add((JsonObject) clientMessage.get("update"));
+		    			Whiteboard openWB = whiteboards.get(curWB);
+		    			openWB.addEvent((JsonObject) clientMessage.get("update"));
 		    			break;
 		    		case NEW_WB:
 		    			System.out.println(whiteboards.size());
-		    			whiteboards.add(new ArrayList<JsonObject>());
+		    			whiteboards.add(new Whiteboard(gson.fromJson(clientMessage.get("manager"), String.class), gson.fromJson(clientMessage.get("whiteboardName"), String.class)));
 		    			whiteboardChats.add(new ArrayList<String> ());
 		    			curWB = whiteboards.size() - 1;
 		    			System.out.println(whiteboards.size());
