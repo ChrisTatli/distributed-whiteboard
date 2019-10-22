@@ -101,7 +101,7 @@ public class Whiteboard extends JPanel implements ActionListener {
 		fileMenu.add(save);
 
 		menuBar.add(fileMenu);
-		
+
 
 		//Shapes
 		JButton freeHand = new JButton(new ImageIcon("Assets/pointer.png"));
@@ -119,15 +119,17 @@ public class Whiteboard extends JPanel implements ActionListener {
 		line.addActionListener(this);
 		menuBar.add(line);
 
-		JButton rectangle = new JButton(new ImageIcon("Assets/rectangle.png"));
-		rectangle.setActionCommand("Rectangle");
-		rectangle.addActionListener(this);
-		menuBar.add(rectangle);
+
 
 		JButton square = new JButton(new ImageIcon("Assets/square.png"));
 		square.setActionCommand("Square");
 		square.addActionListener(this);
 		menuBar.add(square);
+
+		JButton rectangle = new JButton(new ImageIcon("Assets/rectangle.png"));
+		rectangle.setActionCommand("Rectangle");
+		rectangle.addActionListener(this);
+		menuBar.add(rectangle);
 
 		JButton circle = new JButton(new ImageIcon("Assets/circle.png"));
 		circle.setActionCommand("Circle");
@@ -195,10 +197,6 @@ public class Whiteboard extends JPanel implements ActionListener {
 			}
 		});
 		menuBar.add(eraserSlider);
-
-
-
-
 
 		frame.setJMenuBar(menuBar);
 	}
