@@ -120,6 +120,7 @@ public class Client {
 	private static void sendChat(String chat, DataOutputStream output, Gson gson) throws IOException {
 		JsonObject chatMessage = new JsonObject();
 		chatMessage.add("messageType", gson.toJsonTree(Server.Message.CHAT, Server.Message.class));
+		chatMessage.add("chat", gson.toJsonTree(new ChatMessage(username, chat), ChatMessage.class));
 		output.writeUTF(gson.toJson(chatMessage));
 	}
 	

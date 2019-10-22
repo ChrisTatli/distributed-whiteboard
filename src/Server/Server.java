@@ -34,7 +34,7 @@ public class Server {
 	static ArrayList<Whiteboard> whiteboards = new ArrayList<Whiteboard>();
 	
 	// List of whiteboard chats
-	static ArrayList<ArrayList<String>> whiteboardChats = new ArrayList<ArrayList<String>>();
+	static ArrayList<ArrayList<ChatMessage>> whiteboardChats = new ArrayList<ArrayList<ChatMessage>>();
 
 	public static void main(String[] args)
 	{
@@ -44,9 +44,9 @@ public class Server {
 		JsonObject testJson = new JsonObject();
 		testJson.addProperty("test", "testValue");
 		whiteboards.get(0).addEvent(testJson);
-		whiteboardChats.add(new ArrayList<String>());
-		whiteboardChats.get(0).add("Hello");
-		whiteboardChats.get(0).add("Hi");
+		whiteboardChats.add(new ArrayList<ChatMessage>());
+		whiteboardChats.get(0).add(new ChatMessage("testUser1", "Hello"));
+		whiteboardChats.get(0).add(new ChatMessage("testUser2", "Hi"));
 		
 		
 		ServerSocketFactory factory = ServerSocketFactory.getDefault();
@@ -123,13 +123,13 @@ public class Server {
 		    		case NEW_WB:
 		    			System.out.println(whiteboards.size());
 		    			whiteboards.add(new Whiteboard(gson.fromJson(clientMessage.get("manager"), String.class), gson.fromJson(clientMessage.get("whiteboardName"), String.class)));
-		    			whiteboardChats.add(new ArrayList<String> ());
+		    			whiteboardChats.add(new ArrayList<ChatMessage>());
 		    			curWB = whiteboards.size() - 1;
 		    			System.out.println(whiteboards.size());
 		    			break;
 		    		case CHAT:
-		    			ArrayList<String> openWBC = whiteboardChats.get(curWB);
-		    			openWBC.add(gson.fromJson(clientMessage.get("chat"), String.class));
+		    			ArrayList<ChatMessage> openWBC = whiteboardChats.get(curWB);
+		    			openWBC.add(gson.fromJson(clientMessage.get("chat"), ChatMessage.class));
 		    			break;
 		    		default:
 		    			break;
@@ -147,10 +147,10 @@ public class Server {
 			    			curWBElement++;
 			    		}
 			    		else { // Checks for chat updates and sends to client
-				    		ArrayList<String> openWBC = whiteboardChats.get(curWB); 
+				    		ArrayList<ChatMessage> openWBC = whiteboardChats.get(curWB); 
 				    		if (openWBC.size() > curWBCElement) { // Are there new chat messages
 				    			reply.add("messageType", gson.toJsonTree(Server.Message.CHAT, Server.Message.class));
-				    			reply.addProperty("chat", openWBC.get(curWBCElement));
+				    			reply.add("chat", gson.toJsonTree(openWBC.get(curWBCElement), ChatMessage.class));
 				    			output.writeUTF(gson.toJson(reply));
 				    			curWBCElement++;
 				    		}
