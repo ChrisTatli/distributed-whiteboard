@@ -1,14 +1,15 @@
 import Enums.DrawType;
-import Enums.EventType;
+import Shapes.Shape;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 
 @SuppressWarnings("serial")
@@ -18,9 +19,9 @@ public class Whiteboard extends JPanel implements ActionListener {
 	private KeyBoard keyBoard;
 	public DrawEventHandler handler;
 
-	private ArrayList<Shape> shapes = new ArrayList<>();
+	private ArrayList<Shapes.Shape> shapes = new ArrayList<>();
 	private DrawType drawType = DrawType.FREE;
-	private Color color = Color.BLACK;
+	private Color color;
 	public ArrayList<DrawEvent> drawEvents;
 	private int eventNumber;
 
@@ -48,7 +49,7 @@ public class Whiteboard extends JPanel implements ActionListener {
 
 	@Override
 	public synchronized void paintComponent(Graphics graphics){
-		for (Shape shape : shapes) {
+		for (Shapes.Shape shape : shapes) {
 			shape.draw(graphics);
 		}
 	}
@@ -90,7 +91,7 @@ public class Whiteboard extends JPanel implements ActionListener {
 		shapeMenu.add(freeHandMenuItem);
 
 		JRadioButtonMenuItem textMenuItem = new JRadioButtonMenuItem("Text");
-		textMenuItem.setActionCommand("Text");
+		textMenuItem.setActionCommand("SText");
 		textMenuItem.addActionListener(this);
 		group.add(textMenuItem);
 		shapeMenu.add(textMenuItem);
@@ -126,6 +127,12 @@ public class Whiteboard extends JPanel implements ActionListener {
 		group.add(ellipseMenuItem);
 		shapeMenu.add(ellipseMenuItem);
 
+		JRadioButtonMenuItem eraseMenuItem = new JRadioButtonMenuItem("Erase");
+		eraseMenuItem.setActionCommand("Erase");
+		eraseMenuItem.addActionListener(this);
+		group.add(eraseMenuItem);
+		shapeMenu.add(eraseMenuItem);
+
 		menuBar.add(shapeMenu);
 
 		//Colors
@@ -134,6 +141,50 @@ public class Whiteboard extends JPanel implements ActionListener {
 		colorMenu.addActionListener(this);
 
 		menuBar.add(colorMenu);
+
+		//StrokeWidth
+		JSlider strokeSlider = new JSlider(1,5,1);
+		Hashtable strokePos = new Hashtable();
+		strokePos.put(1, new JLabel("1"));
+		strokePos.put(2, new JLabel("2"));
+		strokePos.put(3, new JLabel("3"));
+		strokePos.put(4, new JLabel("4"));
+		strokePos.put(5, new JLabel("5"));
+		strokeSlider.setLabelTable(strokePos);
+		strokeSlider.setMinorTickSpacing(1);
+		strokeSlider.setPaintLabels(true);
+
+		strokeSlider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				int strokeThickness = strokeSlider.getValue();
+				mouse.setStrokeThickness(strokeThickness);
+			}
+		});
+		menuBar.add(strokeSlider);
+
+		//Eraser Slider
+		JSlider eraserSlider = new JSlider(1,3,1);
+		Hashtable eraserPos = new Hashtable();
+		eraserPos.put(1, new JLabel("S"));
+		eraserPos.put(2, new JLabel("M"));
+		eraserPos.put(3, new JLabel("L"));
+		eraserSlider.setLabelTable(eraserPos);
+		eraserSlider.setMinorTickSpacing(1);
+		eraserSlider.setPaintLabels(true);
+
+		eraserSlider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				int eraserSize = eraserSlider.getValue();
+				mouse.setEraserSize(eraserSize);
+			}
+		});
+		menuBar.add(eraserSlider);
+
+
+
+
 
 		frame.setJMenuBar(menuBar);
 	}
@@ -163,6 +214,7 @@ public class Whiteboard extends JPanel implements ActionListener {
 				break;
 			case "Text":
 				drawType = DrawType.TEXT;
+				mouse.setDrawType(DrawType.TEXT);
 				keyBoard.setDrawType(DrawType.TEXT);
 				break;
 			case "Line":
@@ -189,7 +241,10 @@ public class Whiteboard extends JPanel implements ActionListener {
 				color = JColorChooser.showDialog(this, "Select Color", color);
 				mouse.setColor(color);
 				break;
-
+			case "Erase":
+				drawType = DrawType.ERASE;
+				mouse.setDrawType(DrawType.ERASE);
+				break;
 		}
 	}
 }

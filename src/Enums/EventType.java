@@ -4,5 +4,6 @@ public enum EventType {
 
     DRAG,
     RELEASE,
-    KEYSTROKE
+    KEYSTROKE,
+    PRESSED
 }

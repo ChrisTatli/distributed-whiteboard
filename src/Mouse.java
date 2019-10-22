@@ -18,6 +18,8 @@ public class Mouse extends MouseInputAdapter {
     private Whiteboard whiteboard;
     private Color color;
     private String text;
+    private int strokeThickness = 1;
+    private int eraserSize = 1;
 
     Mouse(DrawType type, Whiteboard whiteboard){
         this.type = type;
@@ -31,6 +33,8 @@ public class Mouse extends MouseInputAdapter {
     public void setColor(Color color){
         this.color = color;
     }
+    public  void setStrokeThickness(int strokeThickness){this.strokeThickness = strokeThickness;}
+    public  void setEraserSize(int eraserSize){this.eraserSize = eraserSize;}
 
     @Override
     public void mouseMoved(MouseEvent e){
@@ -40,15 +44,23 @@ public class Mouse extends MouseInputAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         start = e.getPoint();
-        if(type == DrawType.FREE){
+        if(type == DrawType.FREE || type == DrawType.ERASE){
             points = new ArrayList<>();
+        }
+        else if(type == DrawType.TEXT){
+            DrawEvent drawEvent = new DrawEvent(EventType.PRESSED);
+            drawEvent.drawType = type;
+            drawEvent.start = start;
+            drawEvent.color = color;
+
+            whiteboard.addDrawEvent(drawEvent);
         }
     }
 
     @Override
     public void mouseDragged(MouseEvent e){
         Point end = e.getPoint();
-        if(type == DrawType.FREE){
+        if(type == DrawType.FREE || type == DrawType.ERASE){
             points.add(new Point(e.getX(),e.getY()));
         }
         DrawEvent drawEvent = new DrawEvent(EventType.DRAG);
@@ -57,6 +69,8 @@ public class Mouse extends MouseInputAdapter {
         drawEvent.start = start;
         drawEvent.end = end;
         drawEvent.color = color;
+        drawEvent.strokeWidth = strokeThickness;
+        drawEvent.eraserSize = eraserSize;
 
         whiteboard.addDrawEvent(drawEvent);
     }
@@ -71,6 +85,8 @@ public class Mouse extends MouseInputAdapter {
         drawEvent.start = start;
         drawEvent.end = end;
         drawEvent.color = color;
+        drawEvent.strokeWidth = strokeThickness;
+        drawEvent.eraserSize = eraserSize;
 
         whiteboard.addDrawEvent(drawEvent);
     }

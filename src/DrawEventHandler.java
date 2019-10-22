@@ -1,3 +1,6 @@
+import Shapes.*;
+import Shapes.Rectangle;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -16,28 +19,32 @@ public class DrawEventHandler implements Runnable{
                 Graphics graphics = whiteboard.getGraphics();
                 switch (event.drawType){
                     case RECT:
-                        Rectangle rect = new Rectangle(event.start, event.end, event.color);
+                        Shapes.Rectangle rect = new Rectangle(event.start, event.end, event.color, event.strokeWidth);
                         rect.draw(graphics);
                         break;
                     case LINE:
-                        Line line = new Line(event.start, event.end, event.color);
+                        Line line = new Line(event.start, event.end, event.color, event.strokeWidth);
                         line.draw(graphics);
                         break;
                     case ELLIPSE:
-                        Ellipse ellipse = new Ellipse(event.start, event.end, event.color);
+                        Ellipse ellipse = new Ellipse(event.start, event.end, event.color, event.strokeWidth);
                         ellipse.draw(graphics);
                         break;
                     case CIRCLE:
-                        Circle circle = new Circle(event.start, event.end, event.color);
+                        Circle circle = new Circle(event.start, event.end, event.color, event.strokeWidth);
                         circle.draw(graphics);
                         break;
                     case SQUARE:
-                        Square square = new Square(event.start, event.end, event.color);
+                        Square square = new Square(event.start, event.end, event.color, event.strokeWidth);
                         square.draw(graphics);
                         break;
                     case FREE:
-                        Freehand free = new Freehand(event.points, event.color);
+                        Freehand free = new Freehand(event.points, event.color, event.strokeWidth);
                         free.draw(graphics);
+                        break;
+                    case ERASE:
+                        Eraser eraser = new Eraser(event.points, event.eraserSize, whiteboard.getBackground() );
+                        eraser.draw(graphics);
                         break;
 
                 }
@@ -46,30 +53,35 @@ public class DrawEventHandler implements Runnable{
             case RELEASE:
                 switch (event.drawType){
                     case RECT:
-                        whiteboard.addShape(new Rectangle(event.start, event.end, event.color));
+                        whiteboard.addShape(new Shapes.Rectangle(event.start, event.end, event.color, event.strokeWidth));
                         break;
                     case LINE:
-                        whiteboard.addShape(new Line(event.start, event.end, event.color));
+                        whiteboard.addShape(new Line(event.start, event.end, event.color, event.strokeWidth));
                         break;
                     case ELLIPSE:
-                        whiteboard.addShape(new Ellipse(event.start, event.end, event.color));
+                        whiteboard.addShape(new Ellipse(event.start, event.end, event.color, event.strokeWidth));
                         break;
                     case SQUARE:
-                        whiteboard.addShape(new Square(event.start, event.end, event.color));
+                        whiteboard.addShape(new Square(event.start, event.end, event.color, event.strokeWidth));
                         break;
                     case CIRCLE:
-                        whiteboard.addShape(new Circle(event.start, event.end, event.color));
+                        whiteboard.addShape(new Circle(event.start, event.end, event.color, event.strokeWidth));
                         break;
                     case FREE:
-                        whiteboard.addShape(new Freehand(event.points, event.color));
+                        whiteboard.addShape(new Freehand(event.points, event.color, event.strokeWidth));
+                        break;
+                    case ERASE:
+                        whiteboard.addShape(new Eraser(event.points, event.eraserSize, whiteboard.getBackground()));
                         break;
 
                 }
                 whiteboard.frame.repaint();
                 break;
-            case KEYSTROKE:
-                Text text = new Text(event.start,event.text, event.color);
+            case PRESSED:
+                Text text = new Text(event.start,"event.text", Color.BLACK);
+                whiteboard.addShape((new Text(event.start,"event.text", Color.BLACK)));
                 text.draw(whiteboard.getGraphics());
+                whiteboard.frame.repaint();
                 break;
         }
     }
@@ -85,7 +97,7 @@ public class DrawEventHandler implements Runnable{
             }
 
             if(drawEvents.size() > 0) {
-                DrawEvent latestEvent = drawEvents.get(drawEvents.size() -1);
+                DrawEvent latestEvent = drawEvents.get(drawEvents.size() - 1);
                 eventId = latestEvent.Id + 1;
             }
 

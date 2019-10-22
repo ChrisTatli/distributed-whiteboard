@@ -30,6 +30,9 @@ public class KeyBoard extends KeyAdapter {
     @Override
     public void keyTyped(KeyEvent e) {
         if(type == DrawType.TEXT){
+            if(text == null){
+                text = "";
+            }
             char c = e.getKeyChar();
             if(c == '\n'){
 
@@ -37,6 +40,7 @@ public class KeyBoard extends KeyAdapter {
                 text += c;
             }
             DrawEvent drawEvent = new DrawEvent(EventType.KEYSTROKE);
+
             drawEvent.drawType = type;
             drawEvent.start = start;
             drawEvent.text = text;

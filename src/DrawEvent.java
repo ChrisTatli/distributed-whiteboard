@@ -13,6 +13,8 @@ public class DrawEvent {
     public DrawType drawType;
     public Color color;
     public String text;
+    public int strokeWidth;
+    public int eraserSize;
 
     public DrawEvent(EventType eventType){
         this.eventType = eventType;
