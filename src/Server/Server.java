@@ -139,10 +139,10 @@ public class Server {
 		    	else {
 		    		// Checks for updates and sends to client
 			    	if(curWB >= 0) { // Has the client chosen a whiteboard
-			    		ArrayList<JsonObject> openWB = whiteboards.get(curWB); 
-			    		if (openWB.size() > curWBElement) { // Are there new updates
+			    		Whiteboard openWB = whiteboards.get(curWB); 
+			    		if (openWB.getEvents().size() > curWBElement) { // Are there new updates
 			    			reply.add("messageType", gson.toJsonTree(Server.Message.UPDATE, Server.Message.class));
-			    			reply.add("update", openWB.get(curWBElement));
+			    			reply.add("update", openWB.getEvents().get(curWBElement));
 			    			output.writeUTF(gson.toJson(reply));
 			    			curWBElement++;
 			    		}
