@@ -65,8 +65,6 @@ public class Server {
 				// Start a new thread for a connection
 				Thread t = new Thread(() -> serveClient(client));
 				t.start();
-				t = new Thread(() -> serveClientChat(client));
-				t.start();
 			}
 			
 		} 
@@ -86,8 +84,9 @@ public class Server {
 			// Output Stream
 		    DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());
 		    
-		    int curWB = -1;
-		    int curWBElement = 0;
+		    int curWB = -1; // Current whiteboard
+		    int curWBElement = 0; // Current whiteboard json element
+		    int curWBCElement = 0; // Current whiteboard chat message
 		    
 		    // Read input Json
 		    JsonParser parser = new JsonParser();
@@ -118,11 +117,18 @@ public class Server {
 		    		case UPDATE:
 		    			ArrayList<JsonObject> openWB = whiteboards.get(curWB);
 		    			openWB.add((JsonObject) clientMessage.get("update"));
+		    			break;
 		    		case NEW_WB:
 		    			System.out.println(whiteboards.size());
 		    			whiteboards.add(new ArrayList<JsonObject>());
+		    			whiteboardChats.add(new ArrayList<String> ());
 		    			curWB = whiteboards.size() - 1;
 		    			System.out.println(whiteboards.size());
+		    			break;
+		    		case CHAT:
+		    			ArrayList<String> openWBC = whiteboardChats.get(curWB);
+		    			openWBC.add(gson.fromJson(clientMessage.get("chat"), String.class));
+		    			break;
 		    		default:
 		    			break;
 		    		}
@@ -138,6 +144,15 @@ public class Server {
 			    			output.writeUTF(gson.toJson(reply));
 			    			curWBElement++;
 			    		}
+			    		else { // Checks for chat updates and sends to client
+				    		ArrayList<String> openWBC = whiteboardChats.get(curWB); 
+				    		if (openWBC.size() > curWBCElement) { // Are there new chat messages
+				    			reply.add("messageType", gson.toJsonTree(Server.Message.CHAT, Server.Message.class));
+				    			reply.addProperty("chat", openWBC.get(curWBCElement));
+				    			output.writeUTF(gson.toJson(reply));
+				    			curWBCElement++;
+				    		}
+				    	}
 			    	}
 		    	}
 		    	

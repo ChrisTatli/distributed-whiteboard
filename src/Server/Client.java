@@ -72,9 +72,11 @@ public class Client {
 		    		case UPDATE:
 		    			JsonObject update = (JsonObject) serverMessage.get("update");
 		    			System.out.println("Update: " + update.toString());
+		    			break;
 		    		case CHAT:
 		    			String chatString = gson.fromJson(serverMessage.get("chat"), String.class);
-		    			System.out.println(chatString);
+		    			System.out.println("Chat: " + chatString);
+		    			break;
 		    		default:
 		    			break;
 		    		}	
