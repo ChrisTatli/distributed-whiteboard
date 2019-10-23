@@ -123,6 +123,7 @@ public class Server {
 		    				// TODO send message to chat with join flag for manager to review
 		    				if (!appliedWB.getActiveUsers().contains(appliedWB.getManager())) {
 		    					reply.add("messageType", gson.toJsonTree(Server.Message.REJECT, Server.Message.class));
+		    					reply.addProperty("rejectMessage", "Whiteboard is not available because manager is not online");
 		    					output.writeUTF(gson.toJson(reply));
 		    				}
 		    				else {
@@ -203,6 +204,7 @@ public class Server {
 				    				System.out.println(username + ":" + openWBC.get(curWBCElement).getMessage());
 				    				if(openWBC.get(curWBCElement).getMessage().equals(username)) {
 				    					reply.add("messageType", gson.toJsonTree(Server.Message.REJECT, Server.Message.class));
+				    					reply.addProperty("rejectMessage", "Manager has declined your request");
 				    					output.writeUTF(gson.toJson(reply));
 				    				}
 				    			}

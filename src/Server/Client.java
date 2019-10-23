@@ -71,10 +71,15 @@ public class Client {
 		    		case OPEN_WB:
 		    			System.out.println("Whiteboards: " + serverMessage.get("whiteboards"));
 		    			// TODO popup with available whiteboards then send to server OPEN_WB with selected wb
-		    			int wbChoice = WhiteboardConnectOption(gson.fromJson(serverMessage.get("whiteboards"), String.class));
-		    			reply.add("messageType", gson.toJsonTree(Server.Message.JOIN_WB, Server.Message.class));
-		    	    	reply.addProperty("selectedWB", wbChoice);
-		    	    	reply.addProperty("user", username);
+		    			int wbChoice = -1;
+		    			if (wbChoice < 0) {
+		    				reply = initMessage(gson);
+		    			}
+		    			else {
+		    				reply.add("messageType", gson.toJsonTree(Server.Message.JOIN_WB, Server.Message.class));
+			    	    	reply.addProperty("selectedWB", wbChoice);
+			    	    	reply.addProperty("user", username);
+		    			}
 		    	    	output.writeUTF(gson.toJson(reply));
 		    			break;
 		    		case UPDATE:
@@ -87,6 +92,8 @@ public class Client {
 		    			break;
 		    		case REJECT:
 		    			System.out.println("REJECTED CONNECTION");
+		    			String[] okButton = {"Ok"};
+		    			JOptionPane.showOptionDialog(null, gson.fromJson(serverMessage.get("rejectMessage"), String.class), "Access not granted", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, okButton, okButton[0]);
 		    			reply = initMessage(gson);
 		    			output.writeUTF(gson.toJson(reply));
 		    			break;
