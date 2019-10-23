@@ -169,6 +169,7 @@ public class Client {
 	}
 	
 	private static void disconnect(Gson gson, DataOutputStream output) throws IOException {
+		sendChat(gson.fromJson(username, String.class), output, gson, Server.Message.REJECT);
 		JsonObject discMessage = new JsonObject();
 		discMessage.add("messageType", gson.toJsonTree(Server.Message.DISCONNECT, Server.Message.class));
 		discMessage.addProperty("user", username);		
