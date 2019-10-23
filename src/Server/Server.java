@@ -160,13 +160,18 @@ public class Server {
 		    			connected = true;
 		    			break;
 		    		case CHAT:
-		    			ArrayList<ChatMessage> openWBC = whiteboardChats.get(curWB);
-		    			openWBC.add(gson.fromJson(clientMessage.get("chat"), ChatMessage.class));
+		    			if (curWB >= 0) {
+		    				ArrayList<ChatMessage> openWBC = whiteboardChats.get(curWB);
+			    			openWBC.add(gson.fromJson(clientMessage.get("chat"), ChatMessage.class));	
+		    			}
 		    			break;
 		    		case DISCONNECT:
-		    			whiteboards.get(curWB).removeActiveUser(gson.fromJson(clientMessage.get("user"), String.class));
-		    			curWB = -1;
-		    			connected = false;
+		    			if (curWB >= 0)
+		    			{
+		    				whiteboards.get(curWB).removeActiveUser(gson.fromJson(clientMessage.get("user"), String.class));
+		    				curWB = -1;
+			    			connected = false;
+		    			}
 		    			break;
 		    		default:
 		    			break;
