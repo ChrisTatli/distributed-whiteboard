@@ -165,6 +165,7 @@ public class Server {
 		    			break;
 		    		case DISCONNECT:
 		    			whiteboards.get(curWB).removeActiveUser(gson.fromJson(clientMessage.get("user"), String.class));
+		    			curWB = -1;
 		    			connected = false;
 		    			break;
 		    		default:
@@ -203,6 +204,10 @@ public class Server {
 				    				System.out.println("REJECT RECIEVED");
 				    				System.out.println(username + ":" + openWBC.get(curWBCElement).getMessage());
 				    				if(openWBC.get(curWBCElement).getMessage().equals(username)) {
+				    				    curWBElement = 0; // Current whiteboard json element
+				    				    curWBCElement = 0; // Current whiteboard chat message
+				    				    isManager = false;
+				    				    connected = false;
 				    					reply.add("messageType", gson.toJsonTree(Server.Message.REJECT, Server.Message.class));
 				    					reply.addProperty("rejectMessage", "Manager has declined your request");
 				    					output.writeUTF(gson.toJson(reply));

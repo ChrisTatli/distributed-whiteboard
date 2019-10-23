@@ -93,6 +93,7 @@ public class Client {
 		    		case REJECT:
 		    			System.out.println("REJECTED CONNECTION");
 		    			String[] okButton = {"Ok"};
+		    			disconnect(gson, output);
 		    			JOptionPane.showOptionDialog(null, gson.fromJson(serverMessage.get("rejectMessage"), String.class), "Access not granted", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, okButton, okButton[0]);
 		    			reply = initMessage(gson);
 		    			output.writeUTF(gson.toJson(reply));
