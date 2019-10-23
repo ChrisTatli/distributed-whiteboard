@@ -1,7 +1,11 @@
+package Client;
+
 import Shapes.*;
 import Shapes.Rectangle;
+import Events.DrawEvent;
 
 import java.awt.*;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class DrawEventHandler implements Runnable{
@@ -89,8 +93,12 @@ public class DrawEventHandler implements Runnable{
     @Override
     public void run() {
         while(true){
-            ArrayList<DrawEvent> drawEvents;
-            drawEvents = whiteboard.getDrawEvents(eventId);
+            ArrayList<DrawEvent> drawEvents = new ArrayList<>();
+            try {
+                drawEvents = whiteboard.drawService.getDrawEvents(eventId);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
 
             for (DrawEvent event: drawEvents ) {
                 HandleDrawEvent(event);

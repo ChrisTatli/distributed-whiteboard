@@ -1,15 +1,18 @@
+package Client;
+
 import Enums.DrawType;
 import Enums.EventType;
+import Events.ManagementEvent;
+import Server.DrawService;
+import Server.ManagementService;
 import Shapes.Shape;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.lang.reflect.Type;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -23,52 +26,30 @@ public class Whiteboard extends JPanel implements ActionListener {
 	final JFrame frame;
 	private Mouse mouse;
 	private KeyBoard keyBoard;
-	public DrawEventHandler handler;
-	public ManagementEventHandler mhandler;
+
+	public DrawService drawService;
+	public ManagementService managementService;
 
 	private ArrayList<Shapes.Shape> shapes = new ArrayList<>();
 	private DrawType drawType = DrawType.FREE;
 
-	public ArrayList<DrawEvent> drawEvents;
-	public ArrayList<ManagementEvent> managementEvents;
-	private int eventNumber;
-	private int meventNumber;
-
-	public synchronized ArrayList getDrawEvents(int from){
-		return new ArrayList(drawEvents.subList(from, drawEvents.size()));
-	}
-
-	public synchronized ArrayList getManagementEvents(int from){
-		return new ArrayList(managementEvents.subList(from, managementEvents.size()));
-	}
-
-	public synchronized void addDrawEvent(DrawEvent event){
-		event.Id = eventNumber++;
-		drawEvents.add(event);
-	}
-
-	public synchronized void addManagementEvent(ManagementEvent event){
-		event.Id = meventNumber++;
-		managementEvents.add(event);
-	}
-
-	public synchronized void clear(){
-		shapes.clear();
-	}
-
-
-	public Whiteboard(JFrame frame) {
+	public Whiteboard(JFrame frame, DrawService drawService, ManagementService managementService) {
 		this.frame = frame;
+		this.drawService = drawService;
+		this.managementService = managementService;
 		BuildMenu();
-		eventNumber = 0;
-		drawEvents = new ArrayList<>();
-		managementEvents = new ArrayList<>();
+
+
 		mouse = new Mouse(drawType, this);
 		mouse.setColor(Color.BLACK);
 		keyBoard = new KeyBoard(drawType, this);
 		addKeyListener(keyBoard);
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
+	}
+
+	public synchronized void clear(){
+		shapes.clear();
 	}
 
 	@Override
@@ -210,7 +191,11 @@ public class Whiteboard extends JPanel implements ActionListener {
 
 	private void loadWhiteboard(){
 		ManagementEvent event = new ManagementEvent(EventType.LOAD);
-		this.addManagementEvent(event);
+		try {
+			managementService.addManagementEvent(event);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void writeWhiteboard(){
@@ -260,11 +245,19 @@ public class Whiteboard extends JPanel implements ActionListener {
 
 	private void saveWhiteboard(){
 		ManagementEvent event = new ManagementEvent(EventType.SAVE);
-		this.addManagementEvent(event);
+		try {
+			managementService.addManagementEvent(event);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 	private void newWhiteboard(){
 		ManagementEvent event = new ManagementEvent(EventType.NEW);
-		this.addManagementEvent(event);
+		try {
+			managementService.addManagementEvent(event);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

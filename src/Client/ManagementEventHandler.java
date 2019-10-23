@@ -1,3 +1,8 @@
+package Client;
+
+import Events.ManagementEvent;
+
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class ManagementEventHandler implements Runnable{
@@ -30,8 +35,12 @@ public class ManagementEventHandler implements Runnable{
     @Override
     public void run() {
         while(true){
-            ArrayList<ManagementEvent> managementEvents;
-            managementEvents = whiteboard.getManagementEvents(eventId);
+            ArrayList<ManagementEvent> managementEvents = new ArrayList<>();;
+            try {
+                managementEvents = whiteboard.managementService.getManagementEvents(eventId);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
 
             for(ManagementEvent event: managementEvents){
                 HandleManagementEvent(event);

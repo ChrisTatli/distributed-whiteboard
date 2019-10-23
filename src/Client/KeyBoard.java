@@ -1,10 +1,12 @@
+package Client;
+
 import Enums.DrawType;
 import Enums.EventType;
+import Events.DrawEvent;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 public class KeyBoard extends KeyAdapter {
 
@@ -46,7 +48,7 @@ public class KeyBoard extends KeyAdapter {
             drawEvent.text = text;
             drawEvent.color = color;
 
-            whiteboard.addDrawEvent(drawEvent);
+            //whiteboard.addDrawEvent(drawEvent);
         }
     }
 }

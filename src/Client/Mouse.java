@@ -1,12 +1,13 @@
+package Client;
+
 import Enums.DrawType;
 import Enums.EventType;
+import Events.DrawEvent;
 
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class Mouse extends MouseInputAdapter {
@@ -53,7 +54,11 @@ public class Mouse extends MouseInputAdapter {
             drawEvent.start = start;
             drawEvent.color = color;
 
-            whiteboard.addDrawEvent(drawEvent);
+            try {
+                whiteboard.drawService.addDrawEvent(drawEvent);
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -72,7 +77,11 @@ public class Mouse extends MouseInputAdapter {
         drawEvent.strokeWidth = strokeThickness;
         drawEvent.eraserSize = eraserSize;
 
-        whiteboard.addDrawEvent(drawEvent);
+        try {
+            whiteboard.drawService.addDrawEvent(drawEvent);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -88,7 +97,11 @@ public class Mouse extends MouseInputAdapter {
         drawEvent.strokeWidth = strokeThickness;
         drawEvent.eraserSize = eraserSize;
 
-        whiteboard.addDrawEvent(drawEvent);
+        try {
+            whiteboard.drawService.addDrawEvent(drawEvent);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
     }
 
 

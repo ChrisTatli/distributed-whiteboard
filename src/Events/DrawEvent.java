@@ -1,10 +1,13 @@
+package Events;
+
 import Enums.DrawType;
 import Enums.EventType;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DrawEvent {
+public class DrawEvent implements Serializable {
     public int Id;
     public EventType eventType;
     public Point start;
