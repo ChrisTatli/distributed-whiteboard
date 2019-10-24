@@ -17,13 +17,13 @@ public class DrawServant extends UnicastRemoteObject implements DrawService {
     }
 
     @Override
-    public void addDrawEvent(DrawEvent event) throws RemoteException {
+    public synchronized void addDrawEvent(DrawEvent event) throws RemoteException {
         event.Id = eventNumber++;
         drawEvents.add(event);
     }
 
     @Override
-    public ArrayList<DrawEvent> getDrawEvents(int from) throws RemoteException {
+    public synchronized ArrayList<DrawEvent> getDrawEvents(int from) throws RemoteException {
         return new ArrayList(drawEvents.subList(from, drawEvents.size()));
     }
 }

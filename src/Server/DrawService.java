@@ -10,6 +10,6 @@ public interface DrawService extends Remote {
 
     void addDrawEvent(DrawEvent event) throws RemoteException;
 
-    ArrayList<DrawEvent> getDrawEvents(int startFrom) throws RemoteException;
+    ArrayList<DrawEvent> getDrawEvents(int from) throws RemoteException;
 
 }

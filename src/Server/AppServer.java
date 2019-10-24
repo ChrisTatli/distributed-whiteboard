@@ -12,6 +12,7 @@ public class AppServer {
         try {
             registry.bind("draw", new DrawServant());
             registry.bind("management", new ManagementServant());
+            registry.bind("chat", new ChatServant());
         } catch (AlreadyBoundException e) {
             e.printStackTrace();
         }

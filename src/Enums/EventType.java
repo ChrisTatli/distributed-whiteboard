@@ -8,5 +8,14 @@ public enum EventType {
     PRESSED,
     NEW,
     SAVE,
-    LOAD
+    LOAD,
+    SENDCHAT,
+    JOINREQ,
+    APPROVED,
+    DECLINED,
+    ADMIN,
+    UPDATEUSERS,
+    KICK
+
+
 }

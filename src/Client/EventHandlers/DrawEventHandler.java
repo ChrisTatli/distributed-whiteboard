@@ -1,5 +1,6 @@
-package Client;
+package Client.EventHandlers;
 
+import Client.Whiteboard;
 import Shapes.*;
 import Shapes.Rectangle;
 import Events.DrawEvent;
@@ -19,6 +20,18 @@ public class DrawEventHandler implements Runnable{
 
     private void HandleDrawEvent(DrawEvent event){
         switch(event.eventType){
+            case NEW:
+                whiteboard.clear();
+                whiteboard.repaint();
+                break;
+            case SAVE:
+                whiteboard.writeWhiteboard();
+                break;
+            case LOAD:
+                whiteboard.clear();
+                whiteboard.readWhiteboard();
+                whiteboard.repaint();
+                break;
             case DRAG:
                 Graphics graphics = whiteboard.getGraphics();
                 switch (event.drawType){
@@ -52,7 +65,8 @@ public class DrawEventHandler implements Runnable{
                         break;
 
                 }
-                whiteboard.frame.repaint();
+                whiteboard.repaint();
+
                 break;
             case RELEASE:
                 switch (event.drawType){
@@ -79,13 +93,13 @@ public class DrawEventHandler implements Runnable{
                         break;
 
                 }
-                whiteboard.frame.repaint();
+                whiteboard.repaint();
                 break;
             case PRESSED:
                 Text text = new Text(event.start,"event.text", Color.BLACK);
                 whiteboard.addShape((new Text(event.start,"event.text", Color.BLACK)));
                 text.draw(whiteboard.getGraphics());
-                whiteboard.frame.repaint();
+                whiteboard.repaint();
                 break;
         }
     }
@@ -99,10 +113,12 @@ public class DrawEventHandler implements Runnable{
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-
-            for (DrawEvent event: drawEvents ) {
-                HandleDrawEvent(event);
+            if(drawEvents.size() > 0){
+                for (DrawEvent event: drawEvents ) {
+                    HandleDrawEvent(event);
+                }
             }
+
 
             if(drawEvents.size() > 0) {
                 DrawEvent latestEvent = drawEvents.get(drawEvents.size() - 1);

@@ -2,6 +2,7 @@ package Client;
 
 import Enums.DrawType;
 import Enums.EventType;
+import Events.DrawEvent;
 import Events.ManagementEvent;
 import Server.DrawService;
 import Server.ManagementService;
@@ -23,23 +24,32 @@ import javax.swing.event.ChangeListener;
 
 @SuppressWarnings("serial")
 public class Whiteboard extends JPanel implements ActionListener {
+
+
 	final JFrame frame;
+	private JMenuBar menuBar;
 	private Mouse mouse;
 	private KeyBoard keyBoard;
-
+	public User user;
 	public DrawService drawService;
 	public ManagementService managementService;
 
 	private ArrayList<Shapes.Shape> shapes = new ArrayList<>();
 	private DrawType drawType = DrawType.FREE;
 
+	public JFrame getFrame() {
+		return frame;
+	}
+
 	public Whiteboard(JFrame frame, DrawService drawService, ManagementService managementService) {
+
 		this.frame = frame;
+		this.frame.setVisible(false);
+
 		this.drawService = drawService;
 		this.managementService = managementService;
-		BuildMenu();
-
-
+		this.menuBar = BuildMenu();
+		this.frame.setJMenuBar(this.menuBar);
 		mouse = new Mouse(drawType, this);
 		mouse.setColor(Color.BLACK);
 		keyBoard = new KeyBoard(drawType, this);
@@ -47,6 +57,11 @@ public class Whiteboard extends JPanel implements ActionListener {
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
 	}
+	public void setFrameVisibility(){
+		this.frame.setVisible(true);
+	}
+
+
 
 	public synchronized void clear(){
 		shapes.clear();
@@ -54,6 +69,7 @@ public class Whiteboard extends JPanel implements ActionListener {
 
 	@Override
 	public synchronized void paintComponent(Graphics graphics){
+		super.paintComponent(graphics);
 		for (Shapes.Shape shape : shapes) {
 			shape.draw(graphics);
 		}
@@ -63,31 +79,33 @@ public class Whiteboard extends JPanel implements ActionListener {
 	    shapes.add(shape);
     }
 
-	private void BuildMenu(){
+	private JMenuBar BuildMenu(){
 		JMenuBar menuBar = new JMenuBar();
 
 		//FILE MENU
-		JMenu fileMenu = new JMenu("File");
 
-		JMenuItem newBoard = new JMenuItem("New");
-		newBoard.setActionCommand("New");
-		newBoard.addActionListener(this);
-		fileMenu.add(newBoard);
-		fileMenu.addSeparator();
+			JMenu fileMenu = new JMenu("File");
 
-		JMenuItem load = new JMenuItem("Load");
-		load.setActionCommand("Load");
-		load.addActionListener(this);
-		fileMenu.add(load);
+			JMenuItem newBoard = new JMenuItem("New");
+			newBoard.setActionCommand("New");
+			newBoard.addActionListener(this);
+			fileMenu.add(newBoard);
+			fileMenu.addSeparator();
 
-		fileMenu.addSeparator();
+			JMenuItem load = new JMenuItem("Load");
+			load.setActionCommand("Load");
+			load.addActionListener(this);
+			fileMenu.add(load);
 
-		JMenuItem save = new JMenuItem(("Save"));
-		save.setActionCommand(("Save"));
-		save.addActionListener(this);
-		fileMenu.add(save);
+			fileMenu.addSeparator();
 
-		menuBar.add(fileMenu);
+			JMenuItem save = new JMenuItem(("Save"));
+			save.setActionCommand(("Save"));
+			save.addActionListener(this);
+			fileMenu.add(save);
+
+			menuBar.add(fileMenu);
+
 
 
 		//Shapes
@@ -185,14 +203,17 @@ public class Whiteboard extends JPanel implements ActionListener {
 		});
 		menuBar.add(eraserSlider);
 
-		frame.setJMenuBar(menuBar);
+
+		return menuBar;
 	}
 
 
+
+
 	private void loadWhiteboard(){
-		ManagementEvent event = new ManagementEvent(EventType.LOAD);
+		DrawEvent event = new DrawEvent(EventType.LOAD);
 		try {
-			managementService.addManagementEvent(event);
+			drawService.addDrawEvent(event);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -243,18 +264,20 @@ public class Whiteboard extends JPanel implements ActionListener {
 
 	}
 
+
+
 	private void saveWhiteboard(){
-		ManagementEvent event = new ManagementEvent(EventType.SAVE);
+		DrawEvent event = new DrawEvent(EventType.SAVE);
 		try {
-			managementService.addManagementEvent(event);
+			drawService.addDrawEvent(event);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}
 	private void newWhiteboard(){
-		ManagementEvent event = new ManagementEvent(EventType.NEW);
+		DrawEvent event = new DrawEvent(EventType.NEW);
 		try {
-			managementService.addManagementEvent(event);
+			drawService.addDrawEvent(event);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

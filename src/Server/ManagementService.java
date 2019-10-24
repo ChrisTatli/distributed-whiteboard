@@ -11,5 +11,17 @@ public interface ManagementService extends Remote {
 
     void addManagementEvent(ManagementEvent event) throws RemoteException;
 
+    void joinWhiteboard(ManagementEvent event) throws RemoteException;
+
+    void approveUser(ManagementEvent event) throws  RemoteException;
+
+    void kickUser(ManagementEvent event) throws RemoteException;
+
+    boolean isUniqueUsername(ManagementEvent event) throws RemoteException;
+
+    void declineUser(ManagementEvent event ) throws RemoteException;
+
+    ArrayList<String> getAllUsers(ManagementEvent event) throws RemoteException;
+
 
 }
