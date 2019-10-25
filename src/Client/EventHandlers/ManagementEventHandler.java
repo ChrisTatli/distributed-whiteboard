@@ -83,7 +83,20 @@ public class ManagementEventHandler implements Runnable{
                     popup.popupError("This action is restricted to admins.");
                 }
                 break;
-
+            case NEW:
+                DrawEvent clearEvent = new DrawEvent(EventType.NEW);
+                whiteboard.drawService.clearEvents(clearEvent);
+                break;
+            case SAVE:
+                if(event.user.userId.equals(whiteboard.user.userId) ){
+                whiteboard.writeWhiteboard();
+            }
+                break;
+            case LOAD:
+                if(event.user.userId.equals(whiteboard.user.userId) ) {
+                    whiteboard.readWhiteboard();
+                }
+                break;
 
 
 
@@ -97,7 +110,8 @@ public class ManagementEventHandler implements Runnable{
             try {
                 managementEvents = whiteboard.managementService.getManagementEvents(eventId);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                popup.popupError("The server has unexpectedly crashed. Sorry for the inconvenience.");
+                System.exit(-1);
             }
 
             for(ManagementEvent event: managementEvents){

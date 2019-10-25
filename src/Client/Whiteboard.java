@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -211,16 +212,22 @@ public class Whiteboard extends JPanel implements ActionListener {
 
 
 	private void loadWhiteboard(){
-		DrawEvent event = new DrawEvent(EventType.LOAD);
+		ManagementEvent event = new ManagementEvent(EventType.LOAD);
 		try {
-			drawService.addDrawEvent(event);
+			event.user = user;
+			managementService.loadBoard(event);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void writeWhiteboard(){
-
+		ArrayList<DrawEvent> drawEvents = null;
+		try {
+			drawEvents = drawService.getDrawEvents(0);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 
 		JFileChooser jfc = new JFileChooser();
 		int retVal = jfc.showSaveDialog(this);
@@ -229,7 +236,7 @@ public class Whiteboard extends JPanel implements ActionListener {
 			try{
 				FileOutputStream fStream = new FileOutputStream(jfc.getSelectedFile(), false);
 				ObjectOutputStream output = new ObjectOutputStream(fStream);
-				output.writeObject(shapes);
+				output.writeObject(drawEvents);
 				output.close();
 			} catch (IOException e){
 				e.printStackTrace();
@@ -238,8 +245,8 @@ public class Whiteboard extends JPanel implements ActionListener {
 	}
 
 	public void readWhiteboard(){
-		Gson gson = new Gson();
 
+		ArrayList<DrawEvent> drawEvents = null;
 
 		JFileChooser jfc = new JFileChooser();
 		int retval = jfc.showOpenDialog(this);
@@ -252,7 +259,8 @@ public class Whiteboard extends JPanel implements ActionListener {
 				Object object = input.readObject();
 
 
-				shapes = (ArrayList<Shape>) object;
+				drawEvents = (ArrayList<DrawEvent>) object;
+				drawService.loadEvents(drawEvents);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -267,17 +275,19 @@ public class Whiteboard extends JPanel implements ActionListener {
 
 
 	private void saveWhiteboard(){
-		DrawEvent event = new DrawEvent(EventType.SAVE);
+		ManagementEvent event = new ManagementEvent(EventType.SAVE);
 		try {
-			drawService.addDrawEvent(event);
+			event.user = user;
+			managementService.saveBoard(event);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}
 	private void newWhiteboard(){
-		DrawEvent event = new DrawEvent(EventType.NEW);
+		ManagementEvent event = new ManagementEvent(EventType.NEW);
 		try {
-			drawService.addDrawEvent(event);
+			event.user = user;
+			managementService.newBoard(event);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

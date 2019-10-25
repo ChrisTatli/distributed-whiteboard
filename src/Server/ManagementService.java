@@ -23,5 +23,12 @@ public interface ManagementService extends Remote {
 
     ArrayList<String> getAllUsers(ManagementEvent event) throws RemoteException;
 
+    void removeUser(ManagementEvent event) throws RemoteException;
+
+     void newBoard(ManagementEvent event) throws  RemoteException;
+
+     void saveBoard(ManagementEvent event) throws RemoteException;
+
+     void loadBoard(ManagementEvent event) throws RemoteException;
 
 }

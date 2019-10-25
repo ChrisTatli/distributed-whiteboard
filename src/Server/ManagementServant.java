@@ -11,9 +11,8 @@ import java.util.ArrayList;
 public class ManagementServant extends UnicastRemoteObject implements ManagementService {
 
     private ArrayList<ManagementEvent> managementEvents;
-    private int eventNumber = 0;
+    private int eventNumber ;
     private User managerUser;
-    private String whiteboardName;
     private ArrayList<String> activeUsers;
 
 
@@ -74,7 +73,7 @@ public class ManagementServant extends UnicastRemoteObject implements Management
     @Override
     public void kickUser(ManagementEvent event) throws RemoteException {
 
-        if(!event.user.userName.equals(managerUser.userName)){
+      if(!event.user.userName.equals(managerUser.userName)){
             ManagementEvent restricted = new ManagementEvent(EventType.RESTRICTED);
             restricted.user = event.user;
             addManagementEvent(restricted);
@@ -89,6 +88,7 @@ public class ManagementServant extends UnicastRemoteObject implements Management
         usersEvent.userNames = activeUsers;
         addManagementEvent(usersEvent);
     }
+
 
     @Override
     public boolean isUniqueUsername(ManagementEvent event) throws RemoteException {
@@ -106,4 +106,49 @@ public class ManagementServant extends UnicastRemoteObject implements Management
     public ArrayList<String> getAllUsers(ManagementEvent event) throws RemoteException {
         return activeUsers;
     }
+
+    @Override
+    public void removeUser(ManagementEvent event) throws RemoteException {
+        activeUsers.remove(event.username);
+        addManagementEvent(event);
+        ManagementEvent usersEvent = new ManagementEvent((EventType.UPDATEUSERS));
+
+        usersEvent.userNames = activeUsers;
+        addManagementEvent(usersEvent);
+    }
+
+    @Override
+    public void newBoard(ManagementEvent event) throws RemoteException {
+        if(!event.user.userName.equals(managerUser.userName)){
+            ManagementEvent restricted = new ManagementEvent(EventType.RESTRICTED);
+            restricted.user = event.user;
+            addManagementEvent(restricted);
+            return;
+        }
+        addManagementEvent(event);
+    }
+
+    @Override
+    public void saveBoard(ManagementEvent event) throws RemoteException {
+        if(!event.user.userName.equals(managerUser.userName)){
+            ManagementEvent restricted = new ManagementEvent(EventType.RESTRICTED);
+            restricted.user = event.user;
+            addManagementEvent(restricted);
+            return;
+        }
+        addManagementEvent(event);
+    }
+
+    @Override
+    public void loadBoard(ManagementEvent event) throws RemoteException {
+        if(!event.user.userName.equals(managerUser.userName)){
+            ManagementEvent restricted = new ManagementEvent(EventType.RESTRICTED);
+            restricted.user = event.user;
+            addManagementEvent(restricted);
+            return;
+        }
+        addManagementEvent(event);
+    }
+
+
 }

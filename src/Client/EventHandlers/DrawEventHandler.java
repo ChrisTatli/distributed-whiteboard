@@ -20,18 +20,6 @@ public class DrawEventHandler implements Runnable{
 
     private void HandleDrawEvent(DrawEvent event){
         switch(event.eventType){
-            case NEW:
-                whiteboard.clear();
-                whiteboard.repaint();
-                break;
-            case SAVE:
-                whiteboard.writeWhiteboard();
-                break;
-            case LOAD:
-                whiteboard.clear();
-                whiteboard.readWhiteboard();
-                whiteboard.repaint();
-                break;
             case DRAG:
                 Graphics graphics = whiteboard.getGraphics();
                 switch (event.drawType){
@@ -100,6 +88,16 @@ public class DrawEventHandler implements Runnable{
                 whiteboard.addShape((new Text(event.start,"event.text", Color.BLACK)));
                 text.draw(whiteboard.getGraphics());
                 whiteboard.repaint();
+                break;
+            case NEW:
+                whiteboard.clear();
+                whiteboard.repaint();
+                eventId = 0;
+                break;
+            case LOAD:
+                whiteboard.clear();
+                whiteboard.repaint();
+                eventId = 0;
                 break;
         }
     }

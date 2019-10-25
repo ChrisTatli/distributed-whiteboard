@@ -12,4 +12,8 @@ public interface DrawService extends Remote {
 
     ArrayList<DrawEvent> getDrawEvents(int from) throws RemoteException;
 
+    void clearEvents(DrawEvent event) throws RemoteException;
+
+    void loadEvents(ArrayList<DrawEvent> events) throws  RemoteException;
+
 }

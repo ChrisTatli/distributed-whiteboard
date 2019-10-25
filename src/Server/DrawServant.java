@@ -24,6 +24,30 @@ public class DrawServant extends UnicastRemoteObject implements DrawService {
 
     @Override
     public synchronized ArrayList<DrawEvent> getDrawEvents(int from) throws RemoteException {
-        return new ArrayList(drawEvents.subList(from, drawEvents.size()));
+        if(from > drawEvents.size()){
+            from = 0;
+        }
+        ArrayList events = new ArrayList(drawEvents.subList(from, drawEvents.size()));
+        return events;
     }
-}
+
+    @Override
+    public synchronized void clearEvents(DrawEvent event) throws RemoteException {
+
+        drawEvents.clear();
+        eventNumber = 0;
+        addDrawEvent(event);
+    }
+
+    public synchronized void loadEvents(ArrayList<DrawEvent> events) throws RemoteException{
+        drawEvents.clear();
+        eventNumber = 0;
+        for (DrawEvent event: events
+             ) {
+            addDrawEvent(event);
+        }
+
+
+    }
+
+   }

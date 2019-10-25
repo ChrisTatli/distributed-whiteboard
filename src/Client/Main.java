@@ -28,7 +28,7 @@ public class Main {
     public static String port;
 
     private static void InitGui(){
-        final JFrame frame = new JFrame("Client.Whiteboard");
+        final JFrame frame = new JFrame("Whiteboard");
         final Popup popup = new Popup(frame);
         frame.setSize(1200, 900);
         frame.setResizable(false);
@@ -41,10 +41,11 @@ public class Main {
         });
 
 
-        frame.addWindowListener(new FrameListener(frame, popup));
+
         frame.getContentPane().setLayout(new BorderLayout());
         User user = new User();
         whiteboard = new Whiteboard(frame, drawService, managementService);
+        whiteboard.user = user;
         whiteboard.setDoubleBuffered(true);
         frame.getContentPane().add(whiteboard, BorderLayout.CENTER);
         chatroom = new Chatroom(frame, chatService, managementService,user);
@@ -52,8 +53,8 @@ public class Main {
         frame.getContentPane().add(chatroom, BorderLayout.SOUTH);
 
 
-        whiteboard.user = user;
 
+        frame.addWindowListener(new FrameListener(frame, popup,whiteboard));
 
 
         ManagementEventHandler managementEventHandler = new ManagementEventHandler(whiteboard,chatroom);
@@ -123,15 +124,25 @@ public class Main {
 class FrameListener extends WindowAdapter{
     Popup popup;
     JFrame frame;
-    public FrameListener(JFrame frame, Popup popup){
+    Whiteboard whiteboard;
+    public FrameListener(JFrame frame, Popup popup, Whiteboard whiteboard){
         this.popup = popup;
         this.frame = frame;
+        this.whiteboard = whiteboard;
     }
 
     public void windowClosing(WindowEvent e){
         int choice = popup.popupConfirm("Are you should you want to exit?", "Exit");
         if(choice == JOptionPane.YES_OPTION){
-                System.exit(0);
+            ManagementEvent event = new ManagementEvent(EventType.KICK);
+            event.user = whiteboard.user;
+            event.username = whiteboard.user.userName;
+            try {
+                whiteboard.managementService.removeUser(event);
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+            System.exit(0);
         } else {
             frame.setVisible(true);
         }
