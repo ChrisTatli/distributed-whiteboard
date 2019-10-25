@@ -84,8 +84,10 @@ public class ManagementEventHandler implements Runnable{
                 }
                 break;
             case NEW:
+            	if(event.user.userId.equals(whiteboard.user.userId) ) {
                 DrawEvent clearEvent = new DrawEvent(EventType.NEW);
                 whiteboard.drawService.clearEvents(clearEvent);
+            	}
                 break;
             case SAVE:
                 if(event.user.userId.equals(whiteboard.user.userId) ){
@@ -94,6 +96,7 @@ public class ManagementEventHandler implements Runnable{
                 break;
             case LOAD:
                 if(event.user.userId.equals(whiteboard.user.userId) ) {
+                    whiteboard.clear();
                     whiteboard.readWhiteboard();
                 }
                 break;

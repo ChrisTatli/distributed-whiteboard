@@ -7,7 +7,7 @@ import Events.ManagementEvent;
 import Server.DrawService;
 import Server.ManagementService;
 import Shapes.Shape;
-import com.google.gson.Gson;
+
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -110,44 +110,44 @@ public class Whiteboard extends JPanel implements ActionListener {
 
 
 		//Shapes
-		JButton freeHand = new JButton(new ImageIcon("Assets/pointer.png"));
+		JButton freeHand = new JButton(new ImageIcon(Main.class.getResource("/pointer.png")));
 		freeHand.setActionCommand("Free");
 		freeHand.addActionListener(this);
 		menuBar.add(freeHand);
 
-		JButton eraser = new JButton(new ImageIcon("Assets/erase.png"));
+		JButton eraser = new JButton(new ImageIcon(Main.class.getResource("/erase.png")));
 		eraser.setActionCommand("Erase");
 		eraser.addActionListener(this);
 		menuBar.add(eraser);
 
-		JButton line = new JButton(new ImageIcon("Assets/line.png"));
+		JButton line = new JButton(new ImageIcon(Main.class.getResource("/line.png")));
 		line.setActionCommand("Line");
 		line.addActionListener(this);
 		menuBar.add(line);
 
 
 
-		JButton square = new JButton(new ImageIcon("Assets/square.png"));
+		JButton square = new JButton(new ImageIcon(Main.class.getResource("/square.png")));
 		square.setActionCommand("Square");
 		square.addActionListener(this);
 		menuBar.add(square);
 
-		JButton rectangle = new JButton(new ImageIcon("Assets/rectangle.png"));
+		JButton rectangle = new JButton(new ImageIcon(Main.class.getResource("/rectangle.png")));
 		rectangle.setActionCommand("Rectangle");
 		rectangle.addActionListener(this);
 		menuBar.add(rectangle);
 
-		JButton circle = new JButton(new ImageIcon("Assets/circle.png"));
+		JButton circle = new JButton(new ImageIcon(Main.class.getResource("/circle.png")));
 		circle.setActionCommand("Circle");
 		circle.addActionListener(this);
 		menuBar.add(circle);
 
-		JButton ellipse = new JButton(new ImageIcon("Assets/ellipse.png"));
+		JButton ellipse = new JButton(new ImageIcon(Main.class.getResource("/ellipse.png")));
 		ellipse.setActionCommand("Ellipse");
 		ellipse.addActionListener(this);
 		menuBar.add(ellipse);
 
-		JButton text = new JButton(new ImageIcon("Assets/text.png"));
+		JButton text = new JButton(new ImageIcon(Main.class.getResource("/text.png")));
 		text.setActionCommand("Text");
 		text.addActionListener(this);
 		menuBar.add(text);
@@ -158,7 +158,7 @@ public class Whiteboard extends JPanel implements ActionListener {
 
 
 		//colors
-		JButton colorMenu = new JButton(new ImageIcon("Assets/rgb.png"));
+		JButton colorMenu = new JButton(new ImageIcon(Main.class.getResource("/rgb.png")));
 		colorMenu.setActionCommand("Color");
 		colorMenu.addActionListener(this);
 
