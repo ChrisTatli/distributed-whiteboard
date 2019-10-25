@@ -77,7 +77,12 @@ public class ManagementEventHandler implements Runnable{
                     popup.popupError("Admin kicked  you from the session.");
                     System.exit(0);
                 }
-
+                break;
+            case RESTRICTED:
+                if(event.user.userId.equals(whiteboard.user.userId)){
+                    popup.popupError("This action is restricted to admins.");
+                }
+                break;
 
 
 

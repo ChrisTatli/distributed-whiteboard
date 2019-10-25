@@ -20,10 +20,12 @@ public class UserList extends JPanel implements ListSelectionListener, ActionLis
     private JList userList;
     private JScrollPane users;
     private String selected;
+    private User user;
 
     public UserList(ManagementService managementService, User user){
         this.managementService = managementService;
         this.userNames = new ArrayList<>();
+        this.user = user;
         InitPanel();
 
     }
@@ -60,6 +62,7 @@ public class UserList extends JPanel implements ListSelectionListener, ActionLis
     public void actionPerformed(ActionEvent e) {
         ManagementEvent managementEvent = new ManagementEvent(EventType.KICK);
         managementEvent.username = selected;
+        managementEvent.user = user;
         try {
             managementService.kickUser(managementEvent);
         } catch (RemoteException ex) {

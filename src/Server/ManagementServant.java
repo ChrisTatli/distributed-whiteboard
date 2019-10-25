@@ -73,7 +73,15 @@ public class ManagementServant extends UnicastRemoteObject implements Management
 
     @Override
     public void kickUser(ManagementEvent event) throws RemoteException {
+
+        if(!event.user.userName.equals(managerUser.userName)){
+            ManagementEvent restricted = new ManagementEvent(EventType.RESTRICTED);
+            restricted.user = event.user;
+            addManagementEvent(restricted);
+            return;
+        }
         if(event.username.equals(managerUser.userName)){return;}
+
         activeUsers.remove(event.username);
         addManagementEvent(event);
         ManagementEvent usersEvent = new ManagementEvent((EventType.UPDATEUSERS));

@@ -21,10 +21,11 @@ public class Chatroom extends JPanel implements ActionListener {
     private JTextArea chatArea;
 
 
-    public Chatroom(JFrame frame, ChatService chatService, ManagementService managementService){
+    public Chatroom(JFrame frame, ChatService chatService, ManagementService managementService, User user){
         this.frame = frame;
         this.managementService = managementService;
         this.chatService = chatService;
+        this.user = user;
 
         Init();
     }

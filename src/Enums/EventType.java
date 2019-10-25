@@ -15,7 +15,8 @@ public enum EventType {
     DECLINED,
     ADMIN,
     UPDATEUSERS,
-    KICK
+    KICK,
+    RESTRICTED
 
 
 }
