@@ -1,7 +1,7 @@
 package Enums;
 
 public enum EventType {
-
+    MOVE,
     DRAG,
     RELEASE,
     KEYSTROKE,
@@ -16,7 +16,8 @@ public enum EventType {
     ADMIN,
     UPDATEUSERS,
     KICK,
-    RESTRICTED
+    RESTRICTED,
+
 
 
 }

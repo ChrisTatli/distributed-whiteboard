@@ -7,6 +7,9 @@ import Events.DrawEvent;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.rmi.RemoteException;
+
+import static java.awt.event.KeyEvent.VK_ENTER;
 
 public class KeyBoard extends KeyAdapter {
 
@@ -21,6 +24,16 @@ public class KeyBoard extends KeyAdapter {
         this.whiteboard = whiteboard;
     }
 
+    public void setStart(Point start) {
+        this.start = start;
+    }
+    public void setText(String text){
+        this.text = text;
+    }
+
+
+
+
     public void setDrawType(DrawType type){
         this.type = type;
     }
@@ -31,24 +44,29 @@ public class KeyBoard extends KeyAdapter {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if(type == DrawType.TEXT){
-            if(text == null){
-                text = "";
-            }
-            char c = e.getKeyChar();
-            if(c == '\n'){
+        if(start != null && type == DrawType.TEXT){
 
-            } else {
+                char c = e.getKeyChar();
+                if(c == VK_ENTER){
+                    start = null;
+                    text = null;
+                    return;
+                } else {
                 text += c;
+                }
+                DrawEvent drawEvent = new DrawEvent(EventType.KEYSTROKE);
+
+                drawEvent.drawType = type;
+                drawEvent.start = start;
+                drawEvent.text = text;
+                drawEvent.color = color;
+            try {
+                whiteboard.drawService.addDrawEvent(drawEvent);
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
             }
-            DrawEvent drawEvent = new DrawEvent(EventType.KEYSTROKE);
 
-            drawEvent.drawType = type;
-            drawEvent.start = start;
-            drawEvent.text = text;
-            drawEvent.color = color;
 
-            //whiteboard.addDrawEvent(drawEvent);
-        }
-    }
-}
+                }
+                }
+                }

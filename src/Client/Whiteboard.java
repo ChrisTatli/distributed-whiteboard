@@ -30,7 +30,7 @@ public class Whiteboard extends JPanel implements ActionListener {
 	final JFrame frame;
 	private JMenuBar menuBar;
 	private Mouse mouse;
-	private KeyBoard keyBoard;
+	public KeyBoard keyBoard;
 	public User user;
 	public DrawService drawService;
 	public ManagementService managementService;
@@ -38,9 +38,7 @@ public class Whiteboard extends JPanel implements ActionListener {
 	private ArrayList<Shapes.Shape> shapes = new ArrayList<>();
 	private DrawType drawType = DrawType.FREE;
 
-	public JFrame getFrame() {
-		return frame;
-	}
+
 
 	public Whiteboard(JFrame frame, DrawService drawService, ManagementService managementService) {
 
@@ -338,6 +336,7 @@ public class Whiteboard extends JPanel implements ActionListener {
 			case "Color":
 				Color color = JColorChooser.showDialog(this, "Select Color", null);
 				mouse.setColor(color);
+				keyBoard.setColor(color);
 				break;
 			case "Erase":
 				drawType = DrawType.ERASE;

@@ -37,10 +37,6 @@ public class Mouse extends MouseInputAdapter {
     public  void setStrokeThickness(int strokeThickness){this.strokeThickness = strokeThickness;}
     public  void setEraserSize(int eraserSize){this.eraserSize = eraserSize;}
 
-    @Override
-    public void mouseMoved(MouseEvent e){
-
-    }
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -49,16 +45,18 @@ public class Mouse extends MouseInputAdapter {
             points = new ArrayList<>();
         }
         else if(type == DrawType.TEXT){
-            DrawEvent drawEvent = new DrawEvent(EventType.PRESSED);
+            whiteboard.keyBoard.setStart(start);
+            whiteboard.keyBoard.setText("");
+
+            /*DrawEvent drawEvent = new DrawEvent(EventType.PRESSED);
             drawEvent.drawType = type;
             drawEvent.start = start;
             drawEvent.color = color;
-
             try {
                 whiteboard.drawService.addDrawEvent(drawEvent);
             } catch (RemoteException ex) {
                 ex.printStackTrace();
-            }
+            }*/
         }
     }
 

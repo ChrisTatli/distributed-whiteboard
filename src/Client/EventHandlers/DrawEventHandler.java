@@ -83,10 +83,8 @@ public class DrawEventHandler implements Runnable{
                 }
                 whiteboard.repaint();
                 break;
-            case PRESSED:
-                Text text = new Text(event.start,"event.text", Color.BLACK);
-                whiteboard.addShape((new Text(event.start,"event.text", Color.BLACK)));
-                text.draw(whiteboard.getGraphics());
+            case KEYSTROKE:
+                whiteboard.addShape(new Shapes.Text(event.start, event.text, event.color));
                 whiteboard.repaint();
                 break;
             case NEW:
